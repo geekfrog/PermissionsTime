@@ -1,0 +1,13 @@
+name: QuickDevDemo
+main: gg.frog.mc.quickdevdemo.PluginMain
+version: 0.0.1
+author: GeekFrog
+
+commands:
+    quickdevdemo:
+        description: Show all commands.
+
+permissions:
+    quickdevdemo.reload:
+        description: Reloads the config file.
+        default: false
