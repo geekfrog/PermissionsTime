@@ -1,6 +1,8 @@
 # PermissionsTime
 ### 支持跨服的权限限时插件
 
+#### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://note.youdao.com/)
+
 ##### 插件目标：
 
 - 在配置文件中编辑权限包(可含有多个权限组和多个权限)
