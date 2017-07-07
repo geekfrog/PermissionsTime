@@ -31,7 +31,8 @@
         </dependency>
     </dependencies>
     <build>
-        <sourceDirectory>src/main</sourceDirectory>
+        <finalName>PermissionsTime</finalName>
+        <sourceDirectory>${basedir}/src/main</sourceDirectory>
         <resources>
             <resource>
                 <directory>src/resources</directory>
@@ -44,8 +45,74 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <excludes>
+                    </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>assembly/package.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.5</version>
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>commons-logging:commons-logging</include>
+                            <include>org.apache.tomcat:tomcat-jdbc</include>
+                            <include>org.apache.tomcat:tomcat-juli</include>
+                        </includes>
+                    </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.apache.commons.logging</pattern>
+                            <shadedPattern>com.gmail.nossr50.commons.logging</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.juli</pattern>
+                            <shadedPattern>com.gmail.nossr50.database.tomcat.juli</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.tomcat</pattern>
+                            <shadedPattern>com.gmail.nossr50.database.tomcat</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-file</artifactId>
+                <version>2.2</version>
+            </extension>
+        </extensions>
     </build>
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://jenkins.frog.gg/jenkins/job/PermissionsTime/</url>
+    </ciManagement>
 </project>
