@@ -1,7 +1,7 @@
 # PermissionsTime
 ### 支持跨服的权限限时插件
 
-#### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://note.youdao.com/)
+#### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://ci.frog.gg/jenkins/job/PermissionsTime/)
 
 ##### 插件目标：
 
