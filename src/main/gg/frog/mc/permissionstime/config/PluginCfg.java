@@ -10,11 +10,10 @@ import gg.frog.mc.permissionstime.utils.PluginConfig;
  *
  */
 public class PluginCfg extends PluginConfig {
-
-    private static PluginMain pm = PluginMain.getInstance();
     
     public static String PLUGIN_PREFIX = null;
     public static Boolean IS_DEBUG = null;
+    public static String LANG = null;
     
     
     public PluginCfg() {
@@ -23,14 +22,16 @@ public class PluginCfg extends PluginConfig {
 
     @Override
     protected void init() {
+        getConfig().set("lang","zh-cn");
         getConfig().set("debug", false);
         saveConfig();
     }
 
     @Override
     protected void loadToDo() {
-        PLUGIN_PREFIX = (String)getConfig().get("pluginPrefix","&b["+PluginMain.PLUGIN_NAME+"]&r");
+        PLUGIN_PREFIX = getConfig().getString("pluginPrefix","&b["+PluginMain.PLUGIN_NAME+"]&r");
         IS_DEBUG = getConfig().getBoolean("debug", false);
+        LANG = getConfig().getString("lang","zh-cn");
     }
     
 }

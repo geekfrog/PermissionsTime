@@ -25,7 +25,7 @@ public class PluginMain extends JavaPlugin {
         PluginMain.pm = this;
         registerListeners();
         registerCommands();
-        cm = new ConfigManager(this);
+        cm = new ConfigManager();
         pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
         pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    " + PluginMain.PLUGIN_NAME + " v" + PluginMain.PLUGIN_VERSION));
         pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    作者：宅宅蛙 QQ：324747460"));

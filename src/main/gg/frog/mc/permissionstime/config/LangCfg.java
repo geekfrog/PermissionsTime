@@ -1,6 +1,5 @@
 package gg.frog.mc.permissionstime.config;
 
-import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.utils.PluginConfig;
 
 /**
@@ -11,13 +10,11 @@ import gg.frog.mc.permissionstime.utils.PluginConfig;
  */
 public class LangCfg extends PluginConfig {
 
-    private PluginMain pm = PluginMain.getInstance();
-
     public static String NO_PERMISSION = null;
     public static String CONFIG_RELOADED = null;
 
-    public LangCfg() {
-        super("lang/zh-cn.yml");
+    public LangCfg(String fileName) {
+        super(fileName);
     }
 
     @Override
