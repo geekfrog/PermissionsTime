@@ -20,9 +20,6 @@ public class PackagesCfg extends PluginConfig {
 
     @Override
     protected void init() {
-        getConfig().set("version", PluginMain.PLUGIN_VERSION);
-        getConfig().set("defaultGroup", "Default");
-        saveConfig();
     }
 
     @Override
