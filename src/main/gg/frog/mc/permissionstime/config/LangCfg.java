@@ -19,13 +19,12 @@ public class LangCfg extends PluginConfig {
 
     @Override
     protected void init() {
-        saveConfig();
     }
 
     @Override
     protected void loadToDo() {
-        NO_PERMISSION = getConfig().getString("nopermission","&4你没有权限这么做");
-        CONFIG_RELOADED = getConfig().getString("configReloaded","&a配置重载完成");
+        NO_PERMISSION = setGetDefault("nopermission","&4你没有权限这么做");
+        CONFIG_RELOADED = setGetDefault("configReloaded","&a配置重载完成");
     }
     
 }

@@ -19,13 +19,12 @@ public class PackagesCfg extends PluginConfig {
 
     @Override
     protected void init() {
-        saveConfig();
     }
 
     @Override
     protected void loadToDo() {
-        PACKAGES_VERSION = getConfig().getString("version", "?");
-        DEFAULT_GROUP = getConfig().getString("defaultGroup", "Default");
+        PACKAGES_VERSION = setGetDefault("version", "?");
+        DEFAULT_GROUP = setGetDefault("defaultGroup", "Default");
         PACKAGES = getObjMap("packages", PermissionPackageBean.class);
         if (PluginCfg.IS_DEBUG) {
             System.out.println("packages vresion:" + PACKAGES_VERSION);

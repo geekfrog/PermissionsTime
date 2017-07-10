@@ -57,6 +57,7 @@ public abstract class PluginConfig {
         if (!configFile.exists()) {
             getConfig(folder, fileName).options().copyDefaults(true);
             init();
+            saveAndReloadConfig();
         } else {
             reloadConfig();
         }
@@ -99,6 +100,14 @@ public abstract class PluginConfig {
     public void saveConfig() {
         try {
             getConfig().save(configFile);
+        } catch (IOException ex) {
+            PluginMain.LOG.log(Level.SEVERE, "Could not save config to " + configFile, ex);
+        }
+    }
+    
+    public void saveAndReloadConfig() {
+        try {
+            getConfig().save(configFile);
             reloadConfig();
         } catch (IOException ex) {
             PluginMain.LOG.log(Level.SEVERE, "Could not save config to " + configFile, ex);
@@ -124,6 +133,7 @@ public abstract class PluginConfig {
         }
         config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
         loadToDo();
+        saveConfig();
     }
 
     protected void saveObj(String path, Map<String, ? extends IConfigBean> o) {
@@ -162,5 +172,29 @@ public abstract class PluginConfig {
             }
         }
         return null;
+    }
+    
+    protected String setGetDefault(String path, String def){
+        if(!getConfig().contains(path)){
+            getConfig().set(path, def);
+            return def;
+        }
+        return getConfig().getString(path);
+    }
+    
+    protected int setGetDefault(String path, int def){
+        if(!getConfig().contains(path)){
+            getConfig().set(path, def);
+            return def;
+        }
+        return getConfig().getInt(path);
+    }
+    
+    protected boolean setGetDefault(String path, boolean def){
+        if(!getConfig().contains(path)){
+            getConfig().set(path, def);
+            return def;
+        }
+        return getConfig().getBoolean(path);
     }
 }
