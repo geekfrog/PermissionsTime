@@ -12,6 +12,7 @@ import gg.frog.mc.permissionstime.utils.config.PluginConfig;
 public class PluginCfg extends PluginConfig {
     
     public static String PLUGIN_PREFIX = null;
+    public static Boolean IS_METRICS = null;
     public static Boolean IS_DEBUG = null;
     public static String LANG = null;
     public static String SQL_HOSTNAME;
@@ -27,6 +28,7 @@ public class PluginCfg extends PluginConfig {
     @Override
     protected void init() {
         getConfig().set("lang","zh-cn");
+        getConfig().set("metrics", true);
         getConfig().set("debug", false);
         saveConfig();
     }
@@ -35,6 +37,7 @@ public class PluginCfg extends PluginConfig {
     protected void loadToDo() {
         PLUGIN_PREFIX = getConfig().getString("pluginPrefix","&b["+PluginMain.PLUGIN_NAME+"]&r");
         IS_DEBUG = getConfig().getBoolean("debug", false);
+        IS_METRICS = getConfig().getBoolean("metrics", true);
         LANG = getConfig().getString("lang","zh-cn");
     }
     
