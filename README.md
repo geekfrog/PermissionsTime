@@ -1,7 +1,7 @@
 # PermissionsTime
 ### 支持跨服的权限限时插件
 
-#### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://ci.frog.gg/jenkins/job/PermissionsTime/)
+#### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://note.youdao.com/)
 
 ##### 插件目标：
 
@@ -13,3 +13,6 @@
 - 支持重载
 - 支持不同世界权限
 - 支持前后缀管理
+
+##### 使用统计：
+![image](http://i.mcstats.org/PermissionsTime/Global+Statistics.borderless.png)
