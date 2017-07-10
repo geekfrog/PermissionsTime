@@ -1,0 +1,21 @@
+version: 0.0.1
+defaultGroup: Default
+packages:
+#权限包名称
+  example1:
+  #权限包含有的权限
+    permissions:
+    - permission1 
+    - permission2
+    #权限包含有的权限组
+    groups:
+    - group1
+    - group2
+    #权限包含有的前缀
+    prefixs:
+    - '&2[Player]&3'
+    - '&2[VIP]&3'
+    #权限包含有的后缀
+    suffixs:
+    - '→❤'
+    - '→★'

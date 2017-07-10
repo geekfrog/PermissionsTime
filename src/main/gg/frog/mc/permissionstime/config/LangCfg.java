@@ -1,6 +1,6 @@
 package gg.frog.mc.permissionstime.config;
 
-import gg.frog.mc.permissionstime.utils.PluginConfig;
+import gg.frog.mc.permissionstime.utils.config.PluginConfig;
 
 /**
  * 语言支持

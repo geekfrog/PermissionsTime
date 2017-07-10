@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.utils.PluginConfig;
 import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.utils.FileUtil;
 import gg.frog.mc.permissionstime.utils.FileUtil.FindFilesDo;
+import gg.frog.mc.permissionstime.utils.config.PluginConfig;
 
 /**
  * 配置文件管理
@@ -36,6 +36,7 @@ public class ConfigManager {
         // 添加到配置列表
         cfgMap.put("plugin", new PluginCfg());
         cfgMap.put("lang", new LangCfg("lang/" + PluginCfg.LANG + ".yml"));
+        cfgMap.put("packages", new PackagesCfg("packages.yml"));
     }
 
     public void reloadConfig() {

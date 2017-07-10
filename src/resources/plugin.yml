@@ -2,12 +2,17 @@ name: PermissionsTime
 main: gg.frog.mc.permissionstime.PluginMain
 version: 0.0.1
 author: GeekFrog
+softdepend: [SQLibrary, Vault]
 
 commands:
     permissionstime:
         description: Show all commands.
 
 permissions:
+    permissionstime.*:
+        description: Gives access to all PermissionsTime commands.
+        children:
+            permissionstime.reload: true
     permissionstime.reload:
         description: Reloads the config file.
-        default: false
+        default: op

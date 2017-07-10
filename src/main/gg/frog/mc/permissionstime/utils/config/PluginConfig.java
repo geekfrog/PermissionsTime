@@ -1,11 +1,15 @@
-package gg.frog.mc.permissionstime.utils;
+package gg.frog.mc.permissionstime.utils.config;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -57,12 +61,12 @@ public abstract class PluginConfig {
             reloadConfig();
         }
     }
-    
+
     /**
      * 首次生成文件调用
      */
     protected abstract void init();
-    
+
     /**
      * 加载配置后调用
      */
@@ -120,5 +124,31 @@ public abstract class PluginConfig {
         }
         config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
         loadToDo();
+    }
+
+    protected void saveObj(String path, Map<String, ? extends IConfigBean> o) {
+        for (Entry<String, ? extends IConfigBean> configBean : o.entrySet()) {
+            getConfig().set(path + "." + configBean.getKey(), configBean.getValue().toConfig());
+        }
+    }
+
+    protected <T extends IConfigBean> Map<String, T> getObjMap(String path, Class<T> clazz) {
+        Map<String, T> map = new HashMap<>();
+        MemorySection configMap = (MemorySection) getConfig().get(path);
+        if (configMap != null) {
+            for (String key : configMap.getKeys(false)) {
+                MemorySection beanConfig = (MemorySection) configMap.get(key);
+                if (beanConfig != null) {
+                    try {
+                        T bean = clazz.newInstance();
+                        bean.toConfigBean(beanConfig);
+                        map.put(key, bean);
+                    } catch (InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return map;
     }
 }

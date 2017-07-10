@@ -15,22 +15,24 @@ public class PluginMain extends JavaPlugin {
     public static final String PLUGIN_NAME = "PermissionsTime";
     public static final String PLUGIN_VERSION = "0.0.1";
     public static final String PLUGIN_NAME_LOWER_CASE = PLUGIN_NAME.toLowerCase(Locale.ENGLISH);
-    public static final Logger LOG = Logger.getLogger(PluginMain.PLUGIN_NAME);
+    public static final Logger LOG = Logger.getLogger("Minecraft");
 
     private static PluginMain pm = null;
     private ConfigManager cm = null;
-    
+
     @Override
     public void onEnable() {
-        PluginMain.pm = this;
+        pm = this;
+        cm = new ConfigManager();
         registerListeners();
         registerCommands();
-        cm = new ConfigManager();
         pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
+        pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
         pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    " + PluginMain.PLUGIN_NAME + " v" + PluginMain.PLUGIN_VERSION));
-        pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    作者：宅宅蛙 QQ：324747460"));
+        pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    author：GeekFrog QQ：324747460"));
         pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    https://github.com/geekfrog/PermissionsTime/ "));
         pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
+        pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
     }
 
     public static PluginMain getInstance() {

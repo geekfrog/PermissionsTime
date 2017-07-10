@@ -20,6 +20,15 @@
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>dakani</id>
+            <name>Dakani Nexus Repo</name>
+            <url>https://repo.dakanilabs.com/repository/public/</url>
+        </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -29,6 +38,18 @@
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>lib.PatPeter.SQLibrary</groupId>
+            <artifactId>SQLibrary</artifactId>
+            <version>7.1</version>
+        </dependency>
+
     </dependencies>
     <build>
         <finalName>PermissionsTime-${project.version}</finalName>
