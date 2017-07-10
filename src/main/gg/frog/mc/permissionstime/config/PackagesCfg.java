@@ -19,6 +19,7 @@ public class PackagesCfg extends PluginConfig {
 
     @Override
     protected void init() {
+        saveConfig();
     }
 
     @Override

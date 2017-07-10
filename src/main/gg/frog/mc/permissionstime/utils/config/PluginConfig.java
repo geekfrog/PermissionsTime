@@ -128,8 +128,12 @@ public abstract class PluginConfig {
 
     protected void saveObj(String path, Map<String, ? extends IConfigBean> o) {
         for (Entry<String, ? extends IConfigBean> configBean : o.entrySet()) {
-            getConfig().set(path + "." + configBean.getKey(), configBean.getValue().toConfig());
+            saveObj(path + "." + configBean.getKey(), configBean.getValue());
         }
+    }
+
+    protected void saveObj(String path, IConfigBean o) {
+        getConfig().set(path, o.toConfig());
     }
 
     protected <T extends IConfigBean> Map<String, T> getObjMap(String path, Class<T> clazz) {
@@ -137,18 +141,26 @@ public abstract class PluginConfig {
         MemorySection configMap = (MemorySection) getConfig().get(path);
         if (configMap != null) {
             for (String key : configMap.getKeys(false)) {
-                MemorySection beanConfig = (MemorySection) configMap.get(key);
-                if (beanConfig != null) {
-                    try {
-                        T bean = clazz.newInstance();
-                        bean.toConfigBean(beanConfig);
-                        map.put(key, bean);
-                    } catch (InstantiationException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+                T bean = getObj(path + "." + key, clazz);
+                if (bean != null) {
+                    map.put(key, bean);
                 }
             }
         }
         return map;
+    }
+
+    protected <T extends IConfigBean> T getObj(String path, Class<T> clazz) {
+        Object beanConfig = getConfig().get(path);
+        if (beanConfig != null && beanConfig instanceof MemorySection) {
+            try {
+                T bean = clazz.newInstance();
+                bean.toConfigBean((MemorySection) beanConfig);
+                return bean;
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
