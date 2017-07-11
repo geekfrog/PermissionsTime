@@ -8,7 +8,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
-import gg.frog.mc.permissionstime.command.TheCommand;
+import gg.frog.mc.permissionstime.command.MainCommand;
 import gg.frog.mc.permissionstime.config.ConfigManager;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
@@ -84,7 +84,7 @@ public class PluginMain extends JavaPlugin {
      * 这里可以注册多个，一般注册一个就够用
      */
     private void registerCommands() {
-        this.getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(new TheCommand());
+        this.getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(new MainCommand());
     }
 
     public ConfigManager getConfigManager() {
