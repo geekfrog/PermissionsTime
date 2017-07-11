@@ -26,7 +26,7 @@ public class SqlManager {
     }
 
     public boolean updateDatabase() {
-        if(db != null && db.isOpen()){
+        if (db != null && db.isOpen()) {
             db.close();
         }
         if (PluginCfg.USE_MYSQL) {
@@ -37,13 +37,26 @@ public class SqlManager {
         }
         db.open();
         try {
-            if(!pds.tableExist()){
+            if (!pds.tableExist()) {
                 pds.creatTable();
             }
             pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX) + "连接数据库成功");
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean giveTime(String uuid, String packageName, int days) {
+        for (int i = 0; i < 3; i++) {
+            try {
+                if (pds.addTime(uuid, packageName, days)) {
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return false;
     }

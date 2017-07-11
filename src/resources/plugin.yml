@@ -12,28 +12,29 @@ permissions:
     permissionstime.*:
         description: Gives access to all PermissionsTime commands.
         children:
+            permissionstime.me: true
             permissionstime.reload: true
             permissionstime.give: true
             permissionstime.set: true
             permissionstime.remove: true
-            permissionstime.package: true
+            permissionstime.packages: true
             permissionstime.reload: true
     permissionstime.me:
         description: View himself package.
-        default: default
+        default: true
     permissionstime.reload:
         description: Reloads the config file.
         default: op
     permissionstime.give:
-        description: Give player package <time>minutes.
+        description: Give player package <time>day.
         default: op
     permissionstime.set:
-        description: Set player package <time>minutes.
+        description: Set player package <time>day.
         default: op
     permissionstime.remove:
         description: Remove player package.
         default: op
-    permissionstime.package:
+    permissionstime.packages:
         description: View packages.
         default: op
         

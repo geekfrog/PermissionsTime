@@ -18,19 +18,19 @@ public class PackagesCfg extends PluginConfig {
     }
 
     @Override
-    protected void init() {
-    }
+    protected void init() {}
 
     @Override
     protected void loadToDo() {
         PACKAGES_VERSION = setGetDefault("version", "?");
         DEFAULT_GROUP = setGetDefault("defaultGroup", "Default");
         PACKAGES = getObjMap("packages", PermissionPackageBean.class);
+        saveObj("packages", PACKAGES);
         if (PluginCfg.IS_DEBUG) {
             System.out.println("packages vresion:" + PACKAGES_VERSION);
             System.out.println("defaultGroup:" + DEFAULT_GROUP);
             for (Entry<String, PermissionPackageBean> p : PACKAGES.entrySet()) {
-                System.out.println(p);
+                System.out.println(p.getKey() + ":" + p.getValue());
             }
         }
     }

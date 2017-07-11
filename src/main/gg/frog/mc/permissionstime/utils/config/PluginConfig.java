@@ -80,7 +80,7 @@ public abstract class PluginConfig {
      */
     private FileConfiguration getConfig(File folder, String fileName) {
         if (config == null) {
-            reloadConfig(folder, fileName);
+            reloadConfig(folder, fileName, true);
         }
         return config;
     }
@@ -104,7 +104,7 @@ public abstract class PluginConfig {
             PluginMain.LOG.log(Level.SEVERE, "Could not save config to " + configFile, ex);
         }
     }
-    
+
     public void saveAndReloadConfig() {
         try {
             getConfig().save(configFile);
@@ -118,20 +118,22 @@ public abstract class PluginConfig {
      * 配置重载
      */
     public void reloadConfig() {
-        reloadConfig(folder, fileName);
+        reloadConfig(folder, fileName, false);
     }
 
     /**
      * 配置重载
      */
-    private void reloadConfig(File folder, String fileName) {
+    private void reloadConfig(File folder, String fileName, boolean useRes) {
         config = YamlConfiguration.loadConfiguration(configFile);
 
-        final InputStream defConfigStream = PluginMain.getInstance().getResource(fileName);
-        if (defConfigStream == null) {
-            return;
+        if (useRes) {
+            final InputStream defConfigStream = PluginMain.getInstance().getResource(fileName);
+            if (defConfigStream == null) {
+                return;
+            }
+            config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
         }
-        config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
         loadToDo();
         saveConfig();
     }
@@ -167,31 +169,31 @@ public abstract class PluginConfig {
                 T bean = clazz.newInstance();
                 bean.toConfigBean((MemorySection) beanConfig);
                 return bean;
-            } catch (InstantiationException | IllegalAccessException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return null;
     }
-    
-    protected String setGetDefault(String path, String def){
-        if(!getConfig().contains(path)){
+
+    protected String setGetDefault(String path, String def) {
+        if (!getConfig().contains(path)) {
             getConfig().set(path, def);
             return def;
         }
         return getConfig().getString(path);
     }
-    
-    protected int setGetDefault(String path, int def){
-        if(!getConfig().contains(path)){
+
+    protected int setGetDefault(String path, int def) {
+        if (!getConfig().contains(path)) {
             getConfig().set(path, def);
             return def;
         }
         return getConfig().getInt(path);
     }
-    
-    protected boolean setGetDefault(String path, boolean def){
-        if(!getConfig().contains(path)){
+
+    protected boolean setGetDefault(String path, boolean def) {
+        if (!getConfig().contains(path)) {
             getConfig().set(path, def);
             return def;
         }

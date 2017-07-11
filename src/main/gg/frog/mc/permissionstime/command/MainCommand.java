@@ -24,14 +24,7 @@ public class MainCommand implements CommandExecutor {
                 isPlayer = true;
             }
             if (args.length == 0) {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + PluginMain.PLUGIN_NAME + " Version:" + PluginMain.PLUGIN_VERSION + " ====="));
-                if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".reload")) {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " reload -Reloads the config file."));
-                }
-                if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".give")) {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> - Give player package <time>minutes."));
-                }
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
+                getHelp(sender, isPlayer);
                 return true;
             } else {
                 if (args[0].equalsIgnoreCase("reload")) {
@@ -49,18 +42,59 @@ public class MainCommand implements CommandExecutor {
                         }
                     } else {
                         pm.getConfigManager().reloadConfig();
-                        sm.updateDatabase();
+                        if (!sm.updateDatabase()) {
+                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "数据库异常"));
+                        }
                         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.CONFIG_RELOADED));
                     }
                     return true;
+                } else if (args[0].equalsIgnoreCase("me")) {
+                    if (hasPermission(sender, isPlayer, "permissionstime.me")) {
+                        return GiveCmd.onCommand(sender, isPlayer, args);
+                    }
                 } else if (args[0].equalsIgnoreCase("give")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.give")) {
-                        return GiveCmd.onCommand(sender, command, isPlayer, args);
+                        return GiveCmd.onCommand(sender, isPlayer, args);
                     }
+                } else if (args[0].equalsIgnoreCase("set")) {
+                    if (hasPermission(sender, isPlayer, "permissionstime.set")) {
+                        return GiveCmd.onCommand(sender, isPlayer, args);
+                    }
+                } else if (args[0].equalsIgnoreCase("remove")) {
+                    if (hasPermission(sender, isPlayer, "permissionstime.remove")) {
+                        return GiveCmd.onCommand(sender, isPlayer, args);
+                    }
+                } else if (args[0].equalsIgnoreCase("packages")) {
+                    if (hasPermission(sender, isPlayer, "permissionstime.packages")) {
+                        return PackagesCmd.onCommand(sender, isPlayer, args);
+                    }
+                } else {
+                    getHelp(sender, isPlayer);
+                    return true;
                 }
             }
         }
         return false;
+    }
+
+    private void getHelp(CommandSender sender, boolean isPlayer) {
+        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + PluginMain.PLUGIN_NAME + " Version:" + PluginMain.PLUGIN_VERSION + " ====="));
+        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".reload")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " reload \n\t-Reloads the config file."));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".give")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> \n\t- Give player package <time>day."));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".set")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " set <playerName> <packageName> <time> \n\t- Set player package <time>day."));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".remove")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " remove <playerName> <packageName> \n\t- Remove player package."));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".packages")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n\t- View packages."));
+        }
+        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
     }
 
     private boolean hasPermission(CommandSender sender, boolean isPlayer, String permissionPath) {

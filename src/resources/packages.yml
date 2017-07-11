@@ -3,7 +3,11 @@ defaultGroup: Default
 packages:
 #权限包名称
   example1:
-  #权限包含有的权限
+    #权限包显示名称
+    displayName: '权限包模板1'
+    #权限包时间(单位: 天)
+    days: 10
+    #权限包含有的权限
     permissions:
     - permission1 
     - permission2
