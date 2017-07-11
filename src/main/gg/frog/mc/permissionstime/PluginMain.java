@@ -1,9 +1,12 @@
 package gg.frog.mc.permissionstime;
 
 import java.util.Locale;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
@@ -18,16 +21,16 @@ import net.milkbowl.vault.permission.Permission;
 
 public class PluginMain extends JavaPlugin {
 
-    public static String PLUGIN_NAME;
-    public static String PLUGIN_VERSION;
-    public static String PLUGIN_NAME_LOWER_CASE;
+    public String PLUGIN_NAME;
+    public String PLUGIN_VERSION;
+    public String PLUGIN_NAME_LOWER_CASE;
     public static final String DEPEND_PLUGIN = "SQLibrary,Vault";
     public static Logger LOG = Logger.getLogger("Minecraft");
 
-    public static PluginMain pm = null;
-    public static ConfigManager cm = null;
-    public static SqlManager sm = null;
-    public static Permission permission = null;
+    private ConfigManager cm = null;
+    private PluginMain pm = null;
+    private SqlManager sm = null;
+    private Permission permission = null;
 
     public PluginMain() {
         PLUGIN_NAME = getDescription().getName();
@@ -39,23 +42,23 @@ public class PluginMain extends JavaPlugin {
     public void onEnable() {
         super.onEnable();
         pm = this;
-        cm = new ConfigManager();
+        cm = new ConfigManager(pm);
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
-        getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    " + PluginMain.PLUGIN_NAME + " v" + PluginMain.PLUGIN_VERSION));
+        getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    " + PLUGIN_NAME + " v" + PLUGIN_VERSION));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    author：GeekFrog QQ：324747460"));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    https://github.com/geekfrog/PermissionsTime/ "));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
         if (PluginCfg.IS_METRICS) {
             try {
-                Metrics metrics = new Metrics(this);
+                Metrics metrics = new Metrics(pm);
                 metrics.start();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        getServer().getScheduler().runTask(this, new Runnable() {
+        getServer().getScheduler().runTask(pm, new Runnable() {
             public void run() {
                 if (!checkPluginDepends()) {
                     getServer().getPluginManager().disablePlugin(pm);
@@ -67,16 +70,12 @@ public class PluginMain extends JavaPlugin {
         });
     }
 
-    public static PluginMain getInstance() {
-        return pm;
-    }
-
     /**
      * 注册监听器 <br/>
      * 这里可以注册多个
      */
     private void registerListeners() {
-        this.getServer().getPluginManager().registerEvents(new TheListener(), this);
+        pm.getServer().getPluginManager().registerEvents(new TheListener(pm), pm);
     }
 
     /**
@@ -84,11 +83,15 @@ public class PluginMain extends JavaPlugin {
      * 这里可以注册多个，一般注册一个就够用
      */
     private void registerCommands() {
-        this.getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(new MainCommand());
+        pm.getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(new MainCommand(pm));
     }
 
     public ConfigManager getConfigManager() {
         return cm;
+    }
+
+    public SqlManager getSqlManager() {
+        return sm;
     }
 
     private boolean checkPluginDepends() {
@@ -99,12 +102,12 @@ public class PluginMain extends JavaPlugin {
                 needDepend = true;
             }
         }
-        if (!setupPermissions()) {
-            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Cann't hook vault permission"));
+        if (!needDepend && !setupPermissions()) {
+            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Cann''t hook vault permission"));
             needDepend = true;
         }
-        if (!setupDatabase()) {
-            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Cann't setup database"));
+        if (!needDepend && !setupDatabase()) {
+            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Cann''t setup database"));
             needDepend = true;
         }
         if (needDepend) {
@@ -116,9 +119,12 @@ public class PluginMain extends JavaPlugin {
     @Override
     public void onDisable() {
         super.onDisable();
-        getServer().getServicesManager().unregisterAll(this);
-        Bukkit.getScheduler().cancelTasks(this);
-        SqlManager.getDb().close();
+        getServer().getServicesManager().unregisterAll(pm);
+        Bukkit.getScheduler().cancelTasks(pm);
+        try {
+            sm.getDb().close();
+        } catch (Exception e) {
+        }
     }
 
     private boolean setupPermissions() {
@@ -130,7 +136,21 @@ public class PluginMain extends JavaPlugin {
     }
 
     private boolean setupDatabase() {
-        sm = SqlManager.getInstance();
+        sm = new SqlManager(pm);
         return sm.updateDatabase();
+    }
+
+    public UUID getPlayerUUIDByName(String name) {
+        for (Player p : getServer().getOnlinePlayers()) {
+            if (p.getName().equals(name)) {
+                return p.getUniqueId();
+            }
+        }
+        for (OfflinePlayer p : getServer().getOfflinePlayers()) {
+            if (p.getName().equals(name)) {
+                return p.getUniqueId();
+            }
+        }
+        return null;
     }
 }

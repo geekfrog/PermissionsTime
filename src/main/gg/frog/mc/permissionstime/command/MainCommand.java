@@ -13,12 +13,21 @@ import gg.frog.mc.permissionstime.utils.StrUtil;
 
 public class MainCommand implements CommandExecutor {
 
-    private PluginMain pm = PluginMain.getInstance();
-    private SqlManager sm = PluginMain.sm;
+    private PluginMain pm;
+    private SqlManager sm;
+    private GiveCmd giveCmd;
+    private PackagesCmd packagesCmd;
+
+    public MainCommand(PluginMain pm) {
+        this.pm = pm;
+        this.sm = pm.getSqlManager();
+        giveCmd = new GiveCmd(pm);
+        packagesCmd = new PackagesCmd(pm);
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if (commandLabel.equalsIgnoreCase(PluginMain.PLUGIN_NAME_LOWER_CASE)) {
+        if (commandLabel.equalsIgnoreCase(pm.PLUGIN_NAME_LOWER_CASE)) {
             boolean isPlayer = false;
             if (sender instanceof Player) {
                 isPlayer = true;
@@ -50,23 +59,23 @@ public class MainCommand implements CommandExecutor {
                     return true;
                 } else if (args[0].equalsIgnoreCase("me")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.me")) {
-                        return GiveCmd.onCommand(sender, isPlayer, args);
+                        return giveCmd.onCommand(sender, isPlayer, args);
                     }
                 } else if (args[0].equalsIgnoreCase("give")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.give")) {
-                        return GiveCmd.onCommand(sender, isPlayer, args);
+                        return giveCmd.onCommand(sender, isPlayer, args);
                     }
                 } else if (args[0].equalsIgnoreCase("set")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.set")) {
-                        return GiveCmd.onCommand(sender, isPlayer, args);
+                        return giveCmd.onCommand(sender, isPlayer, args);
                     }
                 } else if (args[0].equalsIgnoreCase("remove")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.remove")) {
-                        return GiveCmd.onCommand(sender, isPlayer, args);
+                        return giveCmd.onCommand(sender, isPlayer, args);
                     }
                 } else if (args[0].equalsIgnoreCase("packages")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.packages")) {
-                        return PackagesCmd.onCommand(sender, isPlayer, args);
+                        return packagesCmd.onCommand(sender, isPlayer, args);
                     }
                 } else {
                     getHelp(sender, isPlayer);
@@ -78,21 +87,21 @@ public class MainCommand implements CommandExecutor {
     }
 
     private void getHelp(CommandSender sender, boolean isPlayer) {
-        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + PluginMain.PLUGIN_NAME + " Version:" + PluginMain.PLUGIN_VERSION + " ====="));
-        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".reload")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " reload \n\t-Reloads the config file."));
+        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + " ====="));
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".reload")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " reload \n  -Reloads the config file."));
         }
-        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".give")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> \n\t- Give player package <time>day."));
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".give")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> \n  - Give player package <time>day."));
         }
-        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".set")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " set <playerName> <packageName> <time> \n\t- Set player package <time>day."));
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".set")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " set <playerName> <packageName> <time> \n  - Set player package <time>day."));
         }
-        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".remove")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " remove <playerName> <packageName> \n\t- Remove player package."));
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".remove")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " remove <playerName> <packageName> \n  - Remove player package."));
         }
-        if (!isPlayer || sender.isOp() || sender.hasPermission(PluginMain.PLUGIN_NAME_LOWER_CASE + ".packages")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + PluginMain.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n\t- View packages."));
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n  - View packages."));
         }
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
     }

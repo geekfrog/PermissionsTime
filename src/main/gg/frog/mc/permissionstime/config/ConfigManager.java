@@ -1,9 +1,7 @@
 package gg.frog.mc.permissionstime.config;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.LinkedHashMap;
@@ -24,25 +22,26 @@ import gg.frog.mc.permissionstime.utils.config.PluginConfig;
  *
  */
 public class ConfigManager {
-    
-    private PluginMain pm = PluginMain.getInstance();
+
+    private PluginMain pm;
     private Map<String, PluginConfig> cfgMap = new LinkedHashMap<>();
 
-    public ConfigManager() {
+    public ConfigManager(PluginMain pm) {
+        this.pm = pm;
         File langFolder = new File(pm.getDataFolder(), "lang/");
         if (!langFolder.exists()) {
             copyLangFilesFromJar();
         }
         // 添加到配置列表
-        cfgMap.put("plugin", new PluginCfg());
-        cfgMap.put("lang", new LangCfg("lang/" + PluginCfg.LANG + ".yml"));
-        cfgMap.put("packages", new PackagesCfg("packages.yml"));
+        cfgMap.put("plugin", new PluginCfg(pm));
+        cfgMap.put("lang", new LangCfg("lang/" + PluginCfg.LANG + ".yml", pm));
+        cfgMap.put("packages", new PackagesCfg("packages.yml", pm));
     }
 
     public void reloadConfig() {
         for (Entry<String, PluginConfig> entry : cfgMap.entrySet()) {
             if ("lang".equals(entry.getKey())) {
-                entry.setValue(new LangCfg("lang/" + PluginCfg.LANG + ".yml"));
+                entry.setValue(new LangCfg("lang/" + PluginCfg.LANG + ".yml", pm));
             }
             entry.getValue().reloadConfig();
         }
@@ -57,7 +56,7 @@ public class ConfigManager {
 
             @Override
             public void process(String fileName, InputStream is) {
-                File f = new File(pm.getDataFolder(),fileName);
+                File f = new File(pm.getDataFolder(), fileName);
                 File parentFolder = f.getParentFile();
                 if (!parentFolder.exists()) {
                     parentFolder.mkdirs();

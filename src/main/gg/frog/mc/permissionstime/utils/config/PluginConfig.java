@@ -25,22 +25,24 @@ import gg.frog.mc.permissionstime.PluginMain;
  */
 public abstract class PluginConfig {
 
-    private PluginMain pm = PluginMain.getInstance();
+    protected PluginMain pm;
     private FileConfiguration config = null;
     private File folder = null;
     private String fileName = null;
     private File configFile = null;
 
-
-    protected PluginConfig() {
+    protected PluginConfig(PluginMain pm) {
+        this.pm = pm;
         initConfig(pm.getDataFolder(), "config.yml");
     }
 
-    protected PluginConfig(String fileName) {
+    protected PluginConfig(String fileName, PluginMain pm) {
+        this.pm = pm;
         initConfig(pm.getDataFolder(), fileName);
     }
 
-    protected PluginConfig(File folder, String fileName) {
+    protected PluginConfig(File folder, String fileName, PluginMain pm) {
+        this.pm = pm;
         initConfig(folder, fileName);
     }
 
@@ -128,7 +130,7 @@ public abstract class PluginConfig {
         config = YamlConfiguration.loadConfiguration(configFile);
 
         if (useRes) {
-            final InputStream defConfigStream = PluginMain.getInstance().getResource(fileName);
+            final InputStream defConfigStream = pm.getResource(fileName);
             if (defConfigStream == null) {
                 return;
             }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.utils.config.PluginConfig;
 
@@ -13,8 +14,8 @@ public class PackagesCfg extends PluginConfig {
     public static String DEFAULT_GROUP = null;
     public static Map<String, PermissionPackageBean> PACKAGES = new HashMap<>();
 
-    public PackagesCfg(String fileName) {
-        super(fileName);
+    public PackagesCfg(String fileName, PluginMain pm) {
+        super(fileName, pm);
     }
 
     @Override

@@ -5,8 +5,14 @@ import lib.PatPeter.SQLibrary.Database;
 
 public abstract class DatabaseUtil {
 
+    private SqlManager sm;
+
+    public DatabaseUtil(SqlManager sm) {
+        this.sm = sm;
+    }
+
     protected Database getDB() {
-        Database db = SqlManager.getDb();
+        Database db = sm.getDb();
         for (int i = 0; i < 3; i++) {
             if (!db.isOpen()) {
                 if (db.open()) {

@@ -10,18 +10,15 @@ import lib.PatPeter.SQLibrary.SQLite;
 
 public class SqlManager {
 
-    private PluginMain pm = PluginMain.getInstance();
-    private static SqlManager sm = new SqlManager();
-    private static Database db = null;
-    private static IPlayerDataService pds = null;
+    private PluginMain pm;
+    private Database db = null;
+    private IPlayerDataService pds = null;
 
-    private SqlManager() {}
-
-    public static SqlManager getInstance() {
-        return sm;
+    public SqlManager(PluginMain pm) {
+        this.pm = pm;
     }
 
-    public static Database getDb() {
+    public Database getDb() {
         return db;
     }
 
@@ -30,10 +27,10 @@ public class SqlManager {
             db.close();
         }
         if (PluginCfg.USE_MYSQL) {
-            db = new MySQL(PluginMain.LOG, "[" + PluginMain.PLUGIN_NAME + "] ", PluginCfg.SQL_HOSTNAME, PluginCfg.SQL_PORT, PluginCfg.SQL_DATABASE, PluginCfg.SQL_USERNAME, PluginCfg.SQL_PASSWORD);
+            db = new MySQL(PluginMain.LOG, "[" + pm.PLUGIN_NAME + "] ", PluginCfg.SQL_HOSTNAME, PluginCfg.SQL_PORT, PluginCfg.SQL_DATABASE, PluginCfg.SQL_USERNAME, PluginCfg.SQL_PASSWORD);
         } else {
-            db = new SQLite(PluginMain.LOG, "[" + PluginMain.PLUGIN_NAME + "] ", PluginMain.pm.getDataFolder().getAbsolutePath(), "playerData", ".db");
-            pds = new SqlitePlayerDataService();
+            db = new SQLite(PluginMain.LOG, "[" + pm.PLUGIN_NAME + "] ", pm.getDataFolder().getAbsolutePath(), "playerData", ".db");
+            pds = new SqlitePlayerDataService(pm, this);
         }
         db.open();
         try {

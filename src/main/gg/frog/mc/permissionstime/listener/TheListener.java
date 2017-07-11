@@ -9,8 +9,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import gg.frog.mc.permissionstime.PluginMain;
 
 public class TheListener implements Listener {
-    
-    private PluginMain pm = PluginMain.getInstance();
+
+    private PluginMain pm;
+
+    public TheListener(PluginMain pm) {
+        this.pm = pm;
+    }
 
     /**
      * 一个监听器例子

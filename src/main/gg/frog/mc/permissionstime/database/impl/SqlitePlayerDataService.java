@@ -8,13 +8,19 @@ import java.util.List;
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.IPlayerDataService;
+import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import gg.frog.mc.permissionstime.utils.database.DatabaseUtil;
 
 public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerDataService {
 
-    private PluginMain pm = PluginMain.getInstance();
+    private PluginMain pm;
+
+    public SqlitePlayerDataService(PluginMain pm, SqlManager sm) {
+        super(sm);
+        this.pm = pm;
+    }
 
     @Override
     public boolean tableExist() throws Exception {
@@ -66,8 +72,8 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
     public boolean addTime(String uuid, String packageName, int days) throws Exception {
         PlayerDataBean pdb = queryPlayerData(uuid, packageName);
         long now = new Date().getTime();
-        long addTime = days * 24 * 60 * 60 * 1000;
-        long expire = 0;
+        long addTime = days * 24 * 60 * 60 * 1000L;
+        long expire = 0L;
         if (pdb == null) {
             expire = now + addTime;
             pdb = new PlayerDataBean(null, uuid, packageName, expire);

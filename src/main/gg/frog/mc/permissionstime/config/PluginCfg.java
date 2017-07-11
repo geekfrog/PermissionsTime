@@ -11,7 +11,7 @@ import gg.frog.mc.permissionstime.utils.config.PluginConfig;
  */
 public class PluginCfg extends PluginConfig {
 
-    public static String PLUGIN_PREFIX ;
+    public static String PLUGIN_PREFIX;
     public static boolean IS_METRICS = true;
     public static boolean IS_DEBUG = false;
     public static String LANG;
@@ -23,8 +23,8 @@ public class PluginCfg extends PluginConfig {
     public static String SQL_PASSWORD;
     public static String SQL_TABLE_PREFIX;
 
-    public PluginCfg() {
-        super();
+    public PluginCfg(PluginMain pm) {
+        super(pm);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class PluginCfg extends PluginConfig {
 
     @Override
     protected void loadToDo() {
-        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + PluginMain.PLUGIN_NAME + "]&r");
+        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + pm.PLUGIN_NAME + "]&r");
         IS_DEBUG = setGetDefault("debug", false);
         IS_METRICS = setGetDefault("metrics", true);
         LANG = setGetDefault("lang", "zh-cn");
