@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.model;
+package gg.frog.mc.permissionstime.model.cfg;
 
 import java.util.ArrayList;
 import java.util.List;

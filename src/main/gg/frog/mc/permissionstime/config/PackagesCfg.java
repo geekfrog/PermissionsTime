@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import gg.frog.mc.permissionstime.model.PermissionPackageBean;
+import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.utils.config.PluginConfig;
 
 public class PackagesCfg extends PluginConfig {

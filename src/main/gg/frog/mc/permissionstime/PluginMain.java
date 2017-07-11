@@ -11,9 +11,9 @@ import org.mcstats.Metrics;
 import gg.frog.mc.permissionstime.command.TheCommand;
 import gg.frog.mc.permissionstime.config.ConfigManager;
 import gg.frog.mc.permissionstime.config.PluginCfg;
+import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.listener.TheListener;
 import gg.frog.mc.permissionstime.utils.StrUtil;
-import lib.PatPeter.SQLibrary.SQLite;
 import net.milkbowl.vault.permission.Permission;
 
 public class PluginMain extends JavaPlugin {
@@ -26,6 +26,7 @@ public class PluginMain extends JavaPlugin {
 
     public static PluginMain pm = null;
     public static ConfigManager cm = null;
+    public static SqlManager sm = null;
     public static Permission permission = null;
 
     public PluginMain() {
@@ -54,7 +55,7 @@ public class PluginMain extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+        getServer().getScheduler().runTask(this, new Runnable() {
             public void run() {
                 if (!checkPluginDepends()) {
                     getServer().getPluginManager().disablePlugin(pm);
@@ -63,7 +64,7 @@ public class PluginMain extends JavaPlugin {
                     registerCommands();
                 }
             }
-        }, 0L, 432000L);
+        });
     }
 
     public static PluginMain getInstance() {
@@ -117,6 +118,7 @@ public class PluginMain extends JavaPlugin {
         super.onDisable();
         getServer().getServicesManager().unregisterAll(this);
         Bukkit.getScheduler().cancelTasks(this);
+        SqlManager.getDb().close();
     }
 
     private boolean setupPermissions() {
@@ -128,16 +130,7 @@ public class PluginMain extends JavaPlugin {
     }
 
     private boolean setupDatabase() {
-        try {
-            SQLite sql = new SQLite(Logger.getLogger("Minecraft"), "[" + PLUGIN_NAME + "] ", this.getDataFolder().getAbsolutePath(), PLUGIN_NAME, ".sqlite");
-            if(!sql.isOpen()){
-                sql.open();
-            }
-            sql.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+        sm = SqlManager.getInstance();
+        return sm.updateDatabase();
     }
 }

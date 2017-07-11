@@ -8,11 +8,13 @@ import org.bukkit.entity.Player;
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
+import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 
 public class TheCommand implements CommandExecutor {
 
     private PluginMain pm = PluginMain.getInstance();
+    private SqlManager sm = PluginMain.sm;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
@@ -34,13 +36,18 @@ public class TheCommand implements CommandExecutor {
                         Player player = (Player) sender;
                         if (sender.isOp() || player.hasPermission("quickdevdemo.reload")) {
                             pm.getConfigManager().reloadConfig();
+                            if(!sm.updateDatabase()){
+                                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "数据库异常"));
+                            }
                             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.CONFIG_RELOADED));
                             pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.CONFIG_RELOADED));
                         } else {
+                            
                             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.NO_PERMISSION));
                         }
                     } else {
                         pm.getConfigManager().reloadConfig();
+                        sm.updateDatabase();
                         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.CONFIG_RELOADED));
                     }
                     return true;
