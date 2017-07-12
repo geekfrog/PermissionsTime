@@ -15,14 +15,10 @@ public class MainCommand implements CommandExecutor {
 
     private PluginMain pm;
     private SqlManager sm;
-    private GiveCmd giveCmd;
-    private PackagesCmd packagesCmd;
 
     public MainCommand(PluginMain pm) {
         this.pm = pm;
         this.sm = pm.getSqlManager();
-        giveCmd = new GiveCmd(pm);
-        packagesCmd = new PackagesCmd(pm);
     }
 
     @Override
@@ -59,28 +55,38 @@ public class MainCommand implements CommandExecutor {
                     return true;
                 } else if (args[0].equalsIgnoreCase("me")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.me")) {
-                        return giveCmd.onCommand(sender, isPlayer, args);
+                        GiveCmd giveCmd = new GiveCmd(pm, sender, args);
+                        new Thread(giveCmd).start();
                     }
                 } else if (args[0].equalsIgnoreCase("give")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.give")) {
-                        return giveCmd.onCommand(sender, isPlayer, args);
+                        GiveCmd giveCmd = new GiveCmd(pm, sender, args);
+                        new Thread(giveCmd).start();
                     }
                 } else if (args[0].equalsIgnoreCase("set")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.set")) {
-                        return giveCmd.onCommand(sender, isPlayer, args);
+                        SetCmd setCmd = new SetCmd(pm, sender, args);
+                        new Thread(setCmd).start();
                     }
                 } else if (args[0].equalsIgnoreCase("remove")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.remove")) {
-                        return giveCmd.onCommand(sender, isPlayer, args);
+                        RemoveCmd removeCmd = new RemoveCmd(pm, sender, args);
+                        new Thread(removeCmd).start();
+                    }
+                } else if (args[0].equalsIgnoreCase("removeall")) {
+                    if (hasPermission(sender, isPlayer, "permissionstime.removeall")) {
+                        RemoveAllCmd removeAllCmd = new RemoveAllCmd(pm, sender, args);
+                        new Thread(removeAllCmd).start();
                     }
                 } else if (args[0].equalsIgnoreCase("packages")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.packages")) {
-                        return packagesCmd.onCommand(sender, isPlayer, args);
+                        PackagesCmd packagesCmd = new PackagesCmd(pm, sender, args);
+                        new Thread(packagesCmd).start();
                     }
                 } else {
                     getHelp(sender, isPlayer);
-                    return true;
                 }
+                return true;
             }
         }
         return false;
@@ -88,8 +94,11 @@ public class MainCommand implements CommandExecutor {
 
     private void getHelp(CommandSender sender, boolean isPlayer) {
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + " ====="));
-        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".reload")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " reload \n  -Reloads the config file."));
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " .me \n  - View self package."));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n  - View packages."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".give")) {
             sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> \n  - Give player package <time>day."));
@@ -100,8 +109,11 @@ public class MainCommand implements CommandExecutor {
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".remove")) {
             sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " remove <playerName> <packageName> \n  - Remove player package."));
         }
-        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n  - View packages."));
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".removeall")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " removeall <playerName> \n  - Remove player all package."));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".reload")) {
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " reload \n  -Reloads the config file."));
         }
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
     }

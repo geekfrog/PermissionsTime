@@ -10,15 +10,20 @@ import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 
-public class PackagesCmd {
+public class PackagesCmd implements Runnable {
 
     private PluginMain pm;
+    private CommandSender sender;
+    private String[] args;
 
-    public PackagesCmd(PluginMain pm) {
+    public PackagesCmd(PluginMain pm, CommandSender sender, String[] args) {
         this.pm = pm;
+        this.sender = sender;
+        this.args = args;
     }
 
-    public boolean onCommand(CommandSender sender, boolean isPlayer, String[] args) {
+    @Override
+    public void run() {
         if (args.length == 1) {
             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "共有{0}种权限包", PackagesCfg.PACKAGES.size()));
             for (Entry<String, PermissionPackageBean> e : PackagesCfg.PACKAGES.entrySet()) {
@@ -34,6 +39,5 @@ public class PackagesCmd {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "找不到名为''{0}''的权限包", packageName));
             }
         }
-        return true;
     }
 }

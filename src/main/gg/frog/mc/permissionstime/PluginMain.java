@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
@@ -94,6 +93,10 @@ public class PluginMain extends JavaPlugin {
         return sm;
     }
 
+    public Permission getPermission() {
+        return permission;
+    }
+
     private boolean checkPluginDepends() {
         boolean needDepend = false;
         for (String name : DEPEND_PLUGIN.split(",")) {
@@ -141,14 +144,18 @@ public class PluginMain extends JavaPlugin {
     }
 
     public UUID getPlayerUUIDByName(String name) {
-        for (Player p : getServer().getOnlinePlayers()) {
-            if (p.getName().equals(name)) {
-                return p.getUniqueId();
-            }
+        OfflinePlayer p = getOfflinePlayer(name);
+        if (p == null) {
+            return null;
+        } else {
+            return p.getUniqueId();
         }
+    }
+
+    public OfflinePlayer getOfflinePlayer(String name) {
         for (OfflinePlayer p : getServer().getOfflinePlayers()) {
-            if (p.getName().equals(name)) {
-                return p.getUniqueId();
+            if (p.getName().equalsIgnoreCase(name)) {
+                return p;
             }
         }
         return null;

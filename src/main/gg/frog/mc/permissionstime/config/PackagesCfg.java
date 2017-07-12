@@ -1,8 +1,8 @@
 package gg.frog.mc.permissionstime.config;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
@@ -12,7 +12,7 @@ public class PackagesCfg extends PluginConfig {
 
     public static String PACKAGES_VERSION = null;
     public static String DEFAULT_GROUP = null;
-    public static Map<String, PermissionPackageBean> PACKAGES = new HashMap<>();
+    public static Map<String, PermissionPackageBean> PACKAGES = new ConcurrentHashMap<>();
 
     public PackagesCfg(String fileName, PluginMain pm) {
         super(fileName, pm);

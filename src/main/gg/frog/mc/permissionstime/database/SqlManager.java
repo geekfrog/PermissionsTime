@@ -57,4 +57,43 @@ public class SqlManager {
         }
         return false;
     }
+
+    public boolean setTime(String uuid, String packageName, int days) {
+        for (int i = 0; i < 3; i++) {
+            try {
+                if (pds.setTime(uuid, packageName, days)) {
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public boolean removeTime(String uuid, String packageName) {
+        for (int i = 0; i < 3; i++) {
+            try {
+                if (pds.delPlayData(uuid, packageName)) {
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public boolean removeAllTime(String uuid) {
+        for (int i = 0; i < 3; i++) {
+            try {
+                if (pds.delPlayData(uuid)) {
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
 }

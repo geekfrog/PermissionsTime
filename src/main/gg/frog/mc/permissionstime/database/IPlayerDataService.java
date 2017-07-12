@@ -29,7 +29,7 @@ public interface IPlayerDataService {
      * @throws Exception
      */
     boolean setPlayerData(PlayerDataBean bean) throws Exception;
-
+    boolean setTime(String uuid, String packageName, int days) throws Exception;
     boolean addTime(String uuid, String packageName, int days) throws Exception;
 
     /**

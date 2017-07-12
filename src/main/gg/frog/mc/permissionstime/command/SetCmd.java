@@ -2,7 +2,6 @@ package gg.frog.mc.permissionstime.command;
 
 import java.util.UUID;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import gg.frog.mc.permissionstime.PluginMain;
@@ -12,14 +11,14 @@ import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 
-public class GiveCmd implements Runnable {
+public class SetCmd implements Runnable {
 
     private PluginMain pm;
     private SqlManager sm;
     private String[] args;
     private CommandSender sender;
 
-    public GiveCmd(PluginMain pm, CommandSender sender, String[] args) {
+    public SetCmd(PluginMain pm, CommandSender sender, String[] args) {
         this.pm = pm;
         this.sm = pm.getSqlManager();
         this.sender = sender;
@@ -45,25 +44,16 @@ public class GiveCmd implements Runnable {
             }
             PermissionPackageBean pack = PackagesCfg.PACKAGES.get(packageName);
             if (pack != null) {
-                OfflinePlayer player = pm.getOfflinePlayer(playerName);
-                if (player != null) {
-                    UUID uuid = player.getUniqueId();
+                UUID uuid = pm.getPlayerUUIDByName(playerName);
+                if (uuid != null) {
                     if (PluginCfg.IS_DEBUG) {
                         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString() + "\n" + pack.toString() + "\n" + time + "天"));
                     }
-                    if (sm.giveTime(uuid.toString(), packageName, days)) {
-                        if (player.isOnline()) {
-                            for (String groupName : pack.getGroups()) {
-                                if (!pm.getPermission().playerAddGroup(null, player, groupName)) {
-                                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "权限组{0}添加失败", groupName));
-                                }
-                            }
-                        }
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "给予玩家 {0} {1}天的 {2}", playerName, time, pack.getDisplayName()));
+                    if (sm.setTime(uuid.toString(), packageName, days)) {
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "设置玩家 {0} {1}天的 {2}", playerName, time, pack.getDisplayName()));
                     } else {
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "未给予玩家 {0} {1}天的 {2}", playerName, time, pack.getDisplayName()));
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "未设置玩家 {0} {1}天的 {2}", playerName, time, pack.getDisplayName()));
                     }
-
                 } else {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "找不到名为''{0}''的玩家", playerName));
                 }

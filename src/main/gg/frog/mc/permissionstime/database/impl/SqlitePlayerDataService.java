@@ -69,18 +69,31 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
     }
 
     @Override
-    public boolean addTime(String uuid, String packageName, int days) throws Exception {
-        PlayerDataBean pdb = queryPlayerData(uuid, packageName);
+    public boolean setTime(String uuid, String packageName, int days) throws Exception {
         long now = new Date().getTime();
         long addTime = days * 24 * 60 * 60 * 1000L;
-        long expire = 0L;
+        long expire = now + addTime;
+        PlayerDataBean pdb = queryPlayerData(uuid, packageName);
         if (pdb == null) {
-            expire = now + addTime;
+            pdb = new PlayerDataBean(null, uuid, packageName, expire);
+            return setPlayerData(pdb);
+        } else {
+            pdb.setExpire(expire);
+            return setPlayerData(pdb);
+        }
+    }
+
+    @Override
+    public boolean addTime(String uuid, String packageName, int days) throws Exception {
+        long now = new Date().getTime();
+        long addTime = days * 24 * 60 * 60 * 1000L;
+        long expire = now + addTime;
+        PlayerDataBean pdb = queryPlayerData(uuid, packageName);
+        if (pdb == null) {
             pdb = new PlayerDataBean(null, uuid, packageName, expire);
             return setPlayerData(pdb);
         } else {
             if (pdb.getExpire() < now) {
-                expire = now + addTime;
                 pdb.setExpire(expire);
                 return setPlayerData(pdb);
             } else {
