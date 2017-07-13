@@ -45,7 +45,7 @@ public interface IPlayerDataService {
      * @return
      */
     List<PlayerDataBean> queryPlayerData(String uuid) throws Exception;
-
     PlayerDataBean queryPlayerData(String uuid, String packageName) throws Exception;
+    List<PlayerDataBean> queryNotExpirePlayerData(String uuid) throws Exception;
 
 }

@@ -6,6 +6,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.command.packages.GiveCmd;
+import gg.frog.mc.permissionstime.command.packages.MeCmd;
+import gg.frog.mc.permissionstime.command.packages.PackagesCmd;
+import gg.frog.mc.permissionstime.command.packages.RemoveAllCmd;
+import gg.frog.mc.permissionstime.command.packages.RemoveCmd;
+import gg.frog.mc.permissionstime.command.packages.SetCmd;
 import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
@@ -33,6 +39,7 @@ public class MainCommand implements CommandExecutor {
                 return true;
             } else {
                 if (args[0].equalsIgnoreCase("reload")) {
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "执行中，请等待..."));
                     if (isPlayer) {
                         Player player = (Player) sender;
                         if (sender.isOp() || player.hasPermission("permissionstime.reload")) {
@@ -55,8 +62,8 @@ public class MainCommand implements CommandExecutor {
                     return true;
                 } else if (args[0].equalsIgnoreCase("me")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.me")) {
-                        GiveCmd giveCmd = new GiveCmd(pm, sender, args);
-                        new Thread(giveCmd).start();
+                        MeCmd meCmd = new MeCmd(pm, sender, isPlayer, args);
+                        new Thread(meCmd).start();
                     }
                 } else if (args[0].equalsIgnoreCase("give")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.give")) {

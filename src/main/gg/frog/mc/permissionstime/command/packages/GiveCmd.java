@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.command;
+package gg.frog.mc.permissionstime.command.packages;
 
 import java.util.UUID;
 
@@ -47,6 +47,7 @@ public class GiveCmd implements Runnable {
             if (pack != null) {
                 OfflinePlayer player = pm.getOfflinePlayer(playerName);
                 if (player != null) {
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "执行中，请等待..."));
                     UUID uuid = player.getUniqueId();
                     if (PluginCfg.IS_DEBUG) {
                         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString() + "\n" + pack.toString() + "\n" + time + "天"));

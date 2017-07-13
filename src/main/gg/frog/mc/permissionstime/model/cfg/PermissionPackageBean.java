@@ -18,6 +18,8 @@ public class PermissionPackageBean implements IConfigBean {
 
     private String displayName = null;
     private Integer days = null;
+    private Boolean global = null;
+    private List<String> worlds = new ArrayList<>();
     private List<String> permissions = new ArrayList<>();
     private List<String> groups = new ArrayList<>();
     private List<String> prefixs = new ArrayList<>();
@@ -37,6 +39,22 @@ public class PermissionPackageBean implements IConfigBean {
 
     public void setDays(Integer days) {
         this.days = days;
+    }
+
+    public Boolean getGlobal() {
+        return global;
+    }
+
+    public void setGlobal(Boolean global) {
+        this.global = global;
+    }
+
+    public List<String> getWorlds() {
+        return worlds;
+    }
+
+    public void setWorlds(List<String> worlds) {
+        this.worlds = worlds;
     }
 
     public List<String> getPermissions() {
@@ -76,6 +94,8 @@ public class PermissionPackageBean implements IConfigBean {
         YamlConfiguration config = new YamlConfiguration();
         config.set("displayName", displayName);
         config.set("days", days);
+        config.set("global", global);
+        config.set("worlds", worlds);
         config.set("permissions", permissions);
         config.set("groups", groups);
         config.set("prefixs", prefixs);
@@ -90,6 +110,8 @@ public class PermissionPackageBean implements IConfigBean {
             displayName = "No Name";
         }
         days = config.getInt("days");
+        global = config.getBoolean("global");
+        worlds = config.getStringList("worlds");
         permissions = config.getStringList("permissions");
         groups = config.getStringList("groups");
         prefixs = config.getStringList("prefixs");
@@ -98,6 +120,7 @@ public class PermissionPackageBean implements IConfigBean {
 
     @Override
     public String toString() {
-        return "PermissionPackageBean [displayName=" + displayName + ", days=" + days + ", permissions=" + permissions + ", groups=" + groups + ", prefixs=" + prefixs + ", suffixs=" + suffixs + "]";
+        return "PermissionPackageBean [displayName=" + displayName + ", days=" + days + ", global=" + global + ", worlds=" + worlds + ", permissions=" + permissions + ", groups=" + groups + ", prefixs=" + prefixs + ", suffixs=" + suffixs + "]";
     }
+
 }

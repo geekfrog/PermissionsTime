@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.command;
+package gg.frog.mc.permissionstime.command.packages;
 
 import java.util.UUID;
 
@@ -29,6 +29,7 @@ public class RemoveAllCmd implements Runnable {
             String playerName = args[1];
             UUID uuid = pm.getPlayerUUIDByName(playerName);
             if (uuid != null) {
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "执行中，请等待..."));
                 if (PluginCfg.IS_DEBUG) {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString()));
                 }

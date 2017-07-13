@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.command;
+package gg.frog.mc.permissionstime.command.packages;
 
 import java.util.Map.Entry;
 

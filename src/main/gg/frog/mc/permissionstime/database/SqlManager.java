@@ -1,8 +1,12 @@
 package gg.frog.mc.permissionstime.database;
 
+import java.util.Collections;
+import java.util.List;
+
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.impl.SqlitePlayerDataService;
+import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import lib.PatPeter.SQLibrary.Database;
 import lib.PatPeter.SQLibrary.MySQL;
@@ -43,6 +47,17 @@ public class SqlManager {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<PlayerDataBean> getTime(String uuid) {
+        for (int i = 0; i < 3; i++) {
+            try {
+                return pds.queryNotExpirePlayerData(uuid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return Collections.emptyList();
     }
 
     public boolean giveTime(String uuid, String packageName, int days) {

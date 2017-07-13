@@ -151,6 +151,28 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
     }
 
     @Override
+    public List<PlayerDataBean> queryNotExpirePlayerData(String uuid) throws Exception {
+        long now = new Date().getTime();
+        String sql = "SELECT * FROM \"playerData\" where (\"uuid\"='" + uuid + "' AND \"expire\" > " + now + ");";
+        try {
+            List<PlayerDataBean> pdbList = new ArrayList<>();
+            ResultSet rs = getDB().query(sql);
+            while (rs.next()) {
+                long tid = rs.getLong("id");
+                String tuuid = rs.getString("uuid");
+                String tpackageName = rs.getString("packageName");
+                long texpire = rs.getLong("expire");
+                PlayerDataBean tpd = new PlayerDataBean(tid, tuuid, tpackageName, texpire);
+                pdbList.add(tpd);
+            }
+            return pdbList;
+        } catch (Exception e) {
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法查询UUID: {0} 的数据", uuid));
+            throw e;
+        }
+    }
+
+    @Override
     public boolean delPlayData(String uuid) throws Exception {
         String sql = "DELETE FROM \"main\".\"playerData\" WHERE (\"uuid\"='" + uuid + "');";
         try {

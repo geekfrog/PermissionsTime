@@ -7,6 +7,10 @@ packages:
     displayName: '权限包模板1'
     #权限包时间(单位: 天)
     days: 10
+    #是否跨服权限
+    global: false
+    #单世界权限需要修改
+    worlds: []
     #权限包含有的权限
     permissions:
     - permission1 
