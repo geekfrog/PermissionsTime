@@ -6,12 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.command.packages.GiveCmd;
-import gg.frog.mc.permissionstime.command.packages.MeCmd;
-import gg.frog.mc.permissionstime.command.packages.PackagesCmd;
-import gg.frog.mc.permissionstime.command.packages.RemoveAllCmd;
-import gg.frog.mc.permissionstime.command.packages.RemoveCmd;
-import gg.frog.mc.permissionstime.command.packages.SetCmd;
 import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
@@ -102,7 +96,7 @@ public class MainCommand implements CommandExecutor {
     private void getHelp(CommandSender sender, boolean isPlayer) {
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + " ====="));
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " .me \n  - View self package."));
+            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " me \n  - View self package."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
             sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n  - View packages."));

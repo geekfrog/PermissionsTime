@@ -3,10 +3,14 @@ package gg.frog.mc.permissionstime.model.cfg;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import gg.frog.mc.permissionstime.utils.config.IConfigBean;
+import net.milkbowl.vault.permission.Permission;
 
 /**
  * 权限包实体类
@@ -19,11 +23,8 @@ public class PermissionPackageBean implements IConfigBean {
     private String displayName = null;
     private Integer days = null;
     private Boolean global = null;
-    private List<String> worlds = new ArrayList<>();
     private List<String> permissions = new ArrayList<>();
     private List<String> groups = new ArrayList<>();
-    private List<String> prefixs = new ArrayList<>();
-    private List<String> suffixs = new ArrayList<>();
 
     public String getDisplayName() {
         return displayName;
@@ -49,14 +50,6 @@ public class PermissionPackageBean implements IConfigBean {
         this.global = global;
     }
 
-    public List<String> getWorlds() {
-        return worlds;
-    }
-
-    public void setWorlds(List<String> worlds) {
-        this.worlds = worlds;
-    }
-
     public List<String> getPermissions() {
         return permissions;
     }
@@ -73,33 +66,14 @@ public class PermissionPackageBean implements IConfigBean {
         this.groups = groups;
     }
 
-    public List<String> getPrefixs() {
-        return prefixs;
-    }
-
-    public void setPrefixs(List<String> prefixs) {
-        this.prefixs = prefixs;
-    }
-
-    public List<String> getSuffixs() {
-        return suffixs;
-    }
-
-    public void setSuffixs(List<String> suffixs) {
-        this.suffixs = suffixs;
-    }
-
     @Override
     public YamlConfiguration toConfig() {
         YamlConfiguration config = new YamlConfiguration();
         config.set("displayName", displayName);
         config.set("days", days);
         config.set("global", global);
-        config.set("worlds", worlds);
         config.set("permissions", permissions);
         config.set("groups", groups);
-        config.set("prefixs", prefixs);
-        config.set("suffixs", suffixs);
         return config;
     }
 
@@ -111,16 +85,81 @@ public class PermissionPackageBean implements IConfigBean {
         }
         days = config.getInt("days");
         global = config.getBoolean("global");
-        worlds = config.getStringList("worlds");
         permissions = config.getStringList("permissions");
         groups = config.getStringList("groups");
-        prefixs = config.getStringList("prefixs");
-        suffixs = config.getStringList("suffixs");
     }
 
     @Override
     public String toString() {
-        return "PermissionPackageBean [displayName=" + displayName + ", days=" + days + ", global=" + global + ", worlds=" + worlds + ", permissions=" + permissions + ", groups=" + groups + ", prefixs=" + prefixs + ", suffixs=" + suffixs + "]";
+        return "PermissionPackageBean [displayName=" + displayName + ", days=" + days + ", global=" + global + ", permissions=" + permissions + ", groups=" + groups + "]";
+    }
+
+    public void givePlayer(OfflinePlayer player, CommandSender sender, Permission permission) {
+        List<World> worlds = sender.getServer().getWorlds();
+        for (String pem : permissions) {
+            String[] args = pem.split(":");
+            pem = args[0];
+            if (args.length > 1) {
+                for (int i = 1; i < args.length; i++) {
+                    String worldName = args[i];
+                    permission.playerAdd(worldName, player, pem);
+                }
+            } else {
+                for (World world : worlds) {
+                    String worldName = world.getName();
+                    permission.playerAdd(worldName, player, pem);
+                }
+            }
+        }
+        for (String groupName : groups) {
+            String[] args = groupName.split(":");
+            groupName = args[0];
+            if (args.length > 1) {
+                for (int i = 1; i < args.length; i++) {
+                    String worldName = args[i];
+                    permission.playerAddGroup(worldName, player, groupName);
+                }
+            } else {
+                for (World world : worlds) {
+                    String worldName = world.getName();
+                    permission.playerAddGroup(worldName, player, groupName);
+                }
+            }
+        }
+    }
+
+    public void clearPlayer(OfflinePlayer player, CommandSender sender, Permission permission) {
+        List<World> worlds = sender.getServer().getWorlds();
+        for (String pem : permissions) {
+            String[] args = pem.split(":");
+            pem = args[0];
+            if (args.length > 1) {
+                for (int i = 1; i < args.length; i++) {
+                    String worldName = args[i];
+                    permission.playerAdd(worldName, player, pem);
+                }
+            } else {
+                for (World world : worlds) {
+                    String worldName = world.getName();
+                    permission.playerAdd(worldName, player, pem);
+                }
+            }
+        }
+        for (String groupName : groups) {
+            String[] args = groupName.split(":");
+            groupName = args[0];
+            if (args.length > 1) {
+                for (int i = 1; i < args.length; i++) {
+                    String worldName = args[i];
+                    permission.playerRemoveGroup(worldName, player, groupName);
+                }
+            } else {
+                for (World world : worlds) {
+                    String worldName = world.getName();
+                    permission.playerRemoveGroup(worldName, player, groupName);
+                }
+            }
+        }
     }
 
 }

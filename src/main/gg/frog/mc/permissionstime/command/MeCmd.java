@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.command.packages;
+package gg.frog.mc.permissionstime.command;
 
 import java.util.List;
 

@@ -1,5 +1,6 @@
 package gg.frog.mc.permissionstime;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -15,6 +16,7 @@ import gg.frog.mc.permissionstime.config.ConfigManager;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.listener.TheListener;
+import gg.frog.mc.permissionstime.utils.FileUtil;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import net.milkbowl.vault.permission.Permission;
 
@@ -159,5 +161,9 @@ public class PluginMain extends JavaPlugin {
             }
         }
         return null;
+    }
+
+    public void writeFailLog(String content, Object... args) {
+        FileUtil.writeOnFile(getDataFolder() + "/failure.log", "[" + StrUtil.nowTimeString() + "] " + MessageFormat.format(content, args));
     }
 }

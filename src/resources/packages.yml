@@ -1,4 +1,5 @@
 version: 0.0.1
+#默认权限组
 defaultGroup: Default
 packages:
 #权限包名称
@@ -9,21 +10,20 @@ packages:
     days: 10
     #是否跨服权限
     global: false
-    #单世界权限需要修改
-    worlds: []
-    #权限包含有的权限
+    #权限包含有的权限 world1、world2、world3是赋值给玩家permission2权限的世界
+    #如果所有世界都赋值权限则不用注明世界名称如：permission1
     permissions:
     - permission1 
-    - permission2
+    - permission2:world1:world2:world3
     #权限包含有的权限组
     groups:
     - group1
-    - group2
+    - group2:world1
     #权限包含有的前缀
     prefixs:
     - '&2[Player]&3'
-    - '&2[VIP]&3'
+    - '&2[VIP]&3:world2'
     #权限包含有的后缀
     suffixs:
     - '→❤'
-    - '→★'
+    - '→★:world2:world3'

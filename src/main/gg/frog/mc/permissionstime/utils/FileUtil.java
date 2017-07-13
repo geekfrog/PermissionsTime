@@ -1,5 +1,7 @@
 package gg.frog.mc.permissionstime.utils;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
@@ -7,13 +9,14 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class FileUtil {
-    
+
     public interface FindFilesDo {
         boolean isProcess(String fileName);
+
         void process(String fileName, InputStream is);
     }
-    
-    public static void findFilesFromJar(FindFilesDo ffd, Class<?> jarClazz){
+
+    public static void findFilesFromJar(FindFilesDo ffd, Class<?> jarClazz) {
         JarFile jarFile = null;
         try {
             String jarFilePath = jarClazz.getProtectionDomain().getCodeSource().getLocation().getFile();
@@ -21,7 +24,7 @@ public class FileUtil {
             Enumeration<JarEntry> entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 JarEntry e = entries.nextElement();
-                if(ffd.isProcess(e.getName())){
+                if (ffd.isProcess(e.getName())) {
                     InputStream is = jarFile.getInputStream(e);
                     ffd.process(e.getName(), is);
                     try {
@@ -41,6 +44,18 @@ public class FileUtil {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public static void writeOnFile(String fileName, String content) {
+        FileWriter fw;
+        try {
+            File f = new File(fileName);
+            fw = new FileWriter(f, true);
+            fw.write(content + "\r\n");
+            fw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

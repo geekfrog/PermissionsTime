@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.command.packages;
+package gg.frog.mc.permissionstime.command;
 
 import java.util.Map.Entry;
 
@@ -34,7 +34,7 @@ public class PackagesCmd implements Runnable {
             String packageName = args[1];
             if (PackagesCfg.PACKAGES.containsKey(packageName)) {
                 PermissionPackageBean p = PackagesCfg.PACKAGES.get(packageName);
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "PackgeName: {0}, DisplayName: {1}\n" + "Permissions: {2}\n" + "Groups: {3}\n" + "Prefixs: {4}\n" + "Suffixs: {5}\n" + "", packageName, p.getDisplayName(), p.getPermissions(), p.getGroups(), p.getPrefixs(), p.getSuffixs()));
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "PackgeName: {0}, DisplayName: {1}\n" + "Permissions: {2}\n" + "Groups: {3}\n" + "Prefixs: {4}\n" + "Suffixs: {5}\n" + "", packageName, p.getDisplayName(), p.getPermissions(), p.getGroups()));
             } else {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "找不到名为''{0}''的权限包", packageName));
             }
