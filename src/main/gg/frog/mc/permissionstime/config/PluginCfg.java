@@ -48,7 +48,7 @@ public class PluginCfg extends PluginConfig {
         IS_METRICS = setGetDefault("metrics", true);
         LANG = setGetDefault("lang", "zh-cn");
         USE_MYSQL = setGetDefault("mysql.enable", false);
-        if (!USE_MYSQL) {
+        if (USE_MYSQL) {
             SQL_HOSTNAME = setGetDefault("mysql.hostname", "localhost");
             SQL_PORT = setGetDefault("mysql.port", 3306);
             SQL_DATABASE = setGetDefault("mysql.database", "minecraft");

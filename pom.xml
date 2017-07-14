@@ -73,6 +73,7 @@
                 <directory>${basedir}</directory>
                 <includes>
                     <include>LICENSE</include>
+                    <include>README.md</include>
                 </includes>
             </resource>
         </resources>
@@ -118,12 +119,6 @@
                             <include>org.mcstats.*:*</include>
                         </includes>
                     </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.mcstats</pattern>
-                            <shadedPattern>gg.frog.mc.permissionstime</shadedPattern>
-                        </relocation>
-                    </relocations>
                 </configuration>
                 <executions>
                     <execution>

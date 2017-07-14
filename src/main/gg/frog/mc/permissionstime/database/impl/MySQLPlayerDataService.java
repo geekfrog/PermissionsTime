@@ -13,20 +13,21 @@ import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import gg.frog.mc.permissionstime.utils.database.DatabaseUtil;
 
-public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerDataService {
+public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataService {
 
     private PluginMain pm;
 
-    public SqlitePlayerDataService(PluginMain pm, SqlManager sm) {
+    public MySQLPlayerDataService(PluginMain pm, SqlManager sm) {
         super(sm);
         this.pm = pm;
     }
 
     @Override
     public boolean tableExist() throws Exception {
-        String sql = "SELECT count(*) AS num FROM \"main\".sqlite_master M where (tbl_name='playerData' AND type='table');";
+        String sql = "SELECT count(*) AS num FROM information_schema.TABLES WHERE table_name ='" + PluginCfg.SQL_TABLE_PREFIX + "playerData';";
         try {
             ResultSet rs = getDB().query(sql);
+            rs.next();
             int num = rs.getInt("num");
             if (num == 1) {
                 return true;
@@ -40,7 +41,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
 
     @Override
     public boolean creatTable() throws Exception {
-        String sql = "CREATE TABLE \"playerData\" ( \"id\" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, \"uuid\" TEXT NOT NULL, \"packageName\" TEXT NOT NULL, \"expire\" INTEGER NOT NULL, CONSTRAINT \"UUID_PACKAGE\" UNIQUE (\"uuid\", \"packageName\"));";
+        String sql = "CREATE TABLE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` ( `id` BIGINT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR (255) NOT NULL, `packageName` VARCHAR (255) NOT NULL, `expire` BIGINT NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `UUID_PACKAGE` (`uuid`, `packageName`));";
         try {
             getDB().query(sql);
             return true;
@@ -55,9 +56,9 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
         PlayerDataBean pdb = bean;
         String sql;
         if (pdb.getId() != null) {
-            sql = "UPDATE \"main\".\"playerData\" SET \"uuid\"='" + pdb.getUuid() + "', \"packageName\"='" + pdb.getPackageName() + "', \"expire\"=" + pdb.getExpire() + " WHERE (\"id\"=" + pdb.getId() + ");";
+            sql = "UPDATE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` SET `uuid`='" + pdb.getUuid() + "', `packageName`='" + pdb.getPackageName() + "', `expire`='" + pdb.getExpire() + "' WHERE (`id`='" + pdb.getId() + "');";
         } else {
-            sql = "INSERT INTO \"main\".\"playerData\" (\"uuid\", \"packageName\", \"expire\") VALUES ('" + pdb.getUuid() + "', '" + pdb.getPackageName() + "', " + pdb.getExpire() + ");";
+            sql = "INSERT INTO `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` (`uuid`, `packageName`, `expire`) VALUES ('" + pdb.getUuid() + "', '" + pdb.getPackageName() + "', " + pdb.getExpire() + ");";
         }
         try {
             getDB().query(sql);
@@ -97,7 +98,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
                 pdb.setExpire(expire);
                 return setPlayerData(pdb);
             } else {
-                String sql = "UPDATE \"main\".\"playerData\" SET \"expire\"=\"expire\"+" + addTime + " WHERE (\"id\"=" + pdb.getId() + ");";
+                String sql = "UPDATE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` SET `expire`='" + addTime + "' WHERE (`id`='" + pdb.getId() + "');";
                 try {
                     getDB().query(sql);
                     return true;
@@ -111,7 +112,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
 
     @Override
     public List<PlayerDataBean> queryPlayerData(String uuid) throws Exception {
-        String sql = "SELECT * FROM \"playerData\" where (\"uuid\"='" + uuid + "');";
+        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where (`uuid`='" + uuid + "');";
         try {
             List<PlayerDataBean> pdbList = new ArrayList<>();
             ResultSet rs = getDB().query(sql);
@@ -132,7 +133,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
 
     @Override
     public PlayerDataBean queryPlayerData(String uuid, String packageName) throws Exception {
-        String sql = "SELECT * FROM \"playerData\" where (\"uuid\"='" + uuid + "' AND \"packageName\"='" + packageName + "');";
+        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where (`uuid`='" + uuid + "' AND `packageName`='" + packageName + "');";
         try {
             ResultSet rs = getDB().query(sql);
             while (rs.next()) {
@@ -153,7 +154,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
     @Override
     public List<PlayerDataBean> queryNotExpirePlayerData(String uuid) throws Exception {
         long now = new Date().getTime();
-        String sql = "SELECT * FROM \"playerData\" where (\"uuid\"='" + uuid + "' AND \"expire\" > " + now + ");";
+        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where (`uuid`='" + uuid + "' AND `expire` > " + now + ");";
         try {
             List<PlayerDataBean> pdbList = new ArrayList<>();
             ResultSet rs = getDB().query(sql);
@@ -174,7 +175,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
 
     @Override
     public boolean delPlayData(String uuid) throws Exception {
-        String sql = "DELETE FROM \"main\".\"playerData\" WHERE (\"uuid\"='" + uuid + "');";
+        String sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE (`uuid`='" + uuid + "');";
         try {
             getDB().query(sql);
             return true;
@@ -186,7 +187,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
 
     @Override
     public boolean delPlayData(String uuid, String packageName) throws Exception {
-        String sql = "DELETE FROM \"main\".\"playerData\" WHERE (\"uuid\"='" + uuid + "' AND \"packageName\"='" + packageName + "');";
+        String sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE (`uuid`='" + uuid + "' AND `packageName`='" + packageName + "');";
         try {
             getDB().query(sql);
             return true;
