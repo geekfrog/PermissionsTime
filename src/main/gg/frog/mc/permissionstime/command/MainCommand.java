@@ -23,7 +23,7 @@ public class MainCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-        if (commandLabel.equalsIgnoreCase(pm.PLUGIN_NAME_LOWER_CASE)) {
+        if (commandLabel.equalsIgnoreCase(pm.PLUGIN_NAME_LOWER_CASE) || commandLabel.equalsIgnoreCase("pt")) {
             boolean isPlayer = false;
             if (sender instanceof Player) {
                 isPlayer = true;
@@ -94,7 +94,7 @@ public class MainCommand implements CommandExecutor {
     }
 
     private void getHelp(CommandSender sender, boolean isPlayer) {
-        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + " ====="));
+        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me")) {
             sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " me \n  - View self package."));
         }

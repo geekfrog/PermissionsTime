@@ -1,5 +1,6 @@
 package gg.frog.mc.permissionstime.command;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
@@ -11,6 +12,7 @@ import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
+import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 
 public class GiveCmd implements Runnable {
@@ -55,16 +57,15 @@ public class GiveCmd implements Runnable {
                     }
                     if (sm.giveTime(uuid.toString(), packageName, days)) {
                         if (player.isOnline()) {
-                            pm.getServer().getScheduler().runTask(pm, new Runnable() {
-                                @Override
-                                public void run() {
-                                    pack.givePlayer(player, sender, pm.getPermission());
-                                }
-                            });
-                            Player p = pm.getServer().getPlayer(uuid);
-                            if (p != null) {
-                                p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}给予你 {1}天的 {2}", sender.getName(), time, pack.getDisplayName()));
+                            Player p = player.getPlayer();
+                            try {
+                                List<PlayerDataBean> pdbList = sm.getTime(player.getUniqueId().toString());
+                                PermissionPackageBean.reloadPlayerPermissions(player, pdbList, pm);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "修改权限失败, 请重新进入服务器!"));
                             }
+                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}给予你 {1}天的 {2}", sender.getName(), time, pack.getDisplayName()));
                         }
                         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "给予玩家 {0} {1}天的 {2}", playerName, time, pack.getDisplayName()));
                     } else {

@@ -17,6 +17,9 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
 
     private PluginMain pm;
 
+    // private static long TIME_UNIT = 24 * 60 * 60 * 1000L;//一天
+    private static long TIME_UNIT = 2 * 60 * 1000L;
+
     public SqlitePlayerDataService(PluginMain pm, SqlManager sm) {
         super(sm);
         this.pm = pm;
@@ -71,7 +74,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
     @Override
     public boolean setTime(String uuid, String packageName, int days) throws Exception {
         long now = new Date().getTime();
-        long addTime = days * 24 * 60 * 60 * 1000L;
+        long addTime = days * TIME_UNIT;
         long expire = now + addTime;
         PlayerDataBean pdb = queryPlayerData(uuid, packageName);
         if (pdb == null) {
@@ -86,7 +89,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
     @Override
     public boolean addTime(String uuid, String packageName, int days) throws Exception {
         long now = new Date().getTime();
-        long addTime = days * 24 * 60 * 60 * 1000L;
+        long addTime = days * TIME_UNIT;
         long expire = now + addTime;
         PlayerDataBean pdb = queryPlayerData(uuid, packageName);
         if (pdb == null) {

@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
@@ -40,23 +39,17 @@ public class RemoveAllCmd implements Runnable {
                 if (PluginCfg.IS_DEBUG) {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString()));
                 }
-                List<PlayerDataBean> pdbList = sm.getTime(uuid.toString());
                 if (sm.removeAllTime(uuid.toString())) {
-                    if (player.isOnline() && pdbList.size() > 0) {
-                        pm.getServer().getScheduler().runTask(pm, new Runnable() {
-                            @Override
-                            public void run() {
-                                for (PlayerDataBean pdb : pdbList) {
-                                    String packageName = pdb.getPackageName();
-                                    PermissionPackageBean pack = PackagesCfg.PACKAGES.get(packageName);
-                                    pack.clearPlayer(player, sender, pm.getPermission());
-                                }
-                            }
-                        });
-                        Player p = pm.getServer().getPlayer(uuid);
-                        if (p != null) {
-                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}删除了你的所有权限包", sender.getName()));
+                    if (player.isOnline()) {
+                        Player p = player.getPlayer();
+                        try {
+                            List<PlayerDataBean> pdbList = sm.getTime(player.getUniqueId().toString());
+                            PermissionPackageBean.reloadPlayerPermissions(player, pdbList, pm);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "修改权限失败, 请重新进入服务器!"));
                         }
+                        p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}删除了你的所有权限包", sender.getName()));
                     }
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "删除玩家 {0} 的所有权限包", playerName));
                 } else {

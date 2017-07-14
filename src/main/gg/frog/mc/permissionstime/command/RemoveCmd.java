@@ -1,5 +1,6 @@
 package gg.frog.mc.permissionstime.command;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
@@ -11,6 +12,7 @@ import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
+import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 
 public class RemoveCmd implements Runnable {
@@ -43,16 +45,15 @@ public class RemoveCmd implements Runnable {
                     }
                     if (sm.removeTime(uuid.toString(), packageName)) {
                         if (player.isOnline()) {
-                            pm.getServer().getScheduler().runTask(pm, new Runnable() {
-                                @Override
-                                public void run() {
-                                    pack.clearPlayer(player, sender, pm.getPermission());
-                                }
-                            });
-                            Player p = pm.getServer().getPlayer(uuid);
-                            if (p != null) {
-                                p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}删除了你的 {1}权限包", sender.getName(), pack.getDisplayName()));
+                            Player p = player.getPlayer();
+                            try {
+                                List<PlayerDataBean> pdbList = sm.getTime(player.getUniqueId().toString());
+                                PermissionPackageBean.reloadPlayerPermissions(player, pdbList, pm);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "修改权限失败, 请重新进入服务器!"));
                             }
+                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}删除了你的 {1}权限包", sender.getName(), pack.getDisplayName()));
                         }
                         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "删除玩家 {0} 的 {1}", playerName, pack.getDisplayName()));
                     } else {

@@ -15,7 +15,7 @@ import gg.frog.mc.permissionstime.command.MainCommand;
 import gg.frog.mc.permissionstime.config.ConfigManager;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
-import gg.frog.mc.permissionstime.listener.TheListener;
+import gg.frog.mc.permissionstime.listener.MainListener;
 import gg.frog.mc.permissionstime.utils.FileUtil;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import net.milkbowl.vault.permission.Permission;
@@ -76,7 +76,7 @@ public class PluginMain extends JavaPlugin {
      * 这里可以注册多个
      */
     private void registerListeners() {
-        pm.getServer().getPluginManager().registerEvents(new TheListener(pm), pm);
+        pm.getServer().getPluginManager().registerEvents(new MainListener(pm), pm);
     }
 
     /**
@@ -84,7 +84,13 @@ public class PluginMain extends JavaPlugin {
      * 这里可以注册多个，一般注册一个就够用
      */
     private void registerCommands() {
-        pm.getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(new MainCommand(pm));
+        MainCommand mcmd = new MainCommand(pm);
+        if (getDescription().getCommands().containsKey(PLUGIN_NAME_LOWER_CASE)) {
+            getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(mcmd);
+        }
+        if (getDescription().getCommands().containsKey("pt")) {
+            getCommand("pt").setExecutor(mcmd);
+        }
     }
 
     public ConfigManager getConfigManager() {

@@ -9,6 +9,9 @@ commands:
   permissionstime:
     description: Show all commands.
     usage: /permissionstime [param]
+  pt:
+    description: Aliases commands for permissionstime.
+    usage: /pt [param]
 permissions:
   permissionstime.*:
     description: Gives access to all PermissionsTime commands.
