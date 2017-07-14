@@ -41,8 +41,10 @@ public class MeCmd implements Runnable {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "=====你共有{0}种权限包=====", ps.size()));
                     for (PlayerDataBean pdb : ps) {
                         PermissionPackageBean pc = PackagesCfg.PACKAGES.get(pdb.getPackageName());
-                        String expireString = StrUtil.timestampToString(pdb.getExpire());
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "权限包: {0}({1}), 到期时间: {2}", pc.getDisplayName(), pdb.getPackageName(), expireString));
+                        if (pc != null) {
+                            String expireString = StrUtil.timestampToString(pdb.getExpire());
+                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "权限包: {0}({1}), 到期时间: {2}", pc.getDisplayName(), pdb.getPackageName(), expireString));
+                        }
                     }
                 } else {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "暂时无数据"));

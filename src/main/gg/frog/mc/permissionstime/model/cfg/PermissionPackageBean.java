@@ -176,10 +176,12 @@ public class PermissionPackageBean implements IConfigBean {
                 }
             }
             PermissionPackageBean p = PackagesCfg.PACKAGES.get(pdb.getPackageName());
-            addPpb.getPermissions().addAll(p.getPermissions());
-            subPpb.getPermissions().removeAll(p.getPermissions());
-            addPpb.getGroups().addAll(p.getGroups());
-            subPpb.getGroups().removeAll(p.getGroups());
+            if (p != null) {
+                addPpb.getPermissions().addAll(p.getPermissions());
+                subPpb.getPermissions().removeAll(p.getPermissions());
+                addPpb.getGroups().addAll(p.getGroups());
+                subPpb.getGroups().removeAll(p.getGroups());
+            }
         }
         subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
         addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
