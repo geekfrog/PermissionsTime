@@ -17,8 +17,7 @@ public class SqlitePlayerDataService extends DatabaseUtil implements IPlayerData
 
     private PluginMain pm;
 
-    // private static long TIME_UNIT = 24 * 60 * 60 * 1000L;//一天
-    private static long TIME_UNIT = 2 * 60 * 1000L;
+    private static long TIME_UNIT = 24 * 60 * 60 * 1000L;// 一天
 
     public SqlitePlayerDataService(PluginMain pm, SqlManager sm) {
         super(sm);
