@@ -181,8 +181,8 @@ public class PermissionPackageBean implements IConfigBean {
             addPpb.getGroups().addAll(p.getGroups());
             subPpb.getGroups().removeAll(p.getGroups());
         }
-        addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
         subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
+        addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
         BukkitTask task = taskMap.get(player.getUniqueId().toString());
         if (task != null) {
             plugin.getServer().getScheduler().cancelTask(task.getTaskId());
