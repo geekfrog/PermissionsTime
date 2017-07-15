@@ -19,6 +19,9 @@ public class PlayerPermissionShow {
             ItemStack item = PackagesCfg.PACKAGE_ITEMS.get(pdb.getPackageName());
             if (item != null) {
                 inventory.addItem(item);
+                List<String> lores = item.getItemMeta().getLore();
+                lores.add("");
+                lores.add(StrUtil.messageFormat("&4到期时间: {0}", StrUtil.timestampToString(pdb.getExpire())));
             }
         }
         p.openInventory(inventory);
