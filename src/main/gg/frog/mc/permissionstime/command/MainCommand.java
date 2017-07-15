@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryView;
 
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.LangCfg;
@@ -37,6 +38,12 @@ public class MainCommand implements CommandExecutor {
                     if (isPlayer) {
                         Player player = (Player) sender;
                         if (sender.isOp() || player.hasPermission("permissionstime.reload")) {
+                            for (Player p : pm.getServer().getOnlinePlayers()) {
+                                InventoryView inventory = p.getOpenInventory();
+                                if (StrUtil.messageFormat("&4===权限仓库===" + "&r&5&9&2&0&r").equals(inventory.getTitle())) {
+                                    inventory.close();
+                                }
+                            }
                             pm.getConfigManager().reloadConfig();
                             if (!sm.updateDatabase()) {
                                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "数据库异常"));
@@ -47,6 +54,14 @@ public class MainCommand implements CommandExecutor {
                             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.NO_PERMISSION));
                         }
                     } else {
+                        for (Player p : pm.getServer().getOnlinePlayers()) {
+                            InventoryView inventory = p.getOpenInventory();
+                            if (inventory != null) {
+                                if (StrUtil.messageFormat("&4===权限仓库===" + "&r&5&9&2&0&r").equals(inventory.getTitle())) {
+                                    inventory.close();
+                                }
+                            }
+                        }
                         pm.getConfigManager().reloadConfig();
                         if (!sm.updateDatabase()) {
                             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "数据库异常"));

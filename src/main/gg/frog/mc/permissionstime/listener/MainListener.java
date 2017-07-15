@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -69,5 +70,12 @@ public class MainListener implements Listener {
                 }
             }
         }).start();
+    }
+
+    @EventHandler
+    public void onPlayerClick(InventoryClickEvent event) {
+        if (StrUtil.messageFormat("&4===权限仓库===" + "&r&5&9&2&0&r").equals(event.getInventory().getName())) {
+            event.setCancelled(true);
+        }
     }
 }
