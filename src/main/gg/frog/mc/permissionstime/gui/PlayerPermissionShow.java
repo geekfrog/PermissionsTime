@@ -5,7 +5,9 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
@@ -18,12 +20,15 @@ public class PlayerPermissionShow {
         for (PlayerDataBean pdb : pdbList) {
             ItemStack item = PackagesCfg.PACKAGE_ITEMS.get(pdb.getPackageName());
             if (item != null) {
-                inventory.addItem(item);
-                List<String> lores = item.getItemMeta().getLore();
+                ItemMeta meta = item.getItemMeta();
+                List<String> lores = meta.getLore();
                 lores.add("");
                 lores.add(StrUtil.messageFormat("&4到期时间: {0}", StrUtil.timestampToString(pdb.getExpire())));
+                meta.setLore(lores);
+                item.setItemMeta(meta);
+                inventory.addItem(item);
             }
         }
-        p.openInventory(inventory);
+        InventoryView view = p.openInventory(inventory);
     }
 }
