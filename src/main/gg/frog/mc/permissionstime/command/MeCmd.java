@@ -6,10 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
-import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
+import gg.frog.mc.permissionstime.gui.PlayerPermissionShow;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 
@@ -38,14 +37,7 @@ public class MeCmd implements Runnable {
                 Player p = (Player) sender;
                 List<PlayerDataBean> ps = sm.getTime(p.getUniqueId().toString());
                 if (ps.size() > 0) {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "=====你共有{0}种权限包=====", ps.size()));
-                    for (PlayerDataBean pdb : ps) {
-                        PermissionPackageBean pc = PackagesCfg.PACKAGES.get(pdb.getPackageName());
-                        if (pc != null) {
-                            String expireString = StrUtil.timestampToString(pdb.getExpire());
-                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}权限包: {1}({2}), 到期时间: {3}", pdb.getGlobal() ? "*" : "", pc.getDisplayName(), pdb.getPackageName(), expireString));
-                        }
-                    }
+                    PlayerPermissionShow.show(p, ps);
                 } else {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "暂时无数据"));
                 }

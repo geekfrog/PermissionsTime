@@ -28,7 +28,7 @@ public class MainCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 isPlayer = true;
             }
-            if (args.length == 0) {
+            if (args[0].equalsIgnoreCase("help") || args.length == 0) {
                 getHelp(sender, isPlayer);
                 return true;
             } else {
@@ -85,7 +85,7 @@ public class MainCommand implements CommandExecutor {
                         new Thread(packagesCmd).start();
                     }
                 } else {
-                    getHelp(sender, isPlayer);
+                    sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " help -Show commands."));
                 }
                 return true;
             }

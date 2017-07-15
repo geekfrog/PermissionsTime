@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.IPlayerDataDao;
 import gg.frog.mc.permissionstime.database.SqlManager;
@@ -158,12 +159,14 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             List<PlayerDataBean> pdbList = new ArrayList<>();
             ResultSet rs = getDB().query(sql);
             while (rs.next()) {
-                long tid = rs.getLong("id");
-                String tuuid = rs.getString("uuid");
                 String tpackageName = rs.getString("packageName");
-                long texpire = rs.getLong("expire");
-                PlayerDataBean tpd = new PlayerDataBean(tid, tuuid, tpackageName, texpire);
-                pdbList.add(tpd);
+                if (PackagesCfg.PACKAGES.containsKey(tpackageName)) {
+                    long tid = rs.getLong("id");
+                    String tuuid = rs.getString("uuid");
+                    long texpire = rs.getLong("expire");
+                    PlayerDataBean tpd = new PlayerDataBean(tid, tuuid, tpackageName, texpire);
+                    pdbList.add(tpd);
+                }
             }
             return pdbList;
         } catch (Exception e) {

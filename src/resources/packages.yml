@@ -5,7 +5,12 @@ packages:
 #权限包名称
   example1:
     #权限包显示名称
-    displayName: '权限包模板1'
+    displayName: '&4权限包模板1'
+    #显示的物品类型
+    type: NETHER_STAR
+    #标签
+    lores: 
+    - '&2这是权限包模板的标签'
     #是否跨服权限
     global: false
     #权限包含有的权限 world1、world2、world3是赋值给玩家permission2权限的世界

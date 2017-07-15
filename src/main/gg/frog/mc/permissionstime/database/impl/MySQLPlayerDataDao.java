@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.IPlayerDataDao;
 import gg.frog.mc.permissionstime.database.SqlManager;
@@ -195,16 +196,18 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
             List<PlayerDataBean> pdbList = new ArrayList<>();
             ResultSet rs = getDB().query(sql);
             while (rs.next()) {
-                long tid = rs.getLong("id");
-                String tuuid = rs.getString("uuid");
                 String tpackageName = rs.getString("packageName");
-                String tserverId = rs.getString("serverId");
-                long texpire = rs.getLong("expire");
-                PlayerDataBean tpd = new PlayerDataBean(tid, tuuid, tpackageName, texpire);
-                if (tserverId == null) {
-                    tpd.setGlobal(true);
+                if (PackagesCfg.PACKAGES.containsKey(tpackageName)) {
+                    long tid = rs.getLong("id");
+                    String tuuid = rs.getString("uuid");
+                    String tserverId = rs.getString("serverId");
+                    long texpire = rs.getLong("expire");
+                    PlayerDataBean tpd = new PlayerDataBean(tid, tuuid, tpackageName, texpire);
+                    if (tserverId == null) {
+                        tpd.setGlobal(true);
+                    }
+                    pdbList.add(tpd);
                 }
-                pdbList.add(tpd);
             }
             return pdbList;
         } catch (Exception e) {

@@ -28,6 +28,9 @@ import net.milkbowl.vault.permission.Permission;
 public class PermissionPackageBean implements IConfigBean {
 
     private String displayName = null;
+    private String id;
+    private String type;
+    private List<String> lores = new ArrayList<>();
     private Boolean global = null;
     private List<String> permissions = new ArrayList<>();
     private List<String> groups = new ArrayList<>();
@@ -39,6 +42,30 @@ public class PermissionPackageBean implements IConfigBean {
 
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<String> getLores() {
+        return lores;
+    }
+
+    public void setLores(List<String> lores) {
+        this.lores = lores;
     }
 
     public Boolean getGlobal() {
@@ -69,6 +96,9 @@ public class PermissionPackageBean implements IConfigBean {
     public YamlConfiguration toConfig() {
         YamlConfiguration config = new YamlConfiguration();
         config.set("displayName", displayName);
+        config.set("id", id);
+        config.set("type", type);
+        config.set("lores", lores);
         config.set("global", global);
         config.set("permissions", permissions);
         config.set("groups", groups);
@@ -81,6 +111,12 @@ public class PermissionPackageBean implements IConfigBean {
         if (displayName == null) {
             displayName = "No Name";
         }
+        id = config.getString("id");
+        type = config.getString("type");
+        if (id == null && type == null) {
+            type = "NETHER_STAR";
+        }
+        lores = config.getStringList("lores");
         global = config.getBoolean("global");
         permissions = config.getStringList("permissions");
         groups = config.getStringList("groups");
@@ -88,7 +124,7 @@ public class PermissionPackageBean implements IConfigBean {
 
     @Override
     public String toString() {
-        return "PermissionPackageBean [displayName=" + displayName + ", global=" + global + ", permissions=" + permissions + ", groups=" + groups + "]";
+        return "PermissionPackageBean [displayName=" + displayName + ", id=" + id + ", type=" + type + ", lores=" + lores + ", global=" + global + ", permissions=" + permissions + ", groups=" + groups + "]";
     }
 
     private void givePlayer(OfflinePlayer player, Server server, Permission permission) {

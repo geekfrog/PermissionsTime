@@ -1,6 +1,7 @@
 package gg.frog.mc.permissionstime.utils.config;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -127,8 +129,18 @@ public abstract class PluginConfig {
      * 配置重载
      */
     private void reloadConfig(File folder, String fileName, boolean useRes) {
-        config = YamlConfiguration.loadConfiguration(configFile);
-
+        YamlConfiguration tempConfig = new YamlConfiguration();
+        try {
+            tempConfig.load(configFile);
+            config = tempConfig;
+        } catch (FileNotFoundException e) {
+        } catch (IOException | InvalidConfigurationException e1) {
+            tempConfig = null;
+            e1.printStackTrace();
+        }
+        if (config == null) {
+            config = new YamlConfiguration();
+        }
         if (useRes) {
             final InputStream defConfigStream = pm.getResource(fileName);
             if (defConfigStream == null) {
@@ -137,7 +149,9 @@ public abstract class PluginConfig {
             config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
         }
         loadToDo();
-        saveConfig();
+        if (tempConfig != null) {
+            saveConfig();
+        }
     }
 
     protected void saveObj(String path, Map<String, ? extends IConfigBean> o) {
