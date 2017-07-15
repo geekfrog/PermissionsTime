@@ -31,9 +31,13 @@ public class RemoveCmd implements Runnable {
 
     @Override
     public void run() {
-        if (args.length == 3) {
+        if (args.length == 3 || args.length == 4) {
             String playerName = args[1];
             String packageName = args[2];
+            boolean delGlobal = false;
+            if (args.length == 4 && "t".equalsIgnoreCase(args[3]) && PluginCfg.USE_MYSQL) {
+                delGlobal = true;
+            }
             PermissionPackageBean pack = PackagesCfg.PACKAGES.get(packageName);
             if (pack != null) {
                 OfflinePlayer player = pm.getOfflinePlayer(playerName);
@@ -43,7 +47,7 @@ public class RemoveCmd implements Runnable {
                     if (PluginCfg.IS_DEBUG) {
                         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString() + "\n" + pack.toString()));
                     }
-                    if (sm.removeTime(uuid.toString(), packageName)) {
+                    if (sm.removeTime((delGlobal ? "g:" : "") + uuid.toString(), packageName)) {
                         if (player.isOnline()) {
                             Player p = player.getPlayer();
                             try {

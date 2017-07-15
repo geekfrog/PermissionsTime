@@ -5,8 +5,8 @@ import java.util.List;
 
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.PluginCfg;
-import gg.frog.mc.permissionstime.database.impl.MySQLPlayerDataService;
-import gg.frog.mc.permissionstime.database.impl.SqlitePlayerDataService;
+import gg.frog.mc.permissionstime.database.impl.MySQLPlayerDataDao;
+import gg.frog.mc.permissionstime.database.impl.SqlitePlayerDataDao;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import lib.PatPeter.SQLibrary.Database;
@@ -17,7 +17,7 @@ public class SqlManager {
 
     private PluginMain pm;
     private Database db = null;
-    private IPlayerDataService pds = null;
+    private IPlayerDataDao pds = null;
 
     public SqlManager(PluginMain pm) {
         this.pm = pm;
@@ -33,10 +33,10 @@ public class SqlManager {
         }
         if (PluginCfg.USE_MYSQL) {
             db = new MySQL(PluginMain.LOG, "[" + pm.PLUGIN_NAME + "] ", PluginCfg.SQL_HOSTNAME, PluginCfg.SQL_PORT, PluginCfg.SQL_DATABASE, PluginCfg.SQL_USERNAME, PluginCfg.SQL_PASSWORD);
-            pds = new MySQLPlayerDataService(pm, this);
+            pds = new MySQLPlayerDataDao(pm, this);
         } else {
             db = new SQLite(PluginMain.LOG, "[" + pm.PLUGIN_NAME + "] ", pm.getDataFolder().getAbsolutePath(), "playerData", ".db");
-            pds = new SqlitePlayerDataService(pm, this);
+            pds = new SqlitePlayerDataDao(pm, this);
         }
         if(db.open()) {
             try {

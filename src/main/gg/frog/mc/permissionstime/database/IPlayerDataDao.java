@@ -5,7 +5,7 @@ import java.util.List;
 
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 
-public interface IPlayerDataService {
+public interface IPlayerDataDao {
     
     static long TIME_UNIT = 24 * 60 * 60 * 1000L;// 一天
 

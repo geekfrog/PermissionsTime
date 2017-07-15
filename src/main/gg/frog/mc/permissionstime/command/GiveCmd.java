@@ -55,7 +55,7 @@ public class GiveCmd implements Runnable {
                     if (PluginCfg.IS_DEBUG) {
                         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString() + "\n" + pack.toString() + "\n" + time + "天"));
                     }
-                    if (sm.giveTime(uuid.toString(), packageName, days)) {
+                    if (sm.giveTime(((PluginCfg.USE_MYSQL && pack.getGlobal()) ? "g:" : "") + uuid.toString(), packageName, days)) {
                         if (player.isOnline()) {
                             Player p = player.getPlayer();
                             try {

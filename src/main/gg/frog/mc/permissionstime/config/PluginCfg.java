@@ -16,6 +16,7 @@ public class PluginCfg extends PluginConfig {
     public static boolean IS_DEBUG = false;
     public static String LANG;
     public static boolean USE_MYSQL = false;
+    public static String SQL_SERVER_ID;
     public static String SQL_HOSTNAME;
     public static int SQL_PORT;
     public static String SQL_DATABASE;
@@ -33,6 +34,7 @@ public class PluginCfg extends PluginConfig {
         getConfig().set("metrics", true);
         getConfig().set("debug", false);
         getConfig().set("mysql.enable", false);
+        getConfig().set("mysql.serverId", "default");
         getConfig().set("mysql.hostname", "localhost");
         getConfig().set("mysql.port", 3306);
         getConfig().set("mysql.database", "minecraft");
@@ -49,6 +51,7 @@ public class PluginCfg extends PluginConfig {
         LANG = setGetDefault("lang", "zh-cn");
         USE_MYSQL = setGetDefault("mysql.enable", false);
         if (USE_MYSQL) {
+            SQL_SERVER_ID = setGetDefault("mysql.serverId", "default");
             SQL_HOSTNAME = setGetDefault("mysql.hostname", "localhost");
             SQL_PORT = setGetDefault("mysql.port", 3306);
             SQL_DATABASE = setGetDefault("mysql.database", "minecraft");

@@ -30,8 +30,12 @@ public class RemoveAllCmd implements Runnable {
 
     @Override
     public void run() {
-        if (args.length == 2) {
+        if (args.length == 2 || args.length == 3) {
             String playerName = args[1];
+            boolean delGlobal = false;
+            if (args.length == 3 && "t".equalsIgnoreCase(args[2]) && PluginCfg.USE_MYSQL) {
+                delGlobal = true;
+            }
             OfflinePlayer player = pm.getOfflinePlayer(playerName);
             if (player != null) {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "执行中，请等待..."));
@@ -39,7 +43,7 @@ public class RemoveAllCmd implements Runnable {
                 if (PluginCfg.IS_DEBUG) {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString()));
                 }
-                if (sm.removeAllTime(uuid.toString())) {
+                if (sm.removeAllTime((delGlobal ? "g:" : "") + uuid.toString())) {
                     if (player.isOnline()) {
                         Player p = player.getPlayer();
                         try {

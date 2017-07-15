@@ -5,6 +5,7 @@ public class PlayerDataBean {
     private Long id;
     private String uuid;
     private String packageName;
+    private Boolean global = false;
     private Long expire;
 
     public PlayerDataBean() {
@@ -43,6 +44,14 @@ public class PlayerDataBean {
         this.packageName = packageName;
     }
 
+    public Boolean getGlobal() {
+        return global;
+    }
+
+    public void setGlobal(Boolean global) {
+        this.global = global;
+    }
+
     public Long getExpire() {
         return expire;
     }
@@ -53,6 +62,7 @@ public class PlayerDataBean {
 
     @Override
     public String toString() {
-        return "PlayerDataBean [id=" + id + ", uuid=" + uuid + ", packageName=" + packageName + ", expire=" + expire + "]";
+        return "PlayerDataBean [id=" + id + ", uuid=" + uuid + ", packageName=" + packageName + ", global=" + global + ", expire=" + expire + "]";
     }
+
 }

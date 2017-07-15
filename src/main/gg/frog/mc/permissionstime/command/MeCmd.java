@@ -43,7 +43,7 @@ public class MeCmd implements Runnable {
                         PermissionPackageBean pc = PackagesCfg.PACKAGES.get(pdb.getPackageName());
                         if (pc != null) {
                             String expireString = StrUtil.timestampToString(pdb.getExpire());
-                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "权限包: {0}({1}), 到期时间: {2}", pc.getDisplayName(), pdb.getPackageName(), expireString));
+                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}权限包: {1}({2}), 到期时间: {3}", pdb.getGlobal() ? "*" : "", pc.getDisplayName(), pdb.getPackageName(), expireString));
                         }
                     }
                 } else {

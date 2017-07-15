@@ -28,7 +28,7 @@ public class PackagesCmd implements Runnable {
             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "共有{0}种权限包", PackagesCfg.PACKAGES.size()));
             for (Entry<String, PermissionPackageBean> e : PackagesCfg.PACKAGES.entrySet()) {
                 PermissionPackageBean p = e.getValue();
-                sender.sendMessage(StrUtil.messageFormat("PackgeName: {0}, DisplayName: {1}", e.getKey(), p.getDisplayName()));
+                sender.sendMessage(StrUtil.messageFormat("{0}PackgeName: {1}, DisplayName: {2}", p.getGlobal() ? "*" : "", e.getKey(), p.getDisplayName()));
             }
         } else if (args.length == 2) {
             String packageName = args[1];

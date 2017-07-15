@@ -7,17 +7,17 @@ import java.util.List;
 
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.PluginCfg;
-import gg.frog.mc.permissionstime.database.IPlayerDataService;
+import gg.frog.mc.permissionstime.database.IPlayerDataDao;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import gg.frog.mc.permissionstime.utils.database.DatabaseUtil;
 
-public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataService {
+public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 
     private PluginMain pm;
 
-    public MySQLPlayerDataService(PluginMain pm, SqlManager sm) {
+    public MySQLPlayerDataDao(PluginMain pm, SqlManager sm) {
         super(sm);
         this.pm = pm;
     }
@@ -41,7 +41,7 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
 
     @Override
     public boolean creatTable() throws Exception {
-        String sql = "CREATE TABLE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` ( `id` BIGINT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR (255) NOT NULL, `packageName` VARCHAR (255) NOT NULL, `expire` BIGINT NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `UUID_PACKAGE` (`uuid`, `packageName`));";
+        String sql = "CREATE TABLE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` ( `id` BIGINT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR (255) NOT NULL, `packageName` VARCHAR (255) NOT NULL, `serverId` VARCHAR (255), `expire` BIGINT NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `UUID_PACKAGE_SERVERID` (`uuid`, `packageName`, `serverId`));";
         try {
             getDB().query(sql);
             return true;
@@ -58,7 +58,11 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
         if (pdb.getId() != null) {
             sql = "UPDATE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` SET `uuid`='" + pdb.getUuid() + "', `packageName`='" + pdb.getPackageName() + "', `expire`='" + pdb.getExpire() + "' WHERE (`id`='" + pdb.getId() + "');";
         } else {
-            sql = "INSERT INTO `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` (`uuid`, `packageName`, `expire`) VALUES ('" + pdb.getUuid() + "', '" + pdb.getPackageName() + "', " + pdb.getExpire() + ");";
+            if (bean.getGlobal()) {
+                sql = "INSERT INTO `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` (`uuid`, `packageName`, `serverId`, `expire`) VALUES ('" + pdb.getUuid() + "', '" + pdb.getPackageName() + "', NULL, " + pdb.getExpire() + ");";
+            } else {
+                sql = "INSERT INTO `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` (`uuid`, `packageName`, `serverId`, `expire`) VALUES ('" + pdb.getUuid() + "', '" + pdb.getPackageName() + "', '" + PluginCfg.SQL_SERVER_ID + "', " + pdb.getExpire() + ");";
+            }
         }
         try {
             getDB().query(sql);
@@ -71,31 +75,51 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
 
     @Override
     public boolean setTime(String uuid, String packageName, int days) throws Exception {
+        boolean global = uuid.startsWith("g:") ? true : false;
+        if (global) {
+            uuid = uuid.substring(2);
+        }
         long now = new Date().getTime();
         long addTime = days * TIME_UNIT;
         long expire = now + addTime;
         PlayerDataBean pdb = queryPlayerData(uuid, packageName);
         if (pdb == null) {
             pdb = new PlayerDataBean(null, uuid, packageName, expire);
+            if (global) {
+                pdb.setGlobal(true);
+            }
             return setPlayerData(pdb);
         } else {
             pdb.setExpire(expire);
+            if (global) {
+                pdb.setGlobal(true);
+            }
             return setPlayerData(pdb);
         }
     }
 
     @Override
     public boolean addTime(String uuid, String packageName, int days) throws Exception {
+        boolean global = uuid.startsWith("g:") ? true : false;
+        if (global) {
+            uuid = uuid.substring(2);
+        }
         long now = new Date().getTime();
         long addTime = days * TIME_UNIT;
         long expire = now + addTime;
-        PlayerDataBean pdb = queryPlayerData(uuid, packageName);
+        PlayerDataBean pdb = queryPlayerData((global ? "g:" : "") + uuid, packageName);
         if (pdb == null) {
             pdb = new PlayerDataBean(null, uuid, packageName, expire);
+            if (global) {
+                pdb.setGlobal(true);
+            }
             return setPlayerData(pdb);
         } else {
             if (pdb.getExpire() < now) {
                 pdb.setExpire(expire);
+                if (global) {
+                    pdb.setGlobal(true);
+                }
                 return setPlayerData(pdb);
             } else {
                 String sql = "UPDATE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` SET `expire`='" + addTime + "' WHERE (`id`='" + pdb.getId() + "');";
@@ -112,7 +136,7 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
 
     @Override
     public List<PlayerDataBean> queryPlayerData(String uuid) throws Exception {
-        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where (`uuid`='" + uuid + "');";
+        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where `uuid`='" + uuid + "' AND (`serverId`='" + PluginCfg.SQL_SERVER_ID + "' OR `serverId` IS NULL);";
         try {
             List<PlayerDataBean> pdbList = new ArrayList<>();
             ResultSet rs = getDB().query(sql);
@@ -120,8 +144,12 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
                 long tid = rs.getLong("id");
                 String tuuid = rs.getString("uuid");
                 String tpackageName = rs.getString("packageName");
+                String tserverId = rs.getString("serverId");
                 long texpire = rs.getLong("expire");
                 PlayerDataBean tpd = new PlayerDataBean(tid, tuuid, tpackageName, texpire);
+                if (tserverId == null) {
+                    tpd.setGlobal(true);
+                }
                 pdbList.add(tpd);
             }
             return pdbList;
@@ -133,15 +161,23 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
 
     @Override
     public PlayerDataBean queryPlayerData(String uuid, String packageName) throws Exception {
-        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where (`uuid`='" + uuid + "' AND `packageName`='" + packageName + "');";
+        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where `uuid`='" + uuid + "' AND `packageName`='" + packageName + "' AND `serverId`='" + PluginCfg.SQL_SERVER_ID + "';";
+        if (uuid.startsWith("g:")) {
+            uuid = uuid.substring(2);
+            sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where `uuid`='" + uuid + "' AND `packageName`='" + packageName + "' AND `serverId` IS NULL;";
+        }
         try {
             ResultSet rs = getDB().query(sql);
             while (rs.next()) {
                 long tid = rs.getLong("id");
                 String tuuid = rs.getString("uuid");
                 String tpackageName = rs.getString("packageName");
+                String tserverId = rs.getString("serverId");
                 long texpire = rs.getLong("expire");
                 PlayerDataBean tpd = new PlayerDataBean(tid, tuuid, tpackageName, texpire);
+                if (tserverId == null) {
+                    tpd.setGlobal(true);
+                }
                 return tpd;
             }
             return null;
@@ -154,7 +190,7 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
     @Override
     public List<PlayerDataBean> queryNotExpirePlayerData(String uuid) throws Exception {
         long now = new Date().getTime();
-        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where (`uuid`='" + uuid + "' AND `expire` > " + now + ");";
+        String sql = "SELECT * FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` where `uuid`='" + uuid + "' AND (`serverId`='" + PluginCfg.SQL_SERVER_ID + "' OR `serverId` IS NULL) AND `expire` > " + now + ";";
         try {
             List<PlayerDataBean> pdbList = new ArrayList<>();
             ResultSet rs = getDB().query(sql);
@@ -162,8 +198,12 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
                 long tid = rs.getLong("id");
                 String tuuid = rs.getString("uuid");
                 String tpackageName = rs.getString("packageName");
+                String tserverId = rs.getString("serverId");
                 long texpire = rs.getLong("expire");
                 PlayerDataBean tpd = new PlayerDataBean(tid, tuuid, tpackageName, texpire);
+                if (tserverId == null) {
+                    tpd.setGlobal(true);
+                }
                 pdbList.add(tpd);
             }
             return pdbList;
@@ -175,7 +215,11 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
 
     @Override
     public boolean delPlayData(String uuid) throws Exception {
-        String sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE (`uuid`='" + uuid + "');";
+        String sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE `uuid`='" + uuid + "' AND `serverId`='" + PluginCfg.SQL_SERVER_ID + "';";
+        if (uuid.startsWith("g:")) {
+            uuid = uuid.substring(2);
+            sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE `uuid`='" + uuid + "' AND `serverId` IS NULL;";
+        }
         try {
             getDB().query(sql);
             return true;
@@ -187,7 +231,11 @@ public class MySQLPlayerDataService extends DatabaseUtil implements IPlayerDataS
 
     @Override
     public boolean delPlayData(String uuid, String packageName) throws Exception {
-        String sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE (`uuid`='" + uuid + "' AND `packageName`='" + packageName + "');";
+        String sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE `uuid`='" + uuid + "' AND `packageName`='" + packageName + "'AND `serverId`='" + PluginCfg.SQL_SERVER_ID + "';";
+        if (uuid.startsWith("g:")) {
+            uuid = uuid.substring(2);
+            sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE `uuid`='" + uuid + "' AND `packageName`='" + packageName + "'AND `serverId` IS NULL;";
+        }
         try {
             getDB().query(sql);
             return true;
