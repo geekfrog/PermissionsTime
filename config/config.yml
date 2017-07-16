@@ -1,0 +1,21 @@
+# 插件提示前缀.
+pluginPrefix: '&4[&b限时权限&4]'
+# 是否开启DEBUG模式.
+debug: false
+# 是否同意插件统计信息.
+metrics: true
+# 语言文件名称 在'lang'文件夹内.
+lang: zh-cn
+# 数据库相关.
+mysql:
+  # 是否使用MySQL数据库.
+  enable: false
+  # 服务器唯一标识, 用来区分权限是哪个服务器的.
+  serverId: default
+  hostname: localhost
+  port: 3306
+  database: minecraft
+  username: user
+  password: '123456'
+  # 数据库表前缀
+  tablePrefix: pt_
