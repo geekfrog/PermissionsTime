@@ -1,9 +1,13 @@
 # PermissionsTime
 ### 支持跨服的权限限时插件
 
-#### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://ci.frog.gg/jenkins/job/PermissionsTime/)
-#### 前置插件SQLibrary下载地址:[https://dev.bukkit.org/projects/sqlibrary](https://dev.bukkit.org/projects/sqlibrary/)
-#### [插件使用说明](https://github.com/geekfrog/PermissionsTime/wiki/PermissionsTime-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
+##### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://ci.frog.gg/jenkins/job/PermissionsTime/)
+##### 前置插件SQLibrary下载地址:[https://dev.bukkit.org/projects/sqlibrary](https://dev.bukkit.org/projects/sqlibrary/)
+##### [插件使用说明](https://github.com/geekfrog/PermissionsTime/wiki/PermissionsTime-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
+
+#### 游戏截图: 
+
+
 
 #### 已知问题(作者提醒):
 
