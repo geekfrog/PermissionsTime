@@ -30,7 +30,7 @@ public class PluginCfg extends PluginConfig {
 
     @Override
     protected void init() {
-        getConfig().set("lang", "de");
+        getConfig().set("lang", "en");
         getConfig().set("metrics", true);
         getConfig().set("debug", false);
         getConfig().set("mysql.enable", false);
@@ -48,7 +48,7 @@ public class PluginCfg extends PluginConfig {
         PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + pm.PLUGIN_NAME + "] ") + "&r";
         IS_DEBUG = setGetDefault("debug", false);
         IS_METRICS = setGetDefault("metrics", true);
-        LANG = setGetDefault("lang", "de");
+        LANG = setGetDefault("lang", "en");
         USE_MYSQL = setGetDefault("mysql.enable", false);
         SQL_SERVER_ID = setGetDefault("mysql.serverId", "default");
         SQL_HOSTNAME = setGetDefault("mysql.hostname", "localhost");
