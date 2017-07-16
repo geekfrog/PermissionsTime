@@ -17,7 +17,7 @@ packages:
     lores: 
     - '&2This is a test lore.'
     # 是否跨服权限
-    # Is multiple service permission?
+    # Is multiple server permission?
     global: false
     # 权限包含有的权限 world1、world2、world3是赋值给玩家permission2权限的世界
     # 如果所有世界都赋值权限则不用注明世界名称如：permission1
