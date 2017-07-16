@@ -50,15 +50,13 @@ public class PluginCfg extends PluginConfig {
         IS_METRICS = setGetDefault("metrics", true);
         LANG = setGetDefault("lang", "de");
         USE_MYSQL = setGetDefault("mysql.enable", false);
-        if (USE_MYSQL) {
-            SQL_SERVER_ID = setGetDefault("mysql.serverId", "default");
-            SQL_HOSTNAME = setGetDefault("mysql.hostname", "localhost");
-            SQL_PORT = setGetDefault("mysql.port", 3306);
-            SQL_DATABASE = setGetDefault("mysql.database", "minecraft");
-            SQL_USERNAME = setGetDefault("mysql.username", "user");
-            SQL_PASSWORD = setGetDefault("mysql.password", "123456");
-            SQL_TABLE_PREFIX = setGetDefault("mysql.tablePrefix", "pt_");
-        }
+        SQL_SERVER_ID = setGetDefault("mysql.serverId", "default");
+        SQL_HOSTNAME = setGetDefault("mysql.hostname", "localhost");
+        SQL_PORT = setGetDefault("mysql.port", 3306);
+        SQL_DATABASE = setGetDefault("mysql.database", "minecraft");
+        SQL_USERNAME = setGetDefault("mysql.username", "user");
+        SQL_PASSWORD = setGetDefault("mysql.password", "123456");
+        SQL_TABLE_PREFIX = setGetDefault("mysql.tablePrefix", "pt_");
     }
 
 }
