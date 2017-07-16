@@ -62,10 +62,12 @@ public class PluginMain extends JavaPlugin {
         getServer().getScheduler().runTask(pm, new Runnable() {
             public void run() {
                 if (!checkPluginDepends()) {
+                    getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "启动失败!"));
                     getServer().getPluginManager().disablePlugin(pm);
                 } else {
                     registerListeners();
                     registerCommands();
+                    getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "启动成功!"));
                 }
             }
         });

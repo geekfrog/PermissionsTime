@@ -1,5 +1,6 @@
 package gg.frog.mc.permissionstime.utils.database;
 
+import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import lib.PatPeter.SQLibrary.Database;
 
@@ -13,13 +14,15 @@ public abstract class DatabaseUtil {
 
     protected Database getDB() {
         Database db = sm.getDb();
-        for (int i = 0; i < 3; i++) {
-            if (!db.isOpen()) {
-                if (db.open()) {
+        if (PluginCfg.USE_MYSQL) {
+            for (int i = 0; i < 3; i++) {
+                if (!db.isOpen()) {
+                    if (db.open()) {
+                        return db;
+                    }
+                } else {
                     return db;
                 }
-            } else {
-                return db;
             }
         }
         return db;

@@ -29,7 +29,7 @@ public class MainCommand implements CommandExecutor {
             if (sender instanceof Player) {
                 isPlayer = true;
             }
-            if (args[0].equalsIgnoreCase("help") || args.length == 0) {
+            if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
                 getHelp(sender, isPlayer);
                 return true;
             } else {

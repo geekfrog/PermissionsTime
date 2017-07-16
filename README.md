@@ -2,6 +2,7 @@
 ### 支持跨服的权限限时插件
 
 #### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://ci.frog.gg/jenkins/job/PermissionsTime/)
+#### 前置插件SQLibrary下载地址:[https://dev.bukkit.org/projects/sqlibrary](https://dev.bukkit.org/projects/sqlibrary/)
 
 #### 已知问题(作者提醒):
 
@@ -27,6 +28,7 @@
 - **gui显示自己的权限包**
 - 手动删除过期的或无效数据
 - 语言支持整理
+- 取消前置插件
 
 
 - 支持分页?

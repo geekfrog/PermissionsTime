@@ -28,7 +28,7 @@ public class SqlManager {
     }
 
     public boolean updateDatabase() {
-        if (db != null && db.isOpen()) {
+        if (db != null) {
             db.close();
         }
         if (PluginCfg.USE_MYSQL) {
@@ -38,7 +38,7 @@ public class SqlManager {
             db = new SQLite(PluginMain.LOG, "[" + pm.PLUGIN_NAME + "] ", pm.getDataFolder().getAbsolutePath(), "playerData", ".db");
             pds = new SqlitePlayerDataDao(pm, this);
         }
-        if(db.open()) {
+        if (db.open()) {
             try {
                 if (!pds.tableExist()) {
                     pds.creatTable();
