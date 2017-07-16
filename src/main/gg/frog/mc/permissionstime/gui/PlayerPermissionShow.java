@@ -22,7 +22,6 @@ public class PlayerPermissionShow {
             if (item != null) {
                 ItemMeta meta = item.getItemMeta();
                 List<String> lores = meta.getLore();
-                lores.add("");
                 lores.add(StrUtil.messageFormat(LangCfg.EXPIRATION_DATE, StrUtil.timestampToString(pdb.getExpire())));
                 meta.setLore(lores);
                 item.setItemMeta(meta);

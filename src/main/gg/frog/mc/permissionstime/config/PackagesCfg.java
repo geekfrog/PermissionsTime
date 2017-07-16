@@ -90,13 +90,12 @@ public class PackagesCfg extends PluginConfig {
                 ItemStack items = new ItemStack(type, 1, (short) 0, (byte) exid);
                 ItemMeta meta = items.getItemMeta();
                 meta.setDisplayName(StrUtil.messageFormat(ppb.getDisplayName() + "&r(" + name + ")"));
-                if (ppb.getLores().size() > 0) {
-                    List<String> lores = new ArrayList<String>();
-                    for (String lore : ppb.getLores()) {
-                        lores.add(StrUtil.messageFormat(lore));
-                    }
-                    meta.setLore(lores);
+                List<String> lores = new ArrayList<String>();
+                for (String lore : ppb.getLores()) {
+                    lores.add(StrUtil.messageFormat(lore));
                 }
+                lores.add("");
+                meta.setLore(lores);
                 items.setItemMeta(meta);
                 return items;
             }
