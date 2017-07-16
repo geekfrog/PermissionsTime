@@ -47,32 +47,31 @@ public class LangCfg extends PluginConfig {
 
     @Override
     protected void loadToDo() {
-        INVENTORY_NAME = setGetDefault("inventoryName", "&4===Permissions Packages===");
-        EXPIRATION_DATE = setGetDefault("expirationDate", "&4Expiration date: {0}");
-        MSG_PARAMETER_MISMATCH = setGetDefault("msg.parameterMismatch", "&4Parameter mismatch.");
-        MSG_DAYS_PARAMETER_INCORRECT = setGetDefault("msg.daysParameterIncorrect", "&4The number of days is incorrect. Please enter a positive integer.");
-        MSG_PROCESSING = setGetDefault("msg.processing", "&2Please wait for processing...");
-        MSG_NO_DATA = setGetDefault("msg.noData", "&4No data for packages.");
-        MSG_PACKAGE_NUM = setGetDefault("msg.packageNum", "&4There are {0} kinds of permissions packages.");
-        MSG_PACKAGE_LIST = setGetDefault("msg.packageList", "{0}packageName: {1}, displayName: {2}");
-        MSG_PACKAGE_DETAIL = setGetDefault("msg.packageDetail", "packageName: {0}, displayName: {1}&r\\nPermissions: {2}\\nGroups: {3}");
-        MSG_NO_PERMISSION = setGetDefault("msg.nopermission", "&4You do not have permission to do this.");
-        MSG_CONFIG_RELOADED = setGetDefault("msg.configReloaded", "&2Configuration overload is complete.");
-        MSG_FAIL_SET_PERMISSION = setGetDefault("msg.failSetPermission", "&4Failed to modify permissions. Please re-enter the server!");
-        MSG_NO_FIND_PLAYER = setGetDefault("msg.noFindPlayer", "&4Can not find player named &2{0}");
-        MSG_NO_FIND_PACKAGE = setGetDefault("msg.noFindPackage", "&4Can not find package named &2{0}");
-        MSG_TELL_GIVE_PACKAGE = setGetDefault("msg.tellGivePackage", "&2{0} give you {1}days package of {2}");
-        MSG_GIVE_PACKAGE = setGetDefault("msg.givePackage", "&2Give the player {0} {1}days package of {2}");
-        MSG_GIVE_PACKAGE_FAIL = setGetDefault("msg.givePackageFail", "&4Failed to give players {0} {1}days package of {2}");
-        MSG_TELL_SET_PACKAGE = setGetDefault("msg.tellSetPackage", "&2{0} set your package of {2} to {1}days");
-        MSG_SET_PACKAGE = setGetDefault("msg.setPackage", "&2Set the player {0} {1}days package of {2}");
-        MSG_SET_PACKAGE_FAIL = setGetDefault("msg.setPackageFail", "&4Failed to set the player {0} {1}days package of {2}");
-        MSG_TELL_DEL_PACKAGE = setGetDefault("msg.tellDelPackage", "&4{0} deleted your package of {1}");
-        MSG_DEL_PACKAGE = setGetDefault("msg.delPackage", "&2Remove package of {1}&2 for player {0}");
-        MSG_DEL_PACKAGE_FAIL = setGetDefault("msg.delPackageFail", "&4Failed to delete package of {1}&2 for player {0}");
-        MSG_TELL_DEL_ALL = setGetDefault("msg.tellDelAll", "&4{0} remove all your packages");
-        MSG_DEL_ALL = setGetDefault("msg.delAll", "&2Remove all packages for player {0}");
-        MSG_DEL_ALL_FAIL = setGetDefault("msg.delAllFail", "&4Failed to remove all packages for player {0}");
+        INVENTORY_NAME = getConfig().getString("inventoryName", "&4===Permissions Packages===");
+        EXPIRATION_DATE = getConfig().getString("expirationDate", "&4Expiration date: {0}");
+        MSG_PARAMETER_MISMATCH = getConfig().getString("msg.parameterMismatch", "&4Parameter mismatch.");
+        MSG_DAYS_PARAMETER_INCORRECT = getConfig().getString("msg.daysParameterIncorrect", "&4The number of days is incorrect. Please enter a positive integer.");
+        MSG_PROCESSING = getConfig().getString("msg.processing", "&2Please wait for processing...");
+        MSG_NO_DATA = getConfig().getString("msg.noData", "&4No data for packages.");
+        MSG_PACKAGE_NUM = getConfig().getString("msg.packageNum", "&4There are {0} kinds of permissions packages.");
+        MSG_PACKAGE_LIST = getConfig().getString("msg.packageList", "{0}packageName: {1}, displayName: {2}");
+        MSG_PACKAGE_DETAIL = getConfig().getString("msg.packageDetail", "packageName: {0}, displayName: {1}&r\\nPermissions: {2}\\nGroups: {3}");
+        MSG_NO_PERMISSION = getConfig().getString("msg.nopermission", "&4You do not have permission to do this.");
+        MSG_CONFIG_RELOADED = getConfig().getString("msg.configReloaded", "&2Configuration overload is complete.");
+        MSG_FAIL_SET_PERMISSION = getConfig().getString("msg.failSetPermission", "&4Failed to modify permissions. Please re-enter the server!");
+        MSG_NO_FIND_PLAYER = getConfig().getString("msg.noFindPlayer", "&4Can not find player named &2{0}");
+        MSG_NO_FIND_PACKAGE = getConfig().getString("msg.noFindPackage", "&4Can not find package named &2{0}");
+        MSG_TELL_GIVE_PACKAGE = getConfig().getString("msg.tellGivePackage", "&2{0} give you {1}days package of {2}");
+        MSG_GIVE_PACKAGE = getConfig().getString("msg.givePackage", "&2Give the player {0} {1}days package of {2}");
+        MSG_GIVE_PACKAGE_FAIL = getConfig().getString("msg.givePackageFail", "&4Failed to give players {0} {1}days package of {2}");
+        MSG_TELL_SET_PACKAGE = getConfig().getString("msg.tellSetPackage", "&2{0} set your package of {2} to {1}days");
+        MSG_SET_PACKAGE = getConfig().getString("msg.setPackage", "&2Set the player {0} {1}days package of {2}");
+        MSG_SET_PACKAGE_FAIL = getConfig().getString("msg.setPackageFail", "&4Failed to set the player {0} {1}days package of {2}");
+        MSG_TELL_DEL_PACKAGE = getConfig().getString("msg.tellDelPackage", "&4{0} deleted your package of {1}");
+        MSG_DEL_PACKAGE = getConfig().getString("msg.delPackage", "&2Remove package of {1}&2 for player {0}");
+        MSG_DEL_PACKAGE_FAIL = getConfig().getString("msg.delPackageFail", "&4Failed to delete package of {1}&2 for player {0}");
+        MSG_TELL_DEL_ALL = getConfig().getString("msg.tellDelAll", "&4{0} remove all your packages");
+        MSG_DEL_ALL = getConfig().getString("msg.delAll", "&2Remove all packages for player {0}");
+        MSG_DEL_ALL_FAIL = getConfig().getString("msg.delAllFail", "&4Failed to remove all packages for player {0}");
     }
-
 }

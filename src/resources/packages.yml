@@ -1,24 +1,33 @@
 version: 1.00
-#默认权限组
+# 默认权限组
+# Default permission group
 defaultGroup: Default
 packages:
-#权限包名称
+# 权限包名称
+# Permission package name
   example1:
-    #权限包显示名称
-    displayName: '&4权限包模板1'
-    #显示的物品类型
+    # 权限包显示名称
+    # Permission package display name
+    displayName: '&4Test Package'
+    # 显示的物品类型
+    # Show the type of item
     type: NETHER_STAR
-    #标签
+    # 标签
+    # Lores
     lores: 
-    - '&2这是权限包模板的标签'
-    #是否跨服权限
+    - '&2This is a test lore.'
+    # 是否跨服权限
+    # Is multiple service permission?
     global: false
-    #权限包含有的权限 world1、world2、world3是赋值给玩家permission2权限的世界
-    #如果所有世界都赋值权限则不用注明世界名称如：permission1
+    # 权限包含有的权限 world1、world2、world3是赋值给玩家permission2权限的世界
+    # 如果所有世界都赋值权限则不用注明世界名称如：permission1
+    # Package contain permissions
+    # Add ':world1' at the end can restrict permissions used in 'world1'
     permissions:
     - permission1 
     - permission2:world1:world2:world3
-    #权限包含有的权限组
+    # 权限包含有的权限组
+    # Package contain groups
     groups:
     - group1
     - group2:world1

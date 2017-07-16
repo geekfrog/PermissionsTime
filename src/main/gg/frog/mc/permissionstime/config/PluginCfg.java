@@ -45,7 +45,7 @@ public class PluginCfg extends PluginConfig {
 
     @Override
     protected void loadToDo() {
-        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + pm.PLUGIN_NAME + "]") + "&r";
+        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + pm.PLUGIN_NAME + "] ") + "&r";
         IS_DEBUG = setGetDefault("debug", false);
         IS_METRICS = setGetDefault("metrics", true);
         LANG = setGetDefault("lang", "de");
