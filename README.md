@@ -3,7 +3,16 @@
 
 ##### [插件使用说明](https://github.com/geekfrog/PermissionsTime/wiki/PermissionsTime-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 ##### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://ci.frog.gg/jenkins/job/PermissionsTime/)
-##### 前置插件SQLibrary下载地址:[https://dev.bukkit.org/projects/sqlibrary](https://dev.bukkit.org/projects/sqlibrary/)
+##### 前置插件Vault下载地址:[https://dev.bukkit.org/projects/vault/](https://dev.bukkit.org/projects/vault/)
+##### 前置插件SQLibrary下载地址:[https://dev.bukkit.org/projects/sqlibrary/](https://dev.bukkit.org/projects/sqlibrary/)
+
+本插件并非权限插件, 而是权限扩展插件. 可以限制权限和权限组的时候时间.
+
+使用时必须同时使用Vault及SQLibrary两个前置插件.
+
+使用跨服权限, 要在配置文件里开启MySQl功能.
+
+经测试支持大部分1.7.10-1.12的服务器. 其他版本未做测试.
 
 #### 游戏截图: 
 
