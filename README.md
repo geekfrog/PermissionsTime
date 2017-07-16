@@ -15,7 +15,7 @@
 经测试支持大部分1.7.10-1.12的服务器. 其他版本未做测试.
 
 #### 游戏截图: 
-
+![image](https://raw.githubusercontent.com/geekfrog/PermissionsTime/master/1.bmp)
 
 
 #### 已知问题(作者提醒):
