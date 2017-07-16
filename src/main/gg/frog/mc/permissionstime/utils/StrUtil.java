@@ -20,7 +20,7 @@ public class StrUtil {
     public static String dateToString(Date d) {
         return DateFormatUtils.format(d, dfs);
     }
-    
+
     public static String nowTimeString() {
         return DateFormatUtils.format(new Date(), dfs);
     }
