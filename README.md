@@ -3,6 +3,7 @@
 
 #### 构建地址:[http://ci.frog.gg/jenkins/job/PermissionsTime/](http://ci.frog.gg/jenkins/job/PermissionsTime/)
 #### 前置插件SQLibrary下载地址:[https://dev.bukkit.org/projects/sqlibrary](https://dev.bukkit.org/projects/sqlibrary/)
+#### 插件使用说明:[https://github.com/geekfrog/PermissionsTime/wiki](https://github.com/geekfrog/PermissionsTime/wiki)
 
 #### 已知问题(作者提醒):
 
