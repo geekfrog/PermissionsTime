@@ -34,7 +34,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             }
             return false;
         } catch (Exception e) {
-            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法检查有无数据表"));
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't check table is exist."));
             throw e;
         }
     }
@@ -46,7 +46,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             getDB().query(sql);
             return true;
         } catch (Exception e) {
-            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法创建数据表"));
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't creat table."));
             throw e;
         }
     }
@@ -64,7 +64,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             getDB().query(sql);
             return true;
         } catch (Exception e) {
-            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法创建数据: {0}", pdb));
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't creat data: {0}", pdb));
             throw e;
         }
     }
@@ -103,7 +103,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
                     getDB().query(sql);
                     return true;
                 } catch (Exception e) {
-                    pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法更新数据: {0}", pdb));
+                    pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't update data: {0}", pdb));
                     throw e;
                 }
             }
@@ -126,7 +126,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             }
             return pdbList;
         } catch (Exception e) {
-            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法查询UUID: {0} 的数据", uuid));
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't find data by UUID: {0}", uuid));
             throw e;
         }
     }
@@ -146,7 +146,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             }
             return null;
         } catch (Exception e) {
-            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法查询UUID: {0}, packageName: {1} 的数据", uuid, packageName));
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't find data by UUID: {0}, packageName: {1}", uuid, packageName));
             throw e;
         }
     }
@@ -170,7 +170,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             }
             return pdbList;
         } catch (Exception e) {
-            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法查询UUID: {0} 的数据", uuid));
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't find data by UUID: {0}", uuid));
             throw e;
         }
     }
@@ -182,7 +182,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             getDB().query(sql);
             return true;
         } catch (Exception e) {
-            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法删除UUID为: {0} 的数据", uuid));
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't delete data by UUID: {0}", uuid));
             throw e;
         }
     }
@@ -194,7 +194,7 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
             getDB().query(sql);
             return true;
         } catch (Exception e) {
-            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "无法删除UUID: {0}, packageName: {1} 的数据", uuid, packageName));
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't delete data by UUID: {0}, packageName: {1}", uuid, packageName));
             throw e;
         }
     }

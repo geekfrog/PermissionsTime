@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
@@ -39,21 +40,21 @@ public class GiveCmd implements Runnable {
             try {
                 days = Integer.parseInt(time);
                 if (days <= 0) {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "时间参数不正确,请输入正整数"));
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_DAYS_PARAMETER_INCORRECT));
                     return;
                 }
             } catch (Exception e) {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "时间参数不正确,请输入正整数"));
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_DAYS_PARAMETER_INCORRECT));
                 return;
             }
             PermissionPackageBean pack = PackagesCfg.PACKAGES.get(packageName);
             if (pack != null) {
                 OfflinePlayer player = pm.getOfflinePlayer(playerName);
                 if (player != null) {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "执行中，请等待..."));
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
                     UUID uuid = player.getUniqueId();
                     if (PluginCfg.IS_DEBUG) {
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString() + "\n" + pack.toString() + "\n" + time + "天"));
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString() + "\n" + pack.toString() + "\n" + time + " days."));
                     }
                     if (sm.giveTime(((PluginCfg.USE_MYSQL && pack.getGlobal()) ? "g:" : "") + uuid.toString(), packageName, days)) {
                         if (player.isOnline()) {
@@ -63,28 +64,28 @@ public class GiveCmd implements Runnable {
                                 PermissionPackageBean.reloadPlayerPermissions(player, pdbList, pm);
                             } catch (Exception e) {
                                 e.printStackTrace();
-                                p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "修改权限失败, 请重新进入服务器!"));
+                                p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
                             }
-                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}给予你 {1}天的 {2}", sender.getName(), time, pack.getDisplayName()));
+                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TELL_GIVE_PACKAGE, sender.getName(), time, pack.getDisplayName()));
                         }
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "给予玩家 {0} {1}天的 {2}", playerName, time, pack.getDisplayName()));
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_GIVE_PACKAGE, playerName, time, pack.getDisplayName()));
                     } else {
                         pm.getServer().getScheduler().runTask(pm, new Runnable() {
                             @Override
                             public void run() {
-                                pm.writeFailLog("命令执行失败  给予玩家 {0}({1}) {2}天的 {3} 执行人: {4}", playerName, player.getUniqueId().toString(), time, pack.getDisplayName(), sender.getName());
+                                pm.writeFailLog("Command execution failed. Give {0}({1}) {2}days {3} Executor: {4}", playerName, player.getUniqueId().toString(), time, pack.getDisplayName(), sender.getName());
                             }
                         });
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "未给予玩家 {0} {1}天的 {2}", playerName, time, pack.getDisplayName()));
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_GIVE_PACKAGE_FAIL, playerName, time, pack.getDisplayName()));
                     }
                 } else {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "找不到名为''{0}''的玩家", playerName));
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_FIND_PLAYER, playerName));
                 }
             } else {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "找不到名为''{0}''的权限包", packageName));
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_FIND_PACKAGE, packageName));
             }
         } else {
-            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "参数不正确"));
+            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
         }
     }
 }

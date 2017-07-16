@@ -34,39 +34,39 @@ public class MainCommand implements CommandExecutor {
                 return true;
             } else {
                 if (args[0].equalsIgnoreCase("reload")) {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "执行中，请等待..."));
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
                     if (isPlayer) {
                         Player player = (Player) sender;
                         if (sender.isOp() || player.hasPermission("permissionstime.reload")) {
                             for (Player p : pm.getServer().getOnlinePlayers()) {
                                 InventoryView inventory = p.getOpenInventory();
-                                if (StrUtil.messageFormat("&4===权限仓库===" + "&r&5&9&2&0&r").equals(inventory.getTitle())) {
+                                if (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle())) {
                                     inventory.close();
                                 }
                             }
                             pm.getConfigManager().reloadConfig();
                             if (!sm.updateDatabase()) {
-                                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "数据库异常"));
+                                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Database exceptions."));
                             }
-                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.CONFIG_RELOADED));
-                            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.CONFIG_RELOADED));
+                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_CONFIG_RELOADED));
+                            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_CONFIG_RELOADED));
                         } else {
-                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.NO_PERMISSION));
+                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
                         }
                     } else {
                         for (Player p : pm.getServer().getOnlinePlayers()) {
                             InventoryView inventory = p.getOpenInventory();
                             if (inventory != null) {
-                                if (StrUtil.messageFormat("&4===权限仓库===" + "&r&5&9&2&0&r").equals(inventory.getTitle())) {
+                                if (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle())) {
                                     inventory.close();
                                 }
                             }
                         }
                         pm.getConfigManager().reloadConfig();
                         if (!sm.updateDatabase()) {
-                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "数据库异常"));
+                            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Database exceptions."));
                         }
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.CONFIG_RELOADED));
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_CONFIG_RELOADED));
                     }
                     return true;
                 } else if (args[0].equalsIgnoreCase("me")) {
@@ -139,7 +139,7 @@ public class MainCommand implements CommandExecutor {
             Player player = (Player) sender;
             if (sender.isOp() || player.hasPermission(permissionPath)) {
             } else {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.NO_PERMISSION));
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
                 return false;
             }
         }

@@ -62,12 +62,12 @@ public class PluginMain extends JavaPlugin {
         getServer().getScheduler().runTask(pm, new Runnable() {
             public void run() {
                 if (!checkPluginDepends()) {
-                    getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "启动失败!"));
+                    getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Startup failure!"));
                     getServer().getPluginManager().disablePlugin(pm);
                 } else {
                     registerListeners();
                     registerCommands();
-                    getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "启动成功!"));
+                    getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&2Startup successful!"));
                 }
             }
         });
@@ -111,16 +111,16 @@ public class PluginMain extends JavaPlugin {
         boolean needDepend = false;
         for (String name : DEPEND_PLUGIN.split(",")) {
             if (getServer().getPluginManager().getPlugin(name) == null) {
-                getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Need depend plugins : " + name));
+                getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Need depend plugins : " + name));
                 needDepend = true;
             }
         }
         if (!needDepend && !setupPermissions()) {
-            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Cann''t hook vault permission"));
+            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Cann''t hook vault permission"));
             needDepend = true;
         }
         if (!needDepend && !setupDatabase()) {
-            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Cann''t setup database"));
+            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Cann''t setup database"));
             needDepend = true;
         }
         if (needDepend) {

@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
@@ -38,7 +39,7 @@ public class RemoveAllCmd implements Runnable {
             }
             OfflinePlayer player = pm.getOfflinePlayer(playerName);
             if (player != null) {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "执行中，请等待..."));
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
                 UUID uuid = player.getUniqueId();
                 if (PluginCfg.IS_DEBUG) {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString()));
@@ -51,25 +52,25 @@ public class RemoveAllCmd implements Runnable {
                             PermissionPackageBean.reloadPlayerPermissions(player, pdbList, pm);
                         } catch (Exception e) {
                             e.printStackTrace();
-                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "修改权限失败, 请重新进入服务器!"));
+                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
                         }
-                        p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "{0}删除了你的所有权限包", sender.getName()));
+                        p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TELL_DEL_ALL, sender.getName()));
                     }
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "删除玩家 {0} 的所有权限包", playerName));
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_DEL_ALL, playerName));
                 } else {
                     pm.getServer().getScheduler().runTask(pm, new Runnable() {
                         @Override
                         public void run() {
-                            pm.writeFailLog("命令执行失败  删除玩家 {0}({1}) 的所有权限包 执行人: {2}", playerName, player.getUniqueId().toString(), sender.getName());
+                            pm.writeFailLog("Command execution failed. Delete {0}({1})'s all packages. Executor: {2}", playerName, player.getUniqueId().toString(), sender.getName());
                         }
                     });
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "未删除玩家 {0} 的 {1}", playerName));
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_DEL_ALL_FAIL, playerName));
                 }
             } else {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "找不到名为''{0}''的玩家", playerName));
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_FIND_PLAYER, playerName));
             }
         } else {
-            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "参数不正确"));
+            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
         }
     }
 }

@@ -37,7 +37,7 @@ public class PackagesCfg extends PluginConfig {
 
     @Override
     protected void loadToDo() {
-        PACKAGES_VERSION = setGetDefault("version", "?");
+        PACKAGES_VERSION = setGetDefault("version", "1.00");
         DEFAULT_GROUP = setGetDefault("defaultGroup", "Default");
         PACKAGES = getObjMap("packages", PermissionPackageBean.class);
         saveObj("packages", PACKAGES);

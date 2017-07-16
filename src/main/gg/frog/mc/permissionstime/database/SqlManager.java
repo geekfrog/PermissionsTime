@@ -43,13 +43,11 @@ public class SqlManager {
                 if (!pds.tableExist()) {
                     pds.creatTable();
                 }
-                pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX) + "连接数据库成功");
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX) + "连接数据库失败");
         return false;
     }
 

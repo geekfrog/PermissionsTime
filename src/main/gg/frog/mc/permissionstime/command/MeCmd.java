@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.gui.PlayerPermissionShow;
@@ -31,21 +32,20 @@ public class MeCmd implements Runnable {
     @Override
     public void run() {
         if (isPlayer) {
-            if (args.length < 2) {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "执行中，请等待..."));
-                // String page = args[1];
+            if (args.length == 1) {
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
                 Player p = (Player) sender;
                 List<PlayerDataBean> ps = sm.getTime(p.getUniqueId().toString());
                 if (ps.size() > 0) {
                     PlayerPermissionShow.show(p, ps);
                 } else {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "暂时无数据"));
+                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_DATA));
                 }
             } else {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "参数不正确"));
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
             }
         } else {
-            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "此命令只能玩家执行"));
+            sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Only player can use this command."));
         }
     }
 }

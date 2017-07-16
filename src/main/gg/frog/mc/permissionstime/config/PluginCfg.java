@@ -30,7 +30,7 @@ public class PluginCfg extends PluginConfig {
 
     @Override
     protected void init() {
-        getConfig().set("lang", "zh-cn");
+        getConfig().set("lang", "de");
         getConfig().set("metrics", true);
         getConfig().set("debug", false);
         getConfig().set("mysql.enable", false);
@@ -45,10 +45,10 @@ public class PluginCfg extends PluginConfig {
 
     @Override
     protected void loadToDo() {
-        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + pm.PLUGIN_NAME + "]&r");
+        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + pm.PLUGIN_NAME + "]") + "&r";
         IS_DEBUG = setGetDefault("debug", false);
         IS_METRICS = setGetDefault("metrics", true);
-        LANG = setGetDefault("lang", "zh-cn");
+        LANG = setGetDefault("lang", "de");
         USE_MYSQL = setGetDefault("mysql.enable", false);
         if (USE_MYSQL) {
             SQL_SERVER_ID = setGetDefault("mysql.serverId", "default");

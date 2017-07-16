@@ -1,4 +1,4 @@
-version: 1.00
+version: 0.0.1
 #默认权限组
 defaultGroup: Default
 packages:
