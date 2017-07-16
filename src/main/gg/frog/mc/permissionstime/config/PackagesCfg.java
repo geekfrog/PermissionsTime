@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -50,7 +51,12 @@ public class PackagesCfg extends PluginConfig {
         }
         PACKAGE_ITEMS.clear();
         for (Entry<String, PermissionPackageBean> e : PACKAGES.entrySet()) {
-            PACKAGE_ITEMS.put(e.getKey(), getPackageItem(e.getKey(), e.getValue()));
+            ItemStack item = getPackageItem(e.getKey(), e.getValue());
+            if (item != null) {
+                PACKAGE_ITEMS.put(e.getKey(), item);
+            } else {
+                PluginMain.LOG.log(Level.SEVERE, "Packages of " + e.getKey() + " has problem.");
+            }
             allPermissions.addAll(e.getValue().getPermissions());
             allGroups.addAll(e.getValue().getGroups());
         }

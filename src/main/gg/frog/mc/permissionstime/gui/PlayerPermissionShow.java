@@ -20,12 +20,13 @@ public class PlayerPermissionShow {
         for (PlayerDataBean pdb : pdbList) {
             ItemStack item = PackagesCfg.PACKAGE_ITEMS.get(pdb.getPackageName());
             if (item != null) {
-                ItemMeta meta = item.getItemMeta();
+                ItemStack tItem = item.clone();
+                ItemMeta meta = tItem.getItemMeta();
                 List<String> lores = meta.getLore();
                 lores.add(StrUtil.messageFormat(LangCfg.EXPIRATION_DATE, StrUtil.timestampToString(pdb.getExpire())));
                 meta.setLore(lores);
-                item.setItemMeta(meta);
-                inventory.addItem(item);
+                tItem.setItemMeta(meta);
+                inventory.addItem(tItem);
             }
         }
         p.openInventory(inventory);
