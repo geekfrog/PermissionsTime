@@ -15,9 +15,9 @@
 经测试支持大部分1.7.10-1.12的服务器. 其他版本未做测试.
 
 #### 插件截图: 
-![image](http://imgur.com/cnnd5hb)
-![image](http://imgur.com/bqvIVvz)
-![image](http://imgur.com/NFK3WKa)
+![image](http://i.imgur.com/cnnd5hb.jpg)
+![image](http://i.imgur.com/bqvIVvz.jpg)
+![image](http://i.imgur.com/NFK3WKa.jpg)
 
 
 #### 已知问题(作者提醒):
