@@ -10,7 +10,7 @@ public class StrUtil {
     private static String dfs = "yyyy/MM/dd HH:mm:ss";
 
     public static String messageFormat(String src, Object... args) {
-        return MessageFormat.format(src, args).replace("&", "§");
+        return MessageFormat.format(src, args).replace("&", "§").replace("\\n", "\n");
     }
 
     public static String timestampToString(long time) {
