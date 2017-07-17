@@ -219,8 +219,13 @@ public class PermissionPackageBean implements IConfigBean {
                 subPpb.getGroups().removeAll(p.getGroups());
             }
         }
-        subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
-        addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
+        plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
+                addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
+            }
+        });
         BukkitTask task = taskMap.get(player.getUniqueId().toString());
         if (task != null) {
             plugin.getServer().getScheduler().cancelTask(task.getTaskId());
@@ -242,7 +247,12 @@ public class PermissionPackageBean implements IConfigBean {
         PermissionPackageBean subPpb = new PermissionPackageBean();
         subPpb.getPermissions().addAll(PackagesCfg.allPermissions);
         subPpb.getGroups().addAll(PackagesCfg.allGroups);
-        subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
+        plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
+            }
+        });
         BukkitTask task = taskMap.get(player.getUniqueId().toString());
         if (task != null) {
             plugin.getServer().getScheduler().cancelTask(task.getTaskId());
