@@ -1,18 +1,24 @@
 package gg.frog.mc.permissionstime.command;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
 
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.LangCfg;
+import gg.frog.mc.permissionstime.config.PackagesCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 
-public class MainCommand implements CommandExecutor {
+public class MainCommand implements CommandExecutor, TabCompleter {
 
     private PluginMain pm;
     private SqlManager sm;
@@ -110,7 +116,7 @@ public class MainCommand implements CommandExecutor {
 
     private void getHelp(CommandSender sender, boolean isPlayer) {
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
-        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me")) {
+        if (isPlayer && (sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
             sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " me \n  - View self package."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
@@ -144,5 +150,61 @@ public class MainCommand implements CommandExecutor {
             }
         }
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        List<String> tipList = new ArrayList<String>();
+        boolean isPlayer = false;
+        if (sender instanceof Player) {
+            isPlayer = true;
+        }
+        if (args.length == 1) {
+            args[0] = args[0].toLowerCase(Locale.ENGLISH);
+            if ("me".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
+                tipList.add("me");
+            }
+            if ("packages".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages"))) {
+                tipList.add("packages");
+            }
+            if ("give".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".give"))) {
+                tipList.add("give");
+            }
+            if ("set".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + "set"))) {
+                tipList.add("set");
+            }
+            if ("remove".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".remove"))) {
+                tipList.add("remove");
+            }
+            if ("removeall".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".removeall"))) {
+                tipList.add("removeall");
+            }
+            if ("reload".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".reload"))) {
+                tipList.add("reload");
+            }
+        } else if (args.length == 2) {
+            args[0] = args[0].toLowerCase(Locale.ENGLISH);
+            args[1] = args[1].toLowerCase(Locale.ENGLISH);
+            if ("packages".equals(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
+                for (String name : PackagesCfg.PACKAGES.keySet()) {
+                    if (name.startsWith(args[1])) {
+                        tipList.add(name);
+                    }
+                }
+            } else if ("give".equals(args[0]) || "set".equals(args[0]) || "remove".equals(args[0]) || "removeall".equals(args[0])) {
+                return null;
+            }
+        } else if (args.length == 3) {
+            args[0] = args[0].toLowerCase(Locale.ENGLISH);
+            args[2] = args[2].toLowerCase(Locale.ENGLISH);
+            if ("give".equals(args[0]) || "set".equals(args[0]) || "remove".equals(args[0])) {
+                for (String name : PackagesCfg.PACKAGES.keySet()) {
+                    if (name.startsWith(args[2])) {
+                        tipList.add(name);
+                    }
+                }
+            }
+        }
+        return tipList;
     }
 }
