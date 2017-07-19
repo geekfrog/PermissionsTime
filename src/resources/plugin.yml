@@ -1,6 +1,6 @@
 name: PermissionsTime
 main: gg.frog.mc.permissionstime.PluginMain
-version: 0.0.1
+version: 0.1.2-SNAPSHOT
 author: GeekFrog
 softdepend:
 - SQLibrary
