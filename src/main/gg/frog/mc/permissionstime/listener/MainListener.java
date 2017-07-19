@@ -3,10 +3,11 @@ package gg.frog.mc.permissionstime.listener;
 import java.util.List;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import gg.frog.mc.permissionstime.PluginMain;
@@ -24,28 +25,17 @@ public class MainListener implements Listener {
         this.pm = pm;
     }
 
-    /**
-     * 一个监听器例子
-     * 
-     * @param e
-     */
-    @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(event.getPlayer().getUniqueId().toString());
-                    PermissionPackageBean.reloadPlayerPermissions(event.getPlayer(), pdbList, pm);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    event.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
-                }
-            }
-        }).start();
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onJoin(PlayerLoginEvent event) {
+        try {
+            List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(event.getPlayer().getUniqueId().toString());
+            PermissionPackageBean.reloadPlayerPermissions(event.getPlayer(), pdbList, pm, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            event.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
+        }
     }
 
-    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         new Thread(new Runnable() {
             @Override
@@ -59,7 +49,6 @@ public class MainListener implements Listener {
         }).start();
     }
 
-    @EventHandler
     public void onKick(PlayerKickEvent event) {
         new Thread(new Runnable() {
             @Override

@@ -12,8 +12,17 @@ packages:
     # Permission package display name.
     displayName: '&4Test Package'
     # 显示的物品类型.
+    # 可以使用id, 但不可与type同时使用.
+    # 可以定义物品的种类, 特殊的如头颅可以指定哪个玩家的头颅.
     # Show the type of item.
+    # You can use 'id', but you can't use 'type' at the same time.
+    # You can define the type of item, such as skull can set which player's head.
+    #id: 397
+    #type: SKULL_ITEM:5
+    #type: SKULL_ITEM:MHF_Present1
     type: NETHER_STAR
+    # 是否有附魔发光的特效
+    glowing: false
     # 标签.
     # Lores.
     lores: 

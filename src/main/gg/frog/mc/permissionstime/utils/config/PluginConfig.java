@@ -18,6 +18,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.google.common.base.Charsets;
 
 import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.config.PluginCfg;
+import gg.frog.mc.permissionstime.utils.StrUtil;
 
 /**
  * 配置操作
@@ -105,7 +107,7 @@ public abstract class PluginConfig {
         try {
             getConfig().save(configFile);
         } catch (IOException ex) {
-            PluginMain.LOG.log(Level.SEVERE, "Could not save config to " + configFile, ex);
+            PluginMain.LOG.log(Level.SEVERE, StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Could not save config to " + configFile), ex);
         }
     }
 
@@ -114,7 +116,7 @@ public abstract class PluginConfig {
             getConfig().save(configFile);
             reloadConfig();
         } catch (IOException ex) {
-            PluginMain.LOG.log(Level.SEVERE, "Could not save config to " + configFile, ex);
+            PluginMain.LOG.log(Level.SEVERE, StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "Could not save config to " + configFile), ex);
         }
     }
 

@@ -14,8 +14,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 
 import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
+import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
+import gg.frog.mc.permissionstime.utils.StrUtil;
 import gg.frog.mc.permissionstime.utils.config.IConfigBean;
 import net.milkbowl.vault.permission.Permission;
 
@@ -30,8 +33,9 @@ public class PermissionPackageBean implements IConfigBean {
     private String displayName = null;
     private String id;
     private String type;
+    private Boolean glowing;
     private List<String> lores = new ArrayList<>();
-    private Boolean global = null;
+    private Boolean global;
     private List<String> permissions = new ArrayList<>();
     private List<String> groups = new ArrayList<>();
     private static Map<String, BukkitTask> taskMap = new ConcurrentHashMap<>();
@@ -58,6 +62,14 @@ public class PermissionPackageBean implements IConfigBean {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Boolean getGlowing() {
+        return glowing;
+    }
+
+    public void setGlowing(Boolean glowing) {
+        this.glowing = glowing;
     }
 
     public List<String> getLores() {
@@ -98,6 +110,7 @@ public class PermissionPackageBean implements IConfigBean {
         config.set("displayName", displayName);
         config.set("id", id);
         config.set("type", type);
+        config.set("glowing", glowing);
         config.set("lores", lores);
         config.set("global", global);
         config.set("permissions", permissions);
@@ -116,6 +129,7 @@ public class PermissionPackageBean implements IConfigBean {
         if (id == null && type == null) {
             type = "NETHER_STAR";
         }
+        glowing = config.getBoolean("glowing");
         lores = config.getStringList("lores");
         global = config.getBoolean("global");
         permissions = config.getStringList("permissions");
@@ -124,7 +138,7 @@ public class PermissionPackageBean implements IConfigBean {
 
     @Override
     public String toString() {
-        return "PermissionPackageBean [displayName=" + displayName + ", id=" + id + ", type=" + type + ", lores=" + lores + ", global=" + global + ", permissions=" + permissions + ", groups=" + groups + "]";
+        return "PermissionPackageBean [displayName=" + displayName + ", id=" + id + ", type=" + type + ", glowing=" + glowing + ", lores=" + lores + ", global=" + global + ", permissions=" + permissions + ", groups=" + groups + "]";
     }
 
     private void givePlayer(OfflinePlayer player, Server server, Permission permission) {
@@ -196,6 +210,10 @@ public class PermissionPackageBean implements IConfigBean {
     }
 
     public static void reloadPlayerPermissions(OfflinePlayer player, List<PlayerDataBean> pdbList, PluginMain plugin) {
+        reloadPlayerPermissions(player, pdbList, plugin, true);
+    }
+
+    public static void reloadPlayerPermissions(OfflinePlayer player, List<PlayerDataBean> pdbList, PluginMain plugin, boolean async) {
         long delay = -1;
         long now = new Date().getTime();
         PermissionPackageBean addPpb = new PermissionPackageBean();
@@ -219,13 +237,23 @@ public class PermissionPackageBean implements IConfigBean {
                 subPpb.getGroups().removeAll(p.getGroups());
             }
         }
-        plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-            @Override
-            public void run() {
-                subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
-                addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
-            }
-        });
+        if (async) {
+            plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
+                        addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        player.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
+                    }
+                }
+            });
+        } else {
+            subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
+            addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
+        }
         BukkitTask task = taskMap.get(player.getUniqueId().toString());
         if (task != null) {
             plugin.getServer().getScheduler().cancelTask(task.getTaskId());

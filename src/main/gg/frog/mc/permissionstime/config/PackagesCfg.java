@@ -19,6 +19,7 @@ import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import gg.frog.mc.permissionstime.utils.config.PluginConfig;
+import gg.frog.mc.permissionstime.utils.nms.ItemUtil;
 
 public class PackagesCfg extends PluginConfig {
 
@@ -66,35 +67,42 @@ public class PackagesCfg extends PluginConfig {
         if (ppb != null) {
             Material type = null;
             int exid = 0;
+            String skullOwner = null;
             if (ppb.getType() != null) {
                 String[] args = ppb.getType().split(":");
-                try {
-                    switch (args.length) {
-                        case 2:
-                            exid = Integer.parseInt(args[1]);
-                        case 1:
-                            type = Material.getMaterial(args[0].toUpperCase(Locale.ENGLISH));
+                type = Material.getMaterial(args[0].toUpperCase(Locale.ENGLISH));
+                if (args.length == 2) {
+                    try {
+                        exid = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException e) {
+                        if (Material.SKULL_ITEM.equals(type)) {
+                            exid = 3;
+                            skullOwner = args[1];
+                        } else {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
                 }
             } else if (ppb.getId() != null) {
                 String[] args = ppb.getId().split(":");
-                try {
-                    switch (args.length) {
-                        case 2:
-                            exid = Integer.parseInt(args[1]);
-                        case 1:
-                            int id = Integer.parseInt(args[0]);
-                            type = Material.getMaterial(id);
+                int id = Integer.parseInt(args[0]);
+                type = Material.getMaterial(id);
+                if (args.length == 2) {
+                    try {
+                        exid = Integer.parseInt(args[1]);
+                    } catch (NumberFormatException e) {
+                        if (Material.SKULL_ITEM.equals(type)) {
+                            exid = 3;
+                            skullOwner = args[1];
+                        } else {
+                            e.printStackTrace();
+                        }
                     }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
                 }
             }
             if (type != null) {
-                ItemStack items = new ItemStack(type, 1, (short) 0, (byte) exid);
-                ItemMeta meta = items.getItemMeta();
+                ItemStack item = new ItemStack(type, 1, (short) 0, (byte) exid);
+                ItemMeta meta = item.getItemMeta();
                 meta.setDisplayName(StrUtil.messageFormat(ppb.getDisplayName() + "&r(" + name + ")"));
                 List<String> lores = new ArrayList<String>();
                 for (String lore : ppb.getLores()) {
@@ -102,8 +110,14 @@ public class PackagesCfg extends PluginConfig {
                 }
                 lores.add("");
                 meta.setLore(lores);
-                items.setItemMeta(meta);
-                return items;
+                item.setItemMeta(meta);
+                if (ppb.getGlowing() && !meta.hasEnchants()) {
+                    item = ItemUtil.addEnchantLight(item);
+                }
+                if (skullOwner != null) {
+                    item = ItemUtil.addSkullOwner(item, skullOwner);
+                }
+                return item;
             }
         }
         return null;
