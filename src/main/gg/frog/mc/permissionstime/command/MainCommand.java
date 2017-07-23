@@ -90,6 +90,11 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                         SetCmd setCmd = new SetCmd(pm, sender, args);
                         new Thread(setCmd).start();
                     }
+                } else if (args[0].equalsIgnoreCase("get")) {
+                    if (hasPermission(sender, isPlayer, "permissionstime.get")) {
+                        GetCmd getCmd = new GetCmd(pm, sender, args);
+                        new Thread(getCmd).start();
+                    }
                 } else if (args[0].equalsIgnoreCase("remove")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.remove")) {
                         RemoveCmd removeCmd = new RemoveCmd(pm, sender, args);
@@ -115,27 +120,30 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     }
 
     private void getHelp(CommandSender sender, boolean isPlayer) {
-        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
+        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "\n&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
         if (isPlayer && (sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " me \n  - View self package."));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " me \n&8  - View self package."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n  - View packages."));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n&8  - View packages."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".give")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> \n  - Give player package <time>day."));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> \n&8  - Give player package <time>day."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".set")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " set <playerName> <packageName> <time> \n  - Set player package <time>day."));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " set <playerName> <packageName> <time> \n&8  - Set player package <time>day."));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".get")) {
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " get <playerName> \n&8  - View player packages."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".remove")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " remove <playerName> <packageName> [t/f delGlobal] \n  - Remove player package."));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " remove <playerName> <packageName> [t/f delGlobal] \n&8  - Remove player package."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".removeall")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " removeall <playerName> [t/f delGlobal] \n  - Remove player all package."));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " removeall <playerName> [t/f delGlobal] \n&8  - Remove player all package."));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".reload")) {
-            sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " reload \n  -Reloads the config file."));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " reload \n&8  -Reloads the config file."));
         }
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
     }
@@ -173,6 +181,9 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if ("set".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + "set"))) {
                 tipList.add("set");
             }
+            if ("get".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + "get"))) {
+                tipList.add("get");
+            }
             if ("remove".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".remove"))) {
                 tipList.add("remove");
             }
@@ -191,7 +202,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                         tipList.add(name);
                     }
                 }
-            } else if ("give".equals(args[0]) || "set".equals(args[0]) || "remove".equals(args[0]) || "removeall".equals(args[0])) {
+            } else if ("give".equals(args[0]) || "set".equals(args[0]) || "get".equals(args[0]) || "remove".equals(args[0]) || "removeall".equals(args[0])) {
                 return null;
             }
         } else if (args.length == 3) {

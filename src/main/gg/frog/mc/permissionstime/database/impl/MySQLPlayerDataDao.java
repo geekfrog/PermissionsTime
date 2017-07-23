@@ -217,6 +217,18 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
     }
 
     @Override
+    public boolean delPlayData(Long id) throws Exception {
+        String sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE `id`='" + id + "' AND (`serverId`='" + PluginCfg.SQL_SERVER_ID + "' OR `serverId` IS NULL);";
+        try {
+            getDB().query(sql);
+            return true;
+        } catch (Exception e) {
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't delete data by ID: {0}", id));
+            throw e;
+        }
+    }
+
+    @Override
     public boolean delPlayData(String uuid) throws Exception {
         String sql = "DELETE FROM `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` WHERE `uuid`='" + uuid + "' AND `serverId`='" + PluginCfg.SQL_SERVER_ID + "';";
         if (uuid.startsWith("g:")) {

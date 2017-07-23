@@ -1,6 +1,6 @@
 name: PermissionsTime
+version: 0.1.3-SNAPSHOT
 main: gg.frog.mc.permissionstime.PluginMain
-version: 0.1.2-SNAPSHOT
 author: GeekFrog
 softdepend:
 - SQLibrary
@@ -15,11 +15,13 @@ commands:
 permissions:
   permissionstime.*:
     description: Gives access to all PermissionsTime commands.
+    default: op
     children:
       permissionstime.me: true
       permissionstime.reload: true
       permissionstime.give: true
       permissionstime.set: true
+      permissionstime.get: true
       permissionstime.remove: true
       permissionstime.removeall: true
       permissionstime.packages: true
@@ -34,6 +36,9 @@ permissions:
     default: op
   permissionstime.set:
     description: Set player package <time>day.
+    default: op
+  permissionstime.get:
+    description: View player packages.
     default: op
   permissionstime.remove:
     description: Remove player package.

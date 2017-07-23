@@ -50,6 +50,17 @@ public class SqlManager {
         return false;
     }
 
+    public List<PlayerDataBean> getAllTime(String uuid) {
+        for (int i = 0; i < 3; i++) {
+            try {
+                return pds.queryPlayerData(uuid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return Collections.emptyList();
+    }
+
     public List<PlayerDataBean> getTime(String uuid) {
         for (int i = 0; i < 3; i++) {
             try {
@@ -104,6 +115,19 @@ public class SqlManager {
         for (int i = 0; i < 3; i++) {
             try {
                 if (pds.delPlayData(uuid)) {
+                    return true;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
+    public boolean delById(Long id) {
+        for (int i = 0; i < 3; i++) {
+            try {
+                if (pds.delPlayData(id)) {
                     return true;
                 }
             } catch (Exception e) {

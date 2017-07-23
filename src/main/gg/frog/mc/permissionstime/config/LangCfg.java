@@ -37,6 +37,10 @@ public class LangCfg extends PluginConfig {
     public static String MSG_TELL_DEL_ALL = null;
     public static String MSG_DEL_ALL = null;
     public static String MSG_DEL_ALL_FAIL = null;
+    public static String MSG_NUM_OF_PACKAGES = null;
+    public static String MSG_EXPIRATION_DATE = null;
+    public static String MSG_UNKNOWN_PACKAGE = null;
+    public static String MSG_IS_EXPIRATION_DATE = null;
 
     public LangCfg(String fileName, PluginMain pm) {
         super(fileName, pm);
@@ -73,5 +77,9 @@ public class LangCfg extends PluginConfig {
         MSG_TELL_DEL_ALL = getConfig().getString("msg.tellDelAll", "&4{0} remove all your packages");
         MSG_DEL_ALL = getConfig().getString("msg.delAll", "&2Remove all packages for player {0}");
         MSG_DEL_ALL_FAIL = getConfig().getString("msg.delAllFail", "&4Failed to remove all packages for player {0}");
+        MSG_NUM_OF_PACKAGES = getConfig().getString("msg.numOfPackages", "====={0} has {1} packages=====");
+        MSG_EXPIRATION_DATE = getConfig().getString("msg.expirationDate", "{0}packages: {1}({2}), Expiration date: {3}");
+        MSG_UNKNOWN_PACKAGE = getConfig().getString("msg.unknownPackage", "Unknown Packages");
+        MSG_IS_EXPIRATION_DATE = getConfig().getString("msg.isExpirationDate", "Your package: {0}({1})&r has expired.");
     }
 }

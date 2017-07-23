@@ -18,6 +18,7 @@ import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.listener.MainListener;
 import gg.frog.mc.permissionstime.utils.FileUtil;
 import gg.frog.mc.permissionstime.utils.StrUtil;
+import gg.frog.mc.permissionstime.utils.UpdateCheck;
 import net.milkbowl.vault.permission.Permission;
 
 public class PluginMain extends JavaPlugin {
@@ -59,6 +60,7 @@ public class PluginMain extends JavaPlugin {
                 e.printStackTrace();
             }
         }
+        getServer().getScheduler().runTask(pm, new UpdateCheck(pm));
         getServer().getScheduler().runTask(pm, new Runnable() {
             public void run() {
                 if (!checkPluginDepends()) {

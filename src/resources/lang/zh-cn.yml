@@ -25,3 +25,7 @@ msg:
   tellDelAll: '&4{0}删除了你的所有权限包.'
   delAll: '&2删除玩家 {0} 的所有权限包.'
   delAllFail: '&4未删除玩家 {0} 的 所有权限包.'
+  numOfPackages: '====={0}有{1}个权限包====='
+  expirationDate: '{0}权限包: {1}({2}), 到期时间: {3}'
+  unknownPackage: '未知权限包'
+  isExpirationDate: '你的权限包: {0}({1})&r, 已到期.'

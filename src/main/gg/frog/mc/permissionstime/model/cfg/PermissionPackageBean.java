@@ -11,6 +11,7 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import gg.frog.mc.permissionstime.PluginMain;
@@ -254,10 +255,8 @@ public class PermissionPackageBean implements IConfigBean {
             subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
             addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
         }
+        checkExpire(player, plugin);
         BukkitTask task = taskMap.get(player.getUniqueId().toString());
-        if (task != null) {
-            plugin.getServer().getScheduler().cancelTask(task.getTaskId());
-        }
         if (pdbList.size() > 0) {
             delay = (delay / 1000 + 1) * 20;// 1秒=20ticks
             task = plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
@@ -284,6 +283,26 @@ public class PermissionPackageBean implements IConfigBean {
         BukkitTask task = taskMap.get(player.getUniqueId().toString());
         if (task != null) {
             plugin.getServer().getScheduler().cancelTask(task.getTaskId());
+        }
+    }
+
+    public static void checkExpire(OfflinePlayer player, PluginMain plugin) {
+        List<PlayerDataBean> playerDataList = plugin.getSqlManager().getAllTime(player.getUniqueId().toString());
+        long now = new Date().getTime();
+        for (PlayerDataBean playerData : playerDataList) {
+            if (playerData.getExpire() < now) {
+                PermissionPackageBean packageBean = PackagesCfg.PACKAGES.get(playerData.getPackageName());
+                plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        Player p = player.getPlayer();
+                        if (p != null) {
+                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4你的权限包: &r{0}({1}), 已到期.", packageBean != null ? packageBean.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE, playerData.getPackageName()));
+                        }
+                    }
+                });
+                plugin.getSqlManager().delById(playerData.getId());
+            }
         }
     }
 }

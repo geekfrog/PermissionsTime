@@ -176,6 +176,18 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
     }
 
     @Override
+    public boolean delPlayData(Long id) throws Exception {
+        String sql = "DELETE FROM \"main\".\"playerData\" WHERE (\"id\"='" + id + "');";
+        try {
+            getDB().query(sql);
+            return true;
+        } catch (Exception e) {
+            pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't delete data by ID: {0}", id));
+            throw e;
+        }
+    }
+
+    @Override
     public boolean delPlayData(String uuid) throws Exception {
         String sql = "DELETE FROM \"main\".\"playerData\" WHERE (\"uuid\"='" + uuid + "');";
         try {

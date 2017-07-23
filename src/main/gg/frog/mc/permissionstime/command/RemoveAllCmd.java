@@ -71,6 +71,7 @@ public class RemoveAllCmd implements Runnable {
             }
         } else {
             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " removeall <playerName> [t/f delGlobal] \n&8  - Remove player all package."));
         }
     }
 }

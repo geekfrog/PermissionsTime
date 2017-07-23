@@ -39,10 +39,6 @@ public class GiveCmd implements Runnable {
             int days = 0;
             try {
                 days = Integer.parseInt(time);
-                if (days <= 0) {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_DAYS_PARAMETER_INCORRECT));
-                    return;
-                }
             } catch (Exception e) {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_DAYS_PARAMETER_INCORRECT));
                 return;
@@ -86,6 +82,7 @@ public class GiveCmd implements Runnable {
             }
         } else {
             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
+            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> \n&8  - Give player package <time>day."));
         }
     }
 }

@@ -37,8 +37,8 @@ public interface IPlayerDataDao {
     /**
      * 删除
      */
+    boolean delPlayData(Long id) throws Exception;
     boolean delPlayData(String uuid) throws Exception;
-
     boolean delPlayData(String uuid, String packageName) throws Exception;
 
     /**
