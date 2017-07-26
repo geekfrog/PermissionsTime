@@ -28,10 +28,7 @@ public class ConfigManager {
 
     public ConfigManager(PluginMain pm) {
         this.pm = pm;
-        File langFolder = new File(pm.getDataFolder(), "lang/");
-        if (!langFolder.exists()) {
-            copyLangFilesFromJar();
-        }
+        copyLangFilesFromJar();
         // 添加到配置列表
         cfgMap.put("plugin", new PluginCfg(pm));
         cfgMap.put("lang", new LangCfg("lang/" + PluginCfg.LANG + ".yml", pm));
