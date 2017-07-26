@@ -12,7 +12,6 @@ import gg.frog.mc.permissionstime.config.PluginCfg;
 
 public class UpdateCheck implements Runnable {
 
-    private static final String pluginInfoUrl = "https://raw.githubusercontent.com/geekfrog/PermissionsTime/master/src/resources/plugin.yml";
     private PluginMain pm;
 
     public UpdateCheck(PluginMain pm) {
@@ -22,6 +21,7 @@ public class UpdateCheck implements Runnable {
     @Override
     public void run() {
         try {
+            String pluginInfoUrl = "https://raw.githubusercontent.com/geekfrog/PermissionsTime/master/src/resources/plugin.yml";
             URL url = new URL(pluginInfoUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2");
@@ -29,7 +29,9 @@ public class UpdateCheck implements Runnable {
             YamlConfiguration tempConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(connection.getInputStream(), Charsets.UTF_8));
             String version = tempConfig.getString("version", pm.PLUGIN_VERSION);
             if (!pm.PLUGIN_VERSION.equals(version)) {
-                pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "There is a new version ''{0}'' of the plugin.", version));
+                pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4There is a new version ''{0}'' of the plugin.", version));
+            } else {
+                pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&2No new version available."));
             }
         } catch (Exception e) {
             e.printStackTrace();

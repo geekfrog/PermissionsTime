@@ -29,19 +29,7 @@ public class PluginCfg extends PluginConfig {
     }
 
     @Override
-    protected void init() {
-        getConfig().set("lang", "en");
-        getConfig().set("metrics", true);
-        getConfig().set("debug", false);
-        getConfig().set("mysql.enable", false);
-        getConfig().set("mysql.serverId", "default");
-        getConfig().set("mysql.hostname", "localhost");
-        getConfig().set("mysql.port", 3306);
-        getConfig().set("mysql.database", "minecraft");
-        getConfig().set("mysql.username", "user");
-        getConfig().set("mysql.password", "123456");
-        getConfig().set("mysql.tablePrefix", "pt_");
-    }
+    protected void init() {}
 
     @Override
     protected void loadToDo() {

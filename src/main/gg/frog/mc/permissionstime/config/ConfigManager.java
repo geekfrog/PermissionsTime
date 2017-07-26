@@ -74,8 +74,11 @@ public class ConfigManager {
 
             @Override
             public boolean isProcess(String fileName) {
-                if (fileName.matches("lang/.+\\.yml")) {
-                    return true;
+                if (fileName.matches("lang/.+\\.yml") || "config.yml".equals(fileName) || "packages.yml".equals(fileName)) {
+                    File f = new File(pm.getDataFolder(), fileName);
+                    if (!f.exists()) {
+                        return true;
+                    }
                 }
                 return false;
             }

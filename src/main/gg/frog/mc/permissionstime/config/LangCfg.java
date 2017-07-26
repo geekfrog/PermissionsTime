@@ -104,14 +104,14 @@ public class LangCfg extends PluginConfig {
         MSG_UNKNOWN_PACKAGE = getConfig().getString("msg.unknownPackage", "Unknown Packages");
         MSG_IS_EXPIRATION_DATE = getConfig().getString("msg.isExpirationDate", "Your package: {0}({1})&r has expired.");
 
-        CMD_HELP = getConfig().getString("cmd.help", "/{0} help -Show commands.");
-        CMD_ME = getConfig().getString("cmd.me", "&6/{0} me \\n&8  - View self package.");
-        CMD_PACKAGES = getConfig().getString("cmd.packages", "&6/{0} packages [packageName] \\n&8  - View packages.");
-        CMD_GET = getConfig().getString("cmd.get", "&6/{0} get <playerName> \\n&8  - View player packages.");
-        CMD_GIVE = getConfig().getString("cmd.give", "&6/{0} give <playerName> <packageName> <time> <timeUnit:d/h/m> \\n&8  - Give player package some time.(Time accumulation.) \\n&8    timeUnit: d=day, h=hour, m=minute");
-        CMD_SET = getConfig().getString("cmd.set", "&6/{0} set <playerName> <packageName> <time> <timeUnit:d/h/m> \\n&8  - Set player package some time. \\n&8    timeUnit: d=day, h=hour, m=minute");
-        CMD_REMOVE = getConfig().getString("cmd.remove", "&6/{0} remove <playerName> <packageName> [t/f] \\n&8  - Remove player package.(t: Delete global package.)");
-        CMD_REMOVEALL = getConfig().getString("cmd.removeall", "&6/{0} removeall <playerName> [t/f] \\n&8  - Remove player all package.(t: Delete global packages.)");
-        CMD_RELOAD = getConfig().getString("cmd.reload", "&6/{0} reload \\n&8  - Reloads the config file.");
+        CMD_HELP = getConfig().getString("cmd.help", "/{0} help \\n&7  - Show commands.");
+        CMD_ME = getConfig().getString("cmd.me", "&6/{0} me \\n&7  - View self package.");
+        CMD_PACKAGES = getConfig().getString("cmd.packages", "&6/{0} packages [packageName] \\n&7  - View packages.");
+        CMD_GET = getConfig().getString("cmd.get", "&6/{0} get <playerName> \\n&7  - View player packages.");
+        CMD_GIVE = getConfig().getString("cmd.give", "&6/{0} give <playerName> <packageName> <time> <timeUnit:d/h/m> \\n&7  - Give player package some time. (Time accumulation.) \\n&7    timeUnit: d=day, h=hour, m=minute");
+        CMD_SET = getConfig().getString("cmd.set", "&6/{0} set <playerName> <packageName> <time> <timeUnit:d/h/m> \\n&7  - Set player package some time. \\n&7    timeUnit: d=day, h=hour, m=minute");
+        CMD_REMOVE = getConfig().getString("cmd.remove", "&6/{0} remove <playerName> <packageName> [t/f] \\n&7  - Remove player package. (t: Delete global package.)");
+        CMD_REMOVEALL = getConfig().getString("cmd.removeall", "&6/{0} removeall <playerName> [t/f] \\n&7  - Remove player all package. (t: Delete global packages.)");
+        CMD_RELOAD = getConfig().getString("cmd.reload", "&6/{0} reload \\n&7  - Reloads the config file.");
     }
 }

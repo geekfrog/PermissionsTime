@@ -151,9 +151,9 @@ public abstract class PluginConfig {
             config.setDefaults(YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, Charsets.UTF_8)));
         }
         loadToDo();
-        if (tempConfig != null) {
-            saveConfig();
-        }
+//        if (tempConfig != null) {
+//            saveConfig();
+//        }
     }
 
     protected void saveObj(String path, Map<String, ? extends IConfigBean> o) {

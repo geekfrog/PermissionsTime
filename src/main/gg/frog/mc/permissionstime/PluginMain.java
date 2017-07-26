@@ -26,7 +26,7 @@ public class PluginMain extends JavaPlugin {
     public String PLUGIN_VERSION;
     public String PLUGIN_NAME_LOWER_CASE;
     public static final String DEPEND_PLUGIN = "SQLibrary,Vault";
-    public static Logger LOG = Logger.getLogger("Minecraft");
+    public static final Logger LOG = Logger.getLogger("Minecraft");
 
     private ConfigManager cm = null;
     private PluginMain pm = null;

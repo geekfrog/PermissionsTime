@@ -12,7 +12,6 @@ public class FileUtil {
 
     public interface FindFilesDo {
         boolean isProcess(String fileName);
-
         void process(String fileName, InputStream is);
     }
 

@@ -10,10 +10,10 @@ import gg.frog.mc.permissionstime.database.IPlayerDataDao;
 
 public class StrUtil {
 
-    private static String dfs = "yyyy/MM/dd HH:mm:ss";
-    private static long dt = 24 * 60 * IPlayerDataDao.TIME_UNIT;
-    private static long ht = 60 * IPlayerDataDao.TIME_UNIT;
-    private static long mt = IPlayerDataDao.TIME_UNIT;
+    private static final String dfs = "yyyy/MM/dd HH:mm:ss";
+    private static final long dt = 24 * 60 * IPlayerDataDao.TIME_UNIT;
+    private static final long ht = 60 * IPlayerDataDao.TIME_UNIT;
+    private static final long mt = IPlayerDataDao.TIME_UNIT;
 
     public static String messageFormat(String src, Object... args) {
         return MessageFormat.format(src, args).replace("&", "§").replace("\\n", "\n");

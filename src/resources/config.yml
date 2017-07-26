@@ -1,1 +1,29 @@
+# 插件前缀.
+# Plugin prefix.
 pluginPrefix: '&4[&bPermissions Time&4] '
+# 是否开启DEBUG模式.
+# Whether to open the DEBUG mode.
+debug: false
+# 是否同意插件上传统计信息.
+# Whether or not you agree with the plugin to upload statistics.
+metrics: true
+# 语言文件名称 在'lang'文件夹内.
+# Language file name.
+lang: en
+# 数据库相关.
+# Database settings.
+mysql:
+  # 是否使用MySQL数据库.
+  # Whether to use the MySQL database.
+  enable: false
+  # 服务器唯一标识, 用来区分权限是哪个服务器的.
+  # Server ID.
+  serverId: default
+  hostname: localhost
+  port: 3306
+  database: minecraft
+  username: user
+  password: '123456'
+  # 数据库表前缀
+  # Database table prefix.
+  tablePrefix: pt_

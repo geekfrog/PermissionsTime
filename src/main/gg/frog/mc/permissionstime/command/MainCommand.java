@@ -145,7 +145,6 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".reload")) {
             sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_RELOAD, pm.PLUGIN_NAME_LOWER_CASE));
         }
-        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
     }
 
     private boolean hasPermission(CommandSender sender, boolean isPlayer, String permissionPath) {

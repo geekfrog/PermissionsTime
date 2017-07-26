@@ -7,7 +7,7 @@ import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 
 public interface IPlayerDataDao {
     
-    static long TIME_UNIT = 60 * 1000L;// 分钟
+    long TIME_UNIT = 60 * 1000L;// 分钟
 
     /**
      * 检查表是否
