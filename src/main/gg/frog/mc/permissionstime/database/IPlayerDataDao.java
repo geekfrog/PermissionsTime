@@ -7,7 +7,7 @@ import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 
 public interface IPlayerDataDao {
     
-    static long TIME_UNIT = 24 * 60 * 60 * 1000L;// 一天
+    static long TIME_UNIT = 60 * 1000L;// 分钟
 
     /**
      * 检查表是否
@@ -31,8 +31,8 @@ public interface IPlayerDataDao {
      * @throws Exception
      */
     boolean setPlayerData(PlayerDataBean bean) throws Exception;
-    boolean setTime(String uuid, String packageName, int days) throws Exception;
-    boolean addTime(String uuid, String packageName, int days) throws Exception;
+    boolean setTime(String uuid, String packageName, int time) throws Exception;
+    boolean addTime(String uuid, String packageName, int time) throws Exception;
 
     /**
      * 删除

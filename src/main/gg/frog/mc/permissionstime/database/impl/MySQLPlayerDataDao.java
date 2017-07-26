@@ -42,7 +42,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 
     @Override
     public boolean creatTable() throws Exception {
-        String sql = "CREATE TABLE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` ( `id` BIGINT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR (255) NOT NULL, `packageName` VARCHAR (255) NOT NULL, `serverId` VARCHAR (255), `expire` BIGINT NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `UUID_PACKAGE_SERVERID` (`uuid`, `packageName`, `serverId`));";
+        String sql = "CREATE TABLE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` ( `id` BIGINT NOT NULL AUTO_INCREMENT, `uuid` VARCHAR (36) NOT NULL, `packageName` VARCHAR (100) NOT NULL, `serverId` VARCHAR (100), `expire` BIGINT NOT NULL, PRIMARY KEY (`id`), UNIQUE INDEX `UUID_PACKAGE_SERVERID` (`uuid`, `packageName`, `serverId`)) ENGINE=InnoDB DEFAULT CHARSET=utf8; ";
         try {
             getDB().query(sql);
             return true;
@@ -75,13 +75,13 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
     }
 
     @Override
-    public boolean setTime(String uuid, String packageName, int days) throws Exception {
+    public boolean setTime(String uuid, String packageName, int time) throws Exception {
         boolean global = uuid.startsWith("g:") ? true : false;
         if (global) {
             uuid = uuid.substring(2);
         }
         long now = new Date().getTime();
-        long addTime = days * TIME_UNIT;
+        long addTime = time * TIME_UNIT;
         long expire = now + addTime;
         PlayerDataBean pdb = queryPlayerData(uuid, packageName);
         if (pdb == null) {
@@ -100,13 +100,13 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
     }
 
     @Override
-    public boolean addTime(String uuid, String packageName, int days) throws Exception {
+    public boolean addTime(String uuid, String packageName, int time) throws Exception {
         boolean global = uuid.startsWith("g:") ? true : false;
         if (global) {
             uuid = uuid.substring(2);
         }
         long now = new Date().getTime();
-        long addTime = days * TIME_UNIT;
+        long addTime = time * TIME_UNIT;
         long expire = now + addTime;
         PlayerDataBean pdb = queryPlayerData((global ? "g:" : "") + uuid, packageName);
         if (pdb == null) {
@@ -123,7 +123,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
                 }
                 return setPlayerData(pdb);
             } else {
-                String sql = "UPDATE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` SET `expire`='" + addTime + "' WHERE (`id`='" + pdb.getId() + "');";
+                String sql = "UPDATE `" + PluginCfg.SQL_TABLE_PREFIX + "playerData` SET `expire`=`expire`+" + addTime + " WHERE (`id`='" + pdb.getId() + "');";
                 try {
                     getDB().query(sql);
                     return true;

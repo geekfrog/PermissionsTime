@@ -1,5 +1,5 @@
 name: PermissionsTime
-version: 0.1.3-SNAPSHOT
+version: 0.2.0-SNAPSHOT
 main: gg.frog.mc.permissionstime.PluginMain
 author: GeekFrog
 softdepend:
@@ -32,10 +32,10 @@ permissions:
     description: Reloads the config file.
     default: op
   permissionstime.give:
-    description: Give player package <time>day.
+    description: Give player package some time.
     default: op
   permissionstime.set:
-    description: Set player package <time>day.
+    description: Set player package some time.
     default: op
   permissionstime.get:
     description: View player packages.

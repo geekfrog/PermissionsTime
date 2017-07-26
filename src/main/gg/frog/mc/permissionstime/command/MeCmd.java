@@ -43,7 +43,7 @@ public class MeCmd implements Runnable {
                 }
             } else {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
-                sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " me \n&8  - View self package."));
+                sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_ME, pm.PLUGIN_NAME_LOWER_CASE));
             }
         } else {
             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Only player can use this command."));

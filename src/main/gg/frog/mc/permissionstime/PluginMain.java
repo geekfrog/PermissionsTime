@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.mcstats.Metrics;
 
 import gg.frog.mc.permissionstime.command.MainCommand;
 import gg.frog.mc.permissionstime.config.ConfigManager;
@@ -52,14 +51,6 @@ public class PluginMain extends JavaPlugin {
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    https://github.com/geekfrog/PermissionsTime/ "));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
-        if (PluginCfg.IS_METRICS) {
-            try {
-                Metrics metrics = new Metrics(pm);
-                metrics.start();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         getServer().getScheduler().runTask(pm, new UpdateCheck(pm));
         getServer().getScheduler().runTask(pm, new Runnable() {
             public void run() {
@@ -70,6 +61,14 @@ public class PluginMain extends JavaPlugin {
                     registerListeners();
                     registerCommands();
                     getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&2Startup successful!"));
+                }
+                if (PluginCfg.IS_METRICS) {
+                    try {
+                        org.mcstats.Metrics mcstats = new org.mcstats.Metrics(pm);
+                        mcstats.start();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

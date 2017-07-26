@@ -32,15 +32,34 @@ public class SetCmd implements Runnable {
 
     @Override
     public void run() {
-        if (args.length == 4) {
+        if (args.length == 5) {
             String playerName = args[1];
             String packageName = args[2];
             String time = args[3];
-            int days = 0;
+            String unit = args[4];
+            final String unitName;
+            int minutes = 0;
             try {
-                days = Integer.parseInt(time);
+                minutes = Integer.parseInt(time);
+                if (minutes == 0) {
+                    throw new RuntimeException("not a nonzero integer.");
+                }
             } catch (Exception e) {
-                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_DAYS_PARAMETER_INCORRECT));
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TIME_PARAMETER_INCORRECT));
+                sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_SET, pm.PLUGIN_NAME_LOWER_CASE));
+                return;
+            }
+            if ("d".equalsIgnoreCase(unit)) {
+                minutes *= 24 * 60;
+                unitName = LangCfg.TIME_UNIT_D;
+            } else if ("h".equalsIgnoreCase(unit)) {
+                minutes *= 60;
+                unitName = LangCfg.TIME_UNIT_H;
+            } else if ("m".equalsIgnoreCase(unit)) {
+                unitName = LangCfg.TIME_UNIT_M;
+            } else {
+                sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TIME_UNIT_PARAMETER_INCORRECT));
+                sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_SET, pm.PLUGIN_NAME_LOWER_CASE));
                 return;
             }
             PermissionPackageBean pack = PackagesCfg.PACKAGES.get(packageName);
@@ -50,9 +69,9 @@ public class SetCmd implements Runnable {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
                     UUID uuid = player.getUniqueId();
                     if (PluginCfg.IS_DEBUG) {
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString() + "\n" + pack.toString() + "\n" + time + " days."));
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid.toString() + "\n" + pack.toString() + "\n" + time + unitName + " ."));
                     }
-                    if (sm.setTime(((PluginCfg.USE_MYSQL && pack.getGlobal()) ? "g:" : "") + uuid.toString(), packageName, days)) {
+                    if (sm.setTime(((PluginCfg.USE_MYSQL && pack.getGlobal()) ? "g:" : "") + uuid.toString(), packageName, minutes)) {
                         if (player.isOnline()) {
                             Player p = player.getPlayer();
                             try {
@@ -62,17 +81,17 @@ public class SetCmd implements Runnable {
                                 e.printStackTrace();
                                 p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
                             }
-                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TELL_SET_PACKAGE, sender.getName(), time, pack.getDisplayName()));
+                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TELL_SET_PACKAGE, sender.getName(), time + unitName, pack.getDisplayName()));
                         }
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_SET_PACKAGE, playerName, time, pack.getDisplayName()));
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_SET_PACKAGE, playerName, time + unitName, pack.getDisplayName()));
                     } else {
                         pm.getServer().getScheduler().runTask(pm, new Runnable() {
                             @Override
                             public void run() {
-                                pm.writeFailLog("Command execution failed. Set {0}({1}) {2}days {3} Executor: {4}", playerName, player.getUniqueId().toString(), time, pack.getDisplayName(), sender.getName());
+                                pm.writeFailLog("Command execution failed. Set {0}({1}) {2} {3} Executor: {4}", playerName, player.getUniqueId().toString(), time + unitName, pack.getDisplayName(), sender.getName());
                             }
                         });
-                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_SET_PACKAGE_FAIL, playerName, time, pack.getDisplayName()));
+                        sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_SET_PACKAGE_FAIL, playerName, time + unitName, pack.getDisplayName()));
                     }
                 } else {
                     sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_FIND_PLAYER, playerName));
@@ -82,7 +101,7 @@ public class SetCmd implements Runnable {
             }
         } else {
             sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " set <playerName> <packageName> <time> \n&8  - Set player package <time>day."));
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_SET, pm.PLUGIN_NAME_LOWER_CASE));
         }
     }
 }

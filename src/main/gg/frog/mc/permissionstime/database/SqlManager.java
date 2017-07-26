@@ -72,10 +72,10 @@ public class SqlManager {
         return Collections.emptyList();
     }
 
-    public boolean giveTime(String uuid, String packageName, int days) {
+    public boolean giveTime(String uuid, String packageName, int time) {
         for (int i = 0; i < 3; i++) {
             try {
-                if (pds.addTime(uuid, packageName, days)) {
+                if (pds.addTime(uuid, packageName, time)) {
                     return true;
                 }
             } catch (Exception e) {
@@ -85,10 +85,10 @@ public class SqlManager {
         return false;
     }
 
-    public boolean setTime(String uuid, String packageName, int days) {
+    public boolean setTime(String uuid, String packageName, int time) {
         for (int i = 0; i < 3; i++) {
             try {
-                if (pds.setTime(uuid, packageName, days)) {
+                if (pds.setTime(uuid, packageName, time)) {
                     return true;
                 }
             } catch (Exception e) {

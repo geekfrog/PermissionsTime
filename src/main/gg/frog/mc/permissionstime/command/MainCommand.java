@@ -111,7 +111,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                         new Thread(packagesCmd).start();
                     }
                 } else {
-                    sender.sendMessage(StrUtil.messageFormat("/" + pm.PLUGIN_NAME_LOWER_CASE + " help -Show commands."));
+                    sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_HELP, pm.PLUGIN_NAME_LOWER_CASE));
                 }
                 return true;
             }
@@ -122,28 +122,28 @@ public class MainCommand implements CommandExecutor, TabCompleter {
     private void getHelp(CommandSender sender, boolean isPlayer) {
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "\n&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
         if (isPlayer && (sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " me \n&8  - View self package."));
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_ME, pm.PLUGIN_NAME_LOWER_CASE));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " packages [packageName] \n&8  - View packages."));
-        }
-        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".give")) {
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " give <playerName> <packageName> <time> \n&8  - Give player package <time>day."));
-        }
-        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".set")) {
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " set <playerName> <packageName> <time> \n&8  - Set player package <time>day."));
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_PACKAGES, pm.PLUGIN_NAME_LOWER_CASE));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".get")) {
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " get <playerName> \n&8  - View player packages."));
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_GET, pm.PLUGIN_NAME_LOWER_CASE));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".give")) {
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_GIVE, pm.PLUGIN_NAME_LOWER_CASE));
+        }
+        if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".set")) {
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_SET, pm.PLUGIN_NAME_LOWER_CASE));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".remove")) {
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " remove <playerName> <packageName> [t/f delGlobal] \n&8  - Remove player package."));
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_REMOVE, pm.PLUGIN_NAME_LOWER_CASE));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".removeall")) {
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " removeall <playerName> [t/f delGlobal] \n&8  - Remove player all package."));
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_REMOVEALL, pm.PLUGIN_NAME_LOWER_CASE));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".reload")) {
-            sender.sendMessage(StrUtil.messageFormat("&6/" + pm.PLUGIN_NAME_LOWER_CASE + " reload \n&8  -Reloads the config file."));
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_RELOAD, pm.PLUGIN_NAME_LOWER_CASE));
         }
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
     }
@@ -178,10 +178,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if ("give".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".give"))) {
                 tipList.add("give");
             }
-            if ("set".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + "set"))) {
+            if ("set".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".set"))) {
                 tipList.add("set");
             }
-            if ("get".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + "get"))) {
+            if ("get".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".get"))) {
                 tipList.add("get");
             }
             if ("remove".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".remove"))) {
@@ -196,19 +196,19 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         } else if (args.length == 2) {
             args[0] = args[0].toLowerCase(Locale.ENGLISH);
             args[1] = args[1].toLowerCase(Locale.ENGLISH);
-            if ("packages".equals(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
+            if ("packages".equalsIgnoreCase(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
                 for (String name : PackagesCfg.PACKAGES.keySet()) {
                     if (name.startsWith(args[1])) {
                         tipList.add(name);
                     }
                 }
-            } else if ("give".equals(args[0]) || "set".equals(args[0]) || "get".equals(args[0]) || "remove".equals(args[0]) || "removeall".equals(args[0])) {
+            } else if ("give".equalsIgnoreCase(args[0]) || "set".equalsIgnoreCase(args[0]) || "get".equalsIgnoreCase(args[0]) || "remove".equalsIgnoreCase(args[0]) || "removeall".equalsIgnoreCase(args[0])) {
                 return null;
             }
         } else if (args.length == 3) {
             args[0] = args[0].toLowerCase(Locale.ENGLISH);
             args[2] = args[2].toLowerCase(Locale.ENGLISH);
-            if ("give".equals(args[0]) || "set".equals(args[0]) || "remove".equals(args[0])) {
+            if ("give".equalsIgnoreCase(args[0]) || "set".equalsIgnoreCase(args[0]) || "remove".equalsIgnoreCase(args[0])) {
                 for (String name : PackagesCfg.PACKAGES.keySet()) {
                     if (name.startsWith(args[2])) {
                         tipList.add(name);

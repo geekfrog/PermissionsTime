@@ -70,9 +70,9 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
     }
 
     @Override
-    public boolean setTime(String uuid, String packageName, int days) throws Exception {
+    public boolean setTime(String uuid, String packageName, int time) throws Exception {
         long now = new Date().getTime();
-        long addTime = days * TIME_UNIT;
+        long addTime = time * TIME_UNIT;
         long expire = now + addTime;
         PlayerDataBean pdb = queryPlayerData(uuid, packageName);
         if (pdb == null) {
@@ -85,9 +85,9 @@ public class SqlitePlayerDataDao extends DatabaseUtil implements IPlayerDataDao 
     }
 
     @Override
-    public boolean addTime(String uuid, String packageName, int days) throws Exception {
+    public boolean addTime(String uuid, String packageName, int time) throws Exception {
         long now = new Date().getTime();
-        long addTime = days * TIME_UNIT;
+        long addTime = time * TIME_UNIT;
         long expire = now + addTime;
         PlayerDataBean pdb = queryPlayerData(uuid, packageName);
         if (pdb == null) {

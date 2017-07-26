@@ -218,6 +218,7 @@ public class PermissionPackageBean implements IConfigBean {
         long delay = -1;
         long now = new Date().getTime();
         PermissionPackageBean addPpb = new PermissionPackageBean();
+        addPpb.getGroups().add(PackagesCfg.DEFAULT_GROUP);
         PermissionPackageBean subPpb = new PermissionPackageBean();
         subPpb.getPermissions().addAll(PackagesCfg.allPermissions);
         subPpb.getGroups().addAll(PackagesCfg.allGroups);
