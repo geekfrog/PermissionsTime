@@ -298,7 +298,7 @@ public class PermissionPackageBean implements IConfigBean {
                     public void run() {
                         Player p = player.getPlayer();
                         if (p != null) {
-                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4你的权限包: &r{0}({1}), 已到期.", packageBean != null ? packageBean.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE, playerData.getPackageName()));
+                            p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_IS_EXPIRATION_DATE, packageBean != null ? packageBean.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE, playerData.getPackageName()));
                         }
                     }
                 });

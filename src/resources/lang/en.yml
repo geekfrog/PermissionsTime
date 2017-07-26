@@ -1,5 +1,6 @@
 inventoryName: '&4===Permissions Packages==='
-expirationDate: '&4Expiration date: {0}'
+expirationTime: '&4Expiration date: {0}'
+leftTime: '&4Left time: About {0}{1} {2}{3} {4}{5}'
 timeUnitD: 'day(s)'
 timeUnitH: 'hour(s)'
 timeUnitM: 'minute(s)'
@@ -30,7 +31,7 @@ msg:
   delAll: '&2Remove all packages for player {0}'
   delAllFail: '&4Failed to remove all packages for player {0}'
   numOfPackages: '====={0} has {1} packages====='
-  expirationDate: '{0}packages: {1}({2}), Expiration date: {3}'
+  expirationDate: '{0}packages: {1}({2}), Expiration date: {3}, {4}'
   unknownPackage: 'Unknown Packages'
   isExpirationDate: 'Your package: {0}({1})&r has expired.'
 cmd:

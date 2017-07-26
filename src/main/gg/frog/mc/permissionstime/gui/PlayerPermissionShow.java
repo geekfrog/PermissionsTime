@@ -23,7 +23,8 @@ public class PlayerPermissionShow {
                 ItemStack tItem = item.clone();
                 ItemMeta meta = tItem.getItemMeta();
                 List<String> lores = meta.getLore();
-                lores.add(StrUtil.messageFormat(LangCfg.EXPIRATION_DATE, StrUtil.timestampToString(pdb.getExpire())));
+                lores.add(StrUtil.messageFormat(LangCfg.EXPIRATION_TIME, StrUtil.timestampToString(pdb.getExpire())));
+                lores.add(StrUtil.getLeftTime(pdb.getExpire()));
                 meta.setLore(lores);
                 tItem.setItemMeta(meta);
                 inventory.addItem(tItem);

@@ -1,5 +1,6 @@
 inventoryName: '&4===权限仓库==='
-expirationDate: '&4到期时间: {0}.'
+expirationTime: '&4到期时间: {0}.'
+leftTime: '&4剩余时间: 大约 {0}{1} {2}{3} {4}{5}'
 timeUnitD: '天'
 timeUnitH: '小时'
 timeUnitM: '分钟'
@@ -30,7 +31,7 @@ msg:
   delAll: '&2删除玩家 {0} 的所有权限包.'
   delAllFail: '&4未删除玩家 {0} 的 所有权限包.'
   numOfPackages: '====={0}有{1}个权限包====='
-  expirationDate: '{0}权限包: {1}({2}), 到期时间: {3}'
+  expirationDate: '{0}权限包: {1}({2}), 到期时间: {3}, {4}'
   unknownPackage: '未知权限包'
   isExpirationDate: '你的权限包: {0}({1})&r, 已到期.'
 cmd:

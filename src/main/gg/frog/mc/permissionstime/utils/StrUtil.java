@@ -5,9 +5,15 @@ import java.util.Date;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 
+import gg.frog.mc.permissionstime.config.LangCfg;
+import gg.frog.mc.permissionstime.database.IPlayerDataDao;
+
 public class StrUtil {
 
     private static String dfs = "yyyy/MM/dd HH:mm:ss";
+    private static long dt = 24 * 60 * IPlayerDataDao.TIME_UNIT;
+    private static long ht = 60 * IPlayerDataDao.TIME_UNIT;
+    private static long mt = IPlayerDataDao.TIME_UNIT;
 
     public static String messageFormat(String src, Object... args) {
         return MessageFormat.format(src, args).replace("&", "§").replace("\\n", "\n");
@@ -24,4 +30,13 @@ public class StrUtil {
     public static String nowTimeString() {
         return DateFormatUtils.format(new Date(), dfs);
     }
+
+    public static String getLeftTime(long time) {
+        long leftTime = time - new Date().getTime();
+        long d = leftTime / dt;
+        long h = (leftTime % dt) / ht;
+        long m = (leftTime % ht) / mt;
+        return messageFormat(LangCfg.LEFT_TIME, d, LangCfg.TIME_UNIT_D, h, LangCfg.TIME_UNIT_H, m, LangCfg.TIME_UNIT_M);
+    }
+
 }

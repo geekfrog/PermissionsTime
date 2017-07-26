@@ -12,7 +12,8 @@ import gg.frog.mc.permissionstime.utils.config.PluginConfig;
 public class LangCfg extends PluginConfig {
 
     public static String INVENTORY_NAME = null;
-    public static String EXPIRATION_DATE = null;
+    public static String EXPIRATION_TIME = null;
+    public static String LEFT_TIME = null;
     public static String TIME_UNIT_D = null;
     public static String TIME_UNIT_H = null;
     public static String TIME_UNIT_M = null;
@@ -67,7 +68,8 @@ public class LangCfg extends PluginConfig {
     @Override
     protected void loadToDo() {
         INVENTORY_NAME = getConfig().getString("inventoryName", "&4===Permissions Packages===");
-        EXPIRATION_DATE = getConfig().getString("expirationDate", "&4Expiration date: {0}");
+        EXPIRATION_TIME = getConfig().getString("expirationTime", "&4Expiration time: {0}");
+        LEFT_TIME = getConfig().getString("leftTime", "&4Left time: About {0}{1} {2}{3} {4}{5}");
         TIME_UNIT_D = getConfig().getString("timeUnitD", "day(s)");
         TIME_UNIT_H = getConfig().getString("timeUnitH", "hour(s)");
         TIME_UNIT_M = getConfig().getString("timeUnitM", "minute(s)");
@@ -98,7 +100,7 @@ public class LangCfg extends PluginConfig {
         MSG_DEL_ALL = getConfig().getString("msg.delAll", "&2Remove all packages for player {0}");
         MSG_DEL_ALL_FAIL = getConfig().getString("msg.delAllFail", "&4Failed to remove all packages for player {0}");
         MSG_NUM_OF_PACKAGES = getConfig().getString("msg.numOfPackages", "====={0} has {1} packages=====");
-        MSG_EXPIRATION_DATE = getConfig().getString("msg.expirationDate", "{0}packages: {1}({2}), Expiration date: {3}");
+        MSG_EXPIRATION_DATE = getConfig().getString("msg.expirationDate", "{0}packages: {1}({2}), Expiration date: {3}, {4}");
         MSG_UNKNOWN_PACKAGE = getConfig().getString("msg.unknownPackage", "Unknown Packages");
         MSG_IS_EXPIRATION_DATE = getConfig().getString("msg.isExpirationDate", "Your package: {0}({1})&r has expired.");
 
