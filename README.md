@@ -6,7 +6,7 @@
 ##### 前置插件Vault下载地址:[https://dev.bukkit.org/projects/vault/](https://dev.bukkit.org/projects/vault/)
 ##### 前置插件SQLibrary下载地址:[https://dev.bukkit.org/projects/sqlibrary/](https://dev.bukkit.org/projects/sqlibrary/)
 
-本插件并非权限插件, 而是权限扩展插件. 可以限制权限和权限组的时候时间.
+本插件并非权限插件, 而是权限扩展插件. 可以限制权限和权限组的使用时间.
 
 使用时必须同时使用Vault及SQLibrary两个前置插件.
 
