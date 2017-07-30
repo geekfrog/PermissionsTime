@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -41,7 +42,6 @@ public class PluginMain extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        super.onEnable();
         pm = this;
         cm = new ConfigManager(pm);
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
@@ -64,8 +64,8 @@ public class PluginMain extends JavaPlugin {
                 }
                 if (PluginCfg.IS_METRICS) {
                     try {
-                        org.mcstats.Metrics mcstats = new org.mcstats.Metrics(pm);
-                        mcstats.start();
+                        Metrics metrics = new Metrics(pm);
+//                        metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -132,7 +132,6 @@ public class PluginMain extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        super.onDisable();
         getServer().getServicesManager().unregisterAll(pm);
         Bukkit.getScheduler().cancelTasks(pm);
         try {
