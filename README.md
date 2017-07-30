@@ -58,4 +58,4 @@
 - 数据迁移?
 
 #### 使用统计：
-![image](http://i.mcstats.org/PermissionsTime/Global+Statistics.borderless.png)
+![https://bstats.org/plugin/bukkit/PermissionsTime](https://bstats.org/plugin/bukkit/PermissionsTime)
