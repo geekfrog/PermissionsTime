@@ -3,7 +3,7 @@
 [align=center][table=98%,#4169e1]
 [tr][td][align=center][size=6][color=#ffffff][b]唠叨[/b][/color][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,gray]
-[tr][td][align=center][size=4][color=#ffa500][b]这是本人第一个发布的插件, 希望能让大家满意！[/b][/color][/size][/align][align=center][size=4][color=#dda0dd][b]本插件需要JAVA8！！！[/b][/color][/size][/align][align=center][size=4][color=#98fb98][b]下载地址在最下面！[/b][/color][/size][/align][align=center][size=4][color=#c0c0c0][b]最新版本: [/b][/color][b][color=#8b0000]0.3.0[/color][color=#c0c0c0]，推荐大家使用新版本，只需替换插件的jar包和语言文件即可！[/color][/b][/size][/align][/td][/tr]
+[tr][td][align=center][size=4][color=#ffa500][b]这是本人第一个发布的插件, 希望能让大家满意！[/b][/color][/size][/align][align=center][size=4][color=#dda0dd][b]本插件需要JAVA8！！！[/b][/color][/size][/align][align=center][size=4][color=#98fb98][b]下载地址在最下面！[/b][/color][/size][/align][align=center][size=4][color=#c0c0c0][b]最新版本: [/b][/color][b][color=#8b0000]0.3.1[/color][color=#c0c0c0]，推荐大家使用新版本，只需替换插件的jar包和语言文件即可！[/color][/b][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,#4169e1]
 [tr][td][align=center][size=6][color=#ffffff][b]前言[/b][/color][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,gray]
@@ -136,6 +136,11 @@ packages:
     groups:
     - group1
     - group2:world1
+    # 权限包过期后执行的控制台命令
+    # Package expire console commands.
+    expireCommands:
+    - 'say %player% 的权限包到期了.'
+    - 'say 请及时续期.'
 
 [/code]
 [font=-apple-system, BlinkMacSystemFont,][color=#000000]简体中文 zh-cn.yml[/color][/font][code]
@@ -198,6 +203,8 @@ cmd:
 [tr][td][align=center][size=6][color=#ffffff][b]更新日志[/b][/color][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,gray]
 [tr][td][spoiler][size=4][b][url=http://ci.frog.gg/jenkins/job/PermissionsTime/changes]详细的更新记录[/url]
+[color=#ffffff]2017年8月2日 V0.3.1[/color][quote][color=#000000]
+1.跨服与非跨服权限包同名兼容处理[/color][/quote]
 [color=#ffffff]2017年8月1日 V0.3.0[/color][quote][color=#000000]
 1.权限包到期可执行自定义命令[/color][/quote]
 [color=#ffffff]2017年7月31日 V0.2.4[/color][quote][color=#000000]
@@ -227,7 +234,7 @@ cmd:
 [/table][/align][align=center][table=98%,#4169e1]
 [tr][td][align=center][size=6][color=#ffffff][b]下载地址[/b][/color][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,gray]
-[tr][td][size=4][b][align=center][color=#000] [url=http://ci.frog.gg/jenkins/job/PermissionsTime/64/]V0.3.0版下载地址[/url][/color][/align][align=center][color=#ffffff]前置插件：[/color][color=#000][url=https://dev.bukkit.org/projects/vault/files]vault[/url][/color][color=#000000] , [/color][color=#000][url=https://dev.bukkit.org/projects/sqlibrary/files]sqlibrary[/url][/color][/align][align=center][color=#ffffff]前置插件最好去原站下载适合的版本, 如果无法下载可以在帖内下载。[/color][/align]
+[tr][td][size=4][b][align=center][color=#000] [url=http://ci.frog.gg/jenkins/job/PermissionsTime/65/]V0.3.1版下载地址[/url][/color][/align][align=center][color=#ffffff]前置插件：[/color][color=#000][url=https://dev.bukkit.org/projects/vault/files]vault[/url][/color][color=#000000] , [/color][color=#000][url=https://dev.bukkit.org/projects/sqlibrary/files]sqlibrary[/url][/color][/align][align=center][color=#ffffff]前置插件最好去原站下载适合的版本, 如果无法下载可以在帖内下载。[/color][/align]
 [align=center][b][color=#ffffff]帖内下载：[/color][/b][/align][align=center][color=#000][attach]1101088[/attach][/color][/align][align=center][color=#000][b][color=#ff0000]前置插件必须安装[/color][/b][/color][/align][align=center][color=#000][attach]1101089[/attach][/color][/align][align=center][color=#000][attach]1101090[/attach][/color][/align][align=center][color=#000][attach]1101110[/attach][/color][/align]
 [align=center][color=#000][color=#ff0000][b]如果大家觉得好用就给点金粒吧，如果不好请告诉我，帮助我改进。[/b][/color][/color][/align][align=center][color=#000][b]BUG可以在帖内回复我。[/b][/color][/align][/b][/size][/td][/tr]
 [/table][/align][align=center][table=98%,#4169e1]

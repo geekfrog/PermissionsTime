@@ -246,7 +246,7 @@ public class PermissionPackageBean implements IConfigBean {
 				}
 			}
 			PermissionPackageBean p = PackagesCfg.PACKAGES.get(pdb.getPackageName());
-			if (p != null) {
+			if (p != null && pdb.getGlobal() == p.getGlobal()) {
 				addPpb.getPermissions().addAll(p.getPermissions());
 				subPpb.getPermissions().removeAll(p.getPermissions());
 				addPpb.getGroups().addAll(p.getGroups());
@@ -308,27 +308,32 @@ public class PermissionPackageBean implements IConfigBean {
 		for (PlayerDataBean playerData : playerDataList) {
 			if (playerData.getExpire() < now) {
 				PermissionPackageBean packageBean = PackagesCfg.PACKAGES.get(playerData.getPackageName());
-				plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
-					@Override
-					public void run() {
-						Player p = player.getPlayer();
-						if (p != null) {
-							p.sendMessage(StrUtil.messageFormat(
-									PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_IS_EXPIRATION_DATE,
-									packageBean != null ? packageBean.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE,
-									playerData.getPackageName()));
-							for (String commands : packageBean.getExpireCommands()) {
-								try {
-									commands = StrUtil.messageFormat(player.getPlayer(), commands);
-									plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commands);
-								} catch (Exception e) {
-									e.printStackTrace();
+				if ((packageBean == null && !playerData.getGlobal())
+						|| (packageBean != null && playerData.getGlobal() == packageBean.getGlobal())) {
+					plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+						@Override
+						public void run() {
+							Player p = player.getPlayer();
+							if (p != null) {
+								p.sendMessage(
+										StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_IS_EXPIRATION_DATE,
+												packageBean != null ? packageBean.getDisplayName()
+														: LangCfg.MSG_UNKNOWN_PACKAGE,
+												playerData.getPackageName()));
+								for (String commands : packageBean.getExpireCommands()) {
+									try {
+										commands = StrUtil.messageFormat(player.getPlayer(), commands);
+										plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(),
+												commands);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								}
 							}
 						}
-					}
-				});
-				plugin.getSqlManager().delById(playerData.getId());
+					});
+					plugin.getSqlManager().delById(playerData.getId());
+				}
 			}
 		}
 	}
