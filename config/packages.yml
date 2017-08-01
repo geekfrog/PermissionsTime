@@ -42,3 +42,8 @@ packages:
     groups:
     - group1
     - group2:world1
+    # 权限包过期后执行的控制台命令
+    # Package expire console commands.
+    expireCommands:
+    - 'bc %player% 的权限包到期了.'
+    - 'bc 请及时续期.'

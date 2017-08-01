@@ -4,9 +4,12 @@ import java.text.MessageFormat;
 import java.util.Date;
 
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.database.IPlayerDataDao;
+import me.clip.placeholderapi.PlaceholderAPI;
 
 public class StrUtil {
 
@@ -14,9 +17,26 @@ public class StrUtil {
     private static final long dt = 24 * 60 * IPlayerDataDao.TIME_UNIT;
     private static final long ht = 60 * IPlayerDataDao.TIME_UNIT;
     private static final long mt = IPlayerDataDao.TIME_UNIT;
+    private static final boolean placeholderAPI;
+    
+    static {
+    	if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+    		placeholderAPI = true;    		
+    	}else {
+    		placeholderAPI = false;
+    	}
+    }
 
     public static String messageFormat(String src, Object... args) {
-        return MessageFormat.format(src, args).replace("&", "§").replace("\\n", "\n");
+    	return MessageFormat.format(src, args).replace("&", "§").replace("\\n", "\n");
+    }
+
+    public static String messageFormat(Player player, String src, Object... args) {
+    	String message = MessageFormat.format(src, args).replace("&", "§").replace("\\n", "\n").replace("%player%", player.getDisplayName());
+    	if(placeholderAPI) {
+    		message = PlaceholderAPI.setPlaceholders(player, message);
+    	}
+    	return message;
     }
 
     public static String timestampToString(long time) {

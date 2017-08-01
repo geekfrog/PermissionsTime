@@ -1,10 +1,11 @@
 name: PermissionsTime
-version: 0.2.4-SNAPSHOT
+version: 0.3.0-SNAPSHOT
 main: gg.frog.mc.permissionstime.PluginMain
 author: GeekFrog
 softdepend:
 - SQLibrary
 - Vault
+- PlaceholderAPI
 commands:
   permissionstime:
     description: Show all commands.
