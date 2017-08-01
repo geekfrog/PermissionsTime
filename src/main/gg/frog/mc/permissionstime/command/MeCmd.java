@@ -36,11 +36,7 @@ public class MeCmd implements Runnable {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
                 Player p = (Player) sender;
                 List<PlayerDataBean> ps = sm.getTime(p.getUniqueId().toString());
-                if (ps.size() > 0) {
-                    PlayerPermissionShow.show(p, ps);
-                } else {
-                    sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_DATA));
-                }
+                PlayerPermissionShow.show(p, ps);
             } else {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
                 sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_ME, pm.PLUGIN_NAME_LOWER_CASE));

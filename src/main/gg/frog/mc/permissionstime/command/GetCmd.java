@@ -41,11 +41,11 @@ public class GetCmd implements Runnable {
 					for (PlayerDataBean pdb : ps) {
 						String expireString = StrUtil.timestampToString(pdb.getExpire());
 						PermissionPackageBean pc = PackagesCfg.PACKAGES.get(pdb.getPackageName());
-						if (!pdb.getGlobal() || pc != null) {
-							sender.sendMessage(StrUtil.messageFormat(
-									PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_EXPIRATION_DATE, pdb.getGlobal() ? "*" : "",
-									pc != null ? pc.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE,
-									pdb.getPackageName(), expireString, StrUtil.getLeftTime(pdb.getExpire())));
+						if (pc != null && pdb.getGlobal() == pc.getGlobal()) {
+							sender.sendMessage(
+									StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_EXPIRATION_DATE,
+											pdb.getGlobal() ? "*" : "", pc.getDisplayName(), pdb.getPackageName(),
+											expireString, StrUtil.getLeftTime(pdb.getExpire())));
 						} else {
 							sender.sendMessage(
 									StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_EXPIRATION_DATE,
