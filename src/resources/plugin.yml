@@ -1,5 +1,5 @@
 name: PermissionsTime
-version: 0.3.2-SNAPSHOT
+version: 0.3.3-SNAPSHOT
 main: gg.frog.mc.permissionstime.PluginMain
 author: GeekFrog
 softdepend:

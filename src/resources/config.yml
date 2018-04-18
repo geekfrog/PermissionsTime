@@ -17,6 +17,7 @@ mysql:
   # Whether to use the MySQL database.
   enable: false
   # 服务器唯一标识, 用来区分权限是哪个服务器的.
+  # 想要权限跨服,serverId必须一致.
   # Server ID.
   serverId: default
   hostname: localhost
