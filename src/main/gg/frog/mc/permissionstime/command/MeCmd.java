@@ -2,6 +2,7 @@ package gg.frog.mc.permissionstime.command;
 
 import java.util.List;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,9 +35,9 @@ public class MeCmd implements Runnable {
         if (isPlayer) {
             if (args.length == 1) {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
-                Player p = (Player) sender;
+                OfflinePlayer p = this.pm.getOfflinePlayer(sender.getName());
                 List<PlayerDataBean> ps = sm.getTime(p.getUniqueId().toString());
-                PlayerPermissionShow.show(p, ps);
+                PlayerPermissionShow.show((Player) sender, ps);
             } else {
                 sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
                 sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_ME, pm.PLUGIN_NAME_LOWER_CASE));

@@ -164,6 +164,8 @@ public class PluginMain extends JavaPlugin {
 
     public OfflinePlayer getOfflinePlayer(String name) {
         for (OfflinePlayer p : getServer().getOfflinePlayers()) {
+        	if(p==null)
+        		continue;
             if (p.getName().equalsIgnoreCase(name)) {
                 return p;
             }
