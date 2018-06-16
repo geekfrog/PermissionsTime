@@ -1,0 +1,57 @@
+name: PermissionsTime
+version: 0.4.0-SNAPSHOT
+main: gg.frog.mc.permissionstime.PluginMain
+author: GeekFrog
+softdepend:
+- SQLibrary
+- Vault
+- PlaceholderAPI
+commands:
+  permissionstime:
+    description: Show all commands.
+    usage: /permissionstime [param]
+  pt:
+    description: Aliases commands for permissionstime.
+    usage: /pt [param]
+permissions:
+  permissionstime.*:
+    description: Gives access to all PermissionsTime commands.
+    default: op
+    children:
+      permissionstime.me: true
+      permissionstime.tag: true
+      permissionstime.reload: true
+      permissionstime.give: true
+      permissionstime.set: true
+      permissionstime.get: true
+      permissionstime.remove: true
+      permissionstime.removeall: true
+      permissionstime.packages: true
+  permissionstime.me:
+    description: View your packages.
+    default: true
+  permissionstime.tag:
+    description: View your color/prefix/suffix tags.
+    default: true
+  permissionstime.reload:
+    description: Reloads the config file.
+    default: op
+  permissionstime.give:
+    description: Give player package some time.
+    default: op
+  permissionstime.set:
+    description: Set player package some time.
+    default: op
+  permissionstime.get:
+    description: View player packages.
+    default: op
+  permissionstime.remove:
+    description: Remove player package.
+    default: op
+  permissionstime.removeall:
+    description: Remove player all package.
+    default: op
+  permissionstime.packages:
+    description: View packages.
+    default: op
+    

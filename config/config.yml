@@ -7,6 +7,9 @@ debug: false
 # 是否同意插件上传统计信息.
 # Whether or not you agree with the plugin to upload statistics.
 metrics: true
+# 开启称号系统.
+# Use prefix system.
+tagSystem: false
 # 语言文件名称 在'lang'文件夹内.
 # Language file name.
 lang: en
@@ -14,9 +17,10 @@ lang: en
 # Database settings.
 mysql:
   # 是否使用MySQL数据库.
-  # Whether to use the MySQL database.
+  # Use the MySQL database?
   enable: false
   # 服务器唯一标识, 用来区分权限是哪个服务器的.
+  # 想要权限跨服,serverId必须一致.
   # Server ID.
   serverId: default
   hostname: localhost
