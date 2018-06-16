@@ -137,6 +137,6 @@
 	</build>
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://ci.frog.gg/jenkins/job/PermissionsTime/</url>
+		<url>http://ci.frog.gg/</url>
 	</ciManagement>
 </project>
