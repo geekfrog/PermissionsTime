@@ -33,6 +33,7 @@ public class ConfigManager {
         cfgMap.put("plugin", new PluginCfg(pm));
         cfgMap.put("lang", new LangCfg("lang/" + PluginCfg.LANG + ".yml", pm));
         cfgMap.put("packages", new PackagesCfg("packages.yml", pm));
+        cfgMap.put("tagNames", new TagNameCfg("tagNames.yml", pm));
     }
 
     public void reloadConfig() {
@@ -74,7 +75,7 @@ public class ConfigManager {
 
             @Override
             public boolean isProcess(String fileName) {
-                if (fileName.matches("lang/.+\\.yml") || "config.yml".equals(fileName) || "packages.yml".equals(fileName)) {
+                if (fileName.matches("lang/.+\\.yml") || "config.yml".equals(fileName) || "packages.yml".equals(fileName) || "tagNames.yml".equals(fileName)) {
                     File f = new File(pm.getDataFolder(), fileName);
                     if (!f.exists()) {
                         return true;

@@ -46,7 +46,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                         if (sender.isOp() || player.hasPermission("permissionstime.reload")) {
                             for (Player p : pm.getServer().getOnlinePlayers()) {
                                 InventoryView inventory = p.getOpenInventory();
-                                if (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle())) {
+                                if (inventory!=null && 
+                                		(
+                                				StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle())
+                                				||
+                                				StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle())
+                                		)
+                                ) {
                                     inventory.close();
                                 }
                             }
@@ -79,6 +85,15 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                     if (hasPermission(sender, isPlayer, "permissionstime.me")) {
                         MeCmd meCmd = new MeCmd(pm, sender, isPlayer, args);
                         new Thread(meCmd).start();
+                    }
+				} else if (args[0].equalsIgnoreCase("tag")) {
+                    if (hasPermission(sender, isPlayer, "permissionstime.tag")) {
+                    	if(PluginCfg.TAG_SYSTEM) {
+                            TagCmd tagCmd = new TagCmd(pm, sender, isPlayer, args);
+                            new Thread(tagCmd).start();
+                    	}else {
+                            sender.sendMessage(StrUtil.messageFormat(LangCfg.MSG_FUNC_DISABLED, LangCfg.TAG));
+                    	}
                     }
                 } else if (args[0].equalsIgnoreCase("give")) {
                     if (hasPermission(sender, isPlayer, "permissionstime.give")) {
@@ -123,6 +138,9 @@ public class MainCommand implements CommandExecutor, TabCompleter {
         sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "\n&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
         if (isPlayer && (sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
             sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_ME, pm.PLUGIN_NAME_LOWER_CASE));
+        }
+        if (isPlayer && (sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".tag"))) {
+            sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_TAG, pm.PLUGIN_NAME_LOWER_CASE));
         }
         if (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
             sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_PACKAGES, pm.PLUGIN_NAME_LOWER_CASE));
@@ -171,6 +189,9 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             if ("me".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
                 tipList.add("me");
             }
+            if ("tag".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".tag"))) {
+                tipList.add("tag");
+            }
             if ("packages".startsWith(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages"))) {
                 tipList.add("packages");
             }
@@ -201,8 +222,10 @@ public class MainCommand implements CommandExecutor, TabCompleter {
                         tipList.add(name);
                     }
                 }
-            } else if ("give".equalsIgnoreCase(args[0]) || "set".equalsIgnoreCase(args[0]) || "get".equalsIgnoreCase(args[0]) || "remove".equalsIgnoreCase(args[0]) || "removeall".equalsIgnoreCase(args[0])) {
-                return null;
+            } else if ("tag".equalsIgnoreCase(args[0]) && (!isPlayer || sender.isOp() || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".tag"))) {
+            	tipList.add("c");
+            	tipList.add("p");
+            	tipList.add("s");
             }
         } else if (args.length == 3) {
             args[0] = args[0].toLowerCase(Locale.ENGLISH);

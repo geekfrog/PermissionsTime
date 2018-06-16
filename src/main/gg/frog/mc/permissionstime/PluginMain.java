@@ -19,6 +19,7 @@ import gg.frog.mc.permissionstime.listener.MainListener;
 import gg.frog.mc.permissionstime.utils.FileUtil;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import gg.frog.mc.permissionstime.utils.UpdateCheck;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 
 public class PluginMain extends JavaPlugin {
@@ -33,6 +34,7 @@ public class PluginMain extends JavaPlugin {
     private PluginMain pm = null;
     private SqlManager sm = null;
     private Permission permission = null;
+    private Chat chat = null;
 
     public PluginMain() {
         PLUGIN_NAME = getDescription().getName();
@@ -51,9 +53,9 @@ public class PluginMain extends JavaPlugin {
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    https://github.com/geekfrog/PermissionsTime/ "));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
         getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
-        getServer().getScheduler().runTask(pm, new UpdateCheck(pm));
         getServer().getScheduler().runTask(pm, new Runnable() {
-            public void run() {
+
+			public void run() {
                 if (!checkPluginDepends()) {
                     getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Startup failure!"));
                     getServer().getPluginManager().disablePlugin(pm);
@@ -64,12 +66,12 @@ public class PluginMain extends JavaPlugin {
                 }
                 if (PluginCfg.IS_METRICS) {
                     try {
-                        Metrics metrics = new Metrics(pm);
-//                        metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
+                        new Metrics(pm);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+                getServer().getScheduler().runTaskAsynchronously(pm, new UpdateCheck(pm));
             }
         });
     }
@@ -108,7 +110,11 @@ public class PluginMain extends JavaPlugin {
         return permission;
     }
 
-    private boolean checkPluginDepends() {
+    public Chat getChat() {
+		return chat;
+	}
+
+	private boolean checkPluginDepends() {
         boolean needDepend = false;
         for (String name : DEPEND_PLUGIN.split(",")) {
             if (getServer().getPluginManager().getPlugin(name) == null) {
@@ -118,6 +124,10 @@ public class PluginMain extends JavaPlugin {
         }
         if (!needDepend && !setupPermissions()) {
             getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Cann''t hook vault permission"));
+            needDepend = true;
+        }
+        if (!needDepend && !setupChat()) {
+            getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Cann''t hook vault chat"));
             needDepend = true;
         }
         if (!needDepend && !setupDatabase()) {
@@ -146,6 +156,14 @@ public class PluginMain extends JavaPlugin {
             permission = permissionProvider.getProvider();
         }
         return (permission != null);
+    }
+
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+        if (chatProvider != null) {
+            chat = chatProvider.getProvider();
+        }
+        return (chat != null);
     }
 
     private boolean setupDatabase() {

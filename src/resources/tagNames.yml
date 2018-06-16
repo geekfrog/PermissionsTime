@@ -1,0 +1,53 @@
+# 默认昵称样式.
+# Default Name Color.
+defaultNamecolor: '&6'
+# 默认前缀.
+# Default Prefix.
+defaultPrefix: ''
+# 默认后缀.
+# Default Suffix.
+defaultSuffix: ''
+packages:
+# 称号包名称.
+# Tag package name.
+  example1:
+    # 称号包描述,可以填写如何获得这些称号.
+    # Tag package describes. You can type how to get these tag.
+    description: '&4Tag package description.'
+    # 称号包所需权限. 不需要权限请留空,输入 ''
+    # Tag package needs permission. Keep null to make no permission.
+    permissions: ''
+    # 称号包所含的昵称样式.
+    # Name Colors.
+    namecolor:
+    - '&3'
+    - '&4:SKULL_ITEM:5'
+    - '&5:SKULL_ITEM:MHF_Present1'
+    # 称号包所含的昵称前缀.
+    # Name prefix.
+    prefix:
+    - '&3[prefix]'
+    - '&4[prefix]:1'
+    # 称号包所含的昵称后缀.
+    # Name suffix.
+    suffix:
+    - '&3[suffix]'
+    - '&4[suffix]:1:6'
+  vip:
+    description: '&4VIP Tags.'
+    permissions: 'player.vip'
+    namecolor:
+    - '&3&l'
+    - '&4&n:SKULL_ITEM:5'
+    - '&5&o:SKULL_ITEM:MHF_Present1'
+    # 称号包所含的昵称前缀.
+    # Name prefix.
+    prefix:
+    - '&3&l[prefix]'
+    - '&4&n[prefix]:1'
+    # 称号包所含的昵称后缀.
+    # Name suffix.
+    suffix:
+    - '&3&o[suffix]'
+    - '&4&l&n[suffix]:1:6'
+    

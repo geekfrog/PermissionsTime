@@ -23,7 +23,7 @@ public class PlayerPermissionShow {
 		if (pdbList.size() > 0) {
 			inventory = Bukkit.createInventory(null,
 					(pdbList.size() % 9 == 0 ? pdbList.size() : (pdbList.size() / 9 + 1) * 9),
-					StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "&r&5&9&2&0&r"));
+					StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "&r&5&9&2&0&r"));
 			for (PlayerDataBean pdb : pdbList) {
 				PermissionPackageBean ppb = PackagesCfg.PACKAGES.get(pdb.getPackageName());
 				if (ppb != null && pdb.getGlobal() == ppb.getGlobal()) {

@@ -1,5 +1,5 @@
 name: PermissionsTime
-version: 0.3.3-SNAPSHOT
+version: 0.4.0-SNAPSHOT
 main: gg.frog.mc.permissionstime.PluginMain
 author: GeekFrog
 softdepend:
@@ -19,6 +19,7 @@ permissions:
     default: op
     children:
       permissionstime.me: true
+      permissionstime.tag: true
       permissionstime.reload: true
       permissionstime.give: true
       permissionstime.set: true
@@ -27,7 +28,10 @@ permissions:
       permissionstime.removeall: true
       permissionstime.packages: true
   permissionstime.me:
-    description: View himself package.
+    description: View your packages.
+    default: true
+  permissionstime.tag:
+    description: View your color/prefix/suffix tags.
     default: true
   permissionstime.reload:
     description: Reloads the config file.

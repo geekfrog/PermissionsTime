@@ -14,6 +14,7 @@ public class PluginCfg extends PluginConfig {
     public static String PLUGIN_PREFIX;
     public static boolean IS_METRICS = true;
     public static boolean IS_DEBUG = false;
+    public static boolean TAG_SYSTEM = false;
     public static String LANG;
     public static boolean USE_MYSQL = false;
     public static String SQL_SERVER_ID;
@@ -36,6 +37,7 @@ public class PluginCfg extends PluginConfig {
         PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + pm.PLUGIN_NAME + "] ") + "&r";
         IS_DEBUG = setGetDefault("debug", false);
         IS_METRICS = setGetDefault("metrics", true);
+        TAG_SYSTEM = setGetDefault("tagSystem", false);
         LANG = setGetDefault("lang", "en");
         USE_MYSQL = setGetDefault("mysql.enable", false);
         SQL_SERVER_ID = setGetDefault("mysql.serverId", "default");

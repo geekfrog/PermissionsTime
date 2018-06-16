@@ -150,9 +150,7 @@ public class PermissionPackageBean implements IConfigBean {
 
 	@Override
 	public String toString() {
-		return "PermissionPackageBean [displayName=" + displayName + ", id=" + id + ", type=" + type + ", glowing="
-				+ glowing + ", lores=" + lores + ", global=" + global + ", permissions=" + permissions + ", groups="
-				+ groups + ", expireCommands=" + expireCommands + "]";
+		return "PermissionPackageBean [displayName=" + displayName + ", id=" + id + ", type=" + type + ", glowing=" + glowing + ", lores=" + lores + ", global=" + global + ", permissions=" + permissions + ", groups=" + groups + ", expireCommands=" + expireCommands + "]";
 	}
 
 	private void givePlayer(OfflinePlayer player, Server server, Permission permission) {
@@ -227,8 +225,7 @@ public class PermissionPackageBean implements IConfigBean {
 		reloadPlayerPermissions(player, pdbList, plugin, true);
 	}
 
-	public static void reloadPlayerPermissions(OfflinePlayer player, List<PlayerDataBean> pdbList, PluginMain plugin,
-			boolean async) {
+	public static void reloadPlayerPermissions(OfflinePlayer player, List<PlayerDataBean> pdbList, PluginMain plugin, boolean async) {
 		long delay = -1;
 		long now = new Date().getTime();
 		PermissionPackageBean addPpb = new PermissionPackageBean();
@@ -262,8 +259,7 @@ public class PermissionPackageBean implements IConfigBean {
 						addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
 					} catch (Exception e) {
 						e.printStackTrace();
-						player.getPlayer().sendMessage(
-								StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
+						player.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
 					}
 				}
 			});
@@ -308,25 +304,21 @@ public class PermissionPackageBean implements IConfigBean {
 		for (PlayerDataBean playerData : playerDataList) {
 			if (playerData.getExpire() < now) {
 				PermissionPackageBean packageBean = PackagesCfg.PACKAGES.get(playerData.getPackageName());
-				if ((packageBean == null && !playerData.getGlobal())
-						|| (packageBean != null && playerData.getGlobal() == packageBean.getGlobal())) {
+				if ((packageBean == null && !playerData.getGlobal()) || (packageBean != null && playerData.getGlobal() == packageBean.getGlobal())) {
 					plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
 						@Override
 						public void run() {
 							Player p = player.getPlayer();
 							if (p != null) {
-								p.sendMessage(
-										StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_IS_EXPIRATION_DATE,
-												packageBean != null ? packageBean.getDisplayName()
-														: LangCfg.MSG_UNKNOWN_PACKAGE,
-												playerData.getPackageName()));
-								for (String commands : packageBean.getExpireCommands()) {
-									try {
-										commands = StrUtil.messageFormat(player.getPlayer(), commands);
-										plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(),
-												commands);
-									} catch (Exception e) {
-										e.printStackTrace();
+								p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_IS_EXPIRATION_DATE, packageBean != null ? packageBean.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE, playerData.getPackageName()));
+								if(packageBean !=null) {
+									for (String commands : packageBean.getExpireCommands()) {
+										try {
+											commands = StrUtil.messageFormat(player.getPlayer(), commands);
+											plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commands);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
 									}
 								}
 							}
