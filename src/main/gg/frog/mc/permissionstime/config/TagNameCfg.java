@@ -8,11 +8,14 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.Scoreboard;
 
 import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.model.cfg.PlayerTagBean;
+import gg.frog.mc.permissionstime.model.PlayerTagBean;
 import gg.frog.mc.permissionstime.model.cfg.TagPackageBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import gg.frog.mc.permissionstime.utils.config.PluginConfig;
@@ -23,6 +26,8 @@ public class TagNameCfg extends PluginConfig {
 	public static String DEFAULT_NAMECOLOR = null;
 	public static String DEFAULT_PREFIX = null;
 	public static String DEFAULT_SUFFIX = null;
+	public static boolean USE_HD_PLUGIN = false;
+	public static Integer REFRESH_TAG_TIME = null;
 	public static Map<String, TagPackageBean> PACKAGES = new ConcurrentHashMap<>();
 
 	public static Map<String, List<ItemStack>> NAMECOLOR_ITEMS = new ConcurrentHashMap<>();
@@ -34,6 +39,10 @@ public class TagNameCfg extends PluginConfig {
 	public static Map<String, List<String>> SUFFIX_PERMISSIONS = new ConcurrentHashMap<>();
 
 	public static Map<String, PlayerTagBean> PLAYER_TAG = new ConcurrentHashMap<>();
+
+	public static Scoreboard scoreboard = null;
+
+	private BukkitTask task = null;
 
 	public enum TagType {
 		NAMECOLOR_TYPE, PREFIX_TYPE, SUFFIX_TYPE
@@ -52,12 +61,15 @@ public class TagNameCfg extends PluginConfig {
 		DEFAULT_NAMECOLOR = setGetDefault("defaultNamecolor", "");
 		DEFAULT_PREFIX = setGetDefault("defaultPrefix", "");
 		DEFAULT_SUFFIX = setGetDefault("defaultSuffix", "");
+		USE_HD_PLUGIN = setGetDefault("useHdPlugin", false);
+		REFRESH_TAG_TIME = setGetDefault("refreshTagTime", -1);
 		PACKAGES = getObjMap("packages", TagPackageBean.class);
 		saveObj("packages", PACKAGES);
 		if (PluginCfg.IS_DEBUG) {
 			System.out.println("defaultNamecolor:" + DEFAULT_NAMECOLOR);
 			System.out.println("defaultPrefix:" + DEFAULT_PREFIX);
 			System.out.println("defaultSuffix:" + DEFAULT_SUFFIX);
+			System.out.println("useHdPlugin:" + USE_HD_PLUGIN);
 			for (Entry<String, TagPackageBean> p : PACKAGES.entrySet()) {
 				System.out.println(p.getKey() + ":" + p.getValue());
 			}
@@ -69,6 +81,8 @@ public class TagNameCfg extends PluginConfig {
 		NAMECOLOR_PERMISSIONS.clear();
 		PREFIX_PERMISSIONS.clear();
 		SUFFIX_PERMISSIONS.clear();
+
+		PLAYER_TAG.clear();
 
 		for (Entry<String, TagPackageBean> e : PACKAGES.entrySet()) {
 			List<ItemStack> items = getTagItem(TagType.NAMECOLOR_TYPE, e.getValue());
@@ -89,6 +103,25 @@ public class TagNameCfg extends PluginConfig {
 			} else {
 				SUFFIX_ITEMS.put(e.getValue().getPermissions(), items);
 			}
+		}
+
+		if (task != null) {
+			task.cancel();
+		}
+		refreshTagTask();
+	}
+
+	private void refreshTagTask() {
+		for (Player player : pm.getServer().getOnlinePlayers()) {
+			PlayerTagBean.initPlayerTag(player, pm);
+		}
+		if (REFRESH_TAG_TIME > 0) {
+			task = pm.getServer().getScheduler().runTaskLaterAsynchronously(pm, new Runnable() {
+				@Override
+				public void run() {
+					refreshTagTask();
+				}
+			}, REFRESH_TAG_TIME * 20);
 		}
 	}
 

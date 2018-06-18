@@ -16,8 +16,8 @@ import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.config.TagNameCfg;
+import gg.frog.mc.permissionstime.model.PlayerTagBean;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
-import gg.frog.mc.permissionstime.model.cfg.PlayerTagBean;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 
@@ -35,23 +35,15 @@ public class MainListener implements Listener {
 			@Override
 			public void run() {
 				try {
-					List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(event.getPlayer().getUniqueId().toString());
+					String uuid = pm.getPlayerUUIDByName(event.getPlayer().getName());
+					List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(uuid);
 					PermissionPackageBean.reloadPlayerPermissions(event.getPlayer(), pdbList, pm, false);
 				} catch (Exception e) {
 					e.printStackTrace();
 					event.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
 				}
 				if (PluginCfg.TAG_SYSTEM) {
-					String uuid = event.getPlayer().getUniqueId().toString();
-					PlayerTagBean playerTag = null;
-					if (TagNameCfg.PLAYER_TAG.containsKey(uuid)) {
-						playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
-						playerTag.setPlayerDisplayName(event.getPlayer());
-					} else {
-						playerTag = new PlayerTagBean("playerTag/" + uuid + ".yml", pm);
-						playerTag.setPlayerDisplayName(event.getPlayer(), true);
-					}
-					TagNameCfg.PLAYER_TAG.put(uuid, playerTag);
+					PlayerTagBean.initPlayerTag(event.getPlayer(), pm);
 				}
 			}
 		}).start();

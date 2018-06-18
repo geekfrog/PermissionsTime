@@ -11,7 +11,6 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import gg.frog.mc.permissionstime.PluginMain;
@@ -153,69 +152,69 @@ public class PermissionPackageBean implements IConfigBean {
 		return "PermissionPackageBean [displayName=" + displayName + ", id=" + id + ", type=" + type + ", glowing=" + glowing + ", lores=" + lores + ", global=" + global + ", permissions=" + permissions + ", groups=" + groups + ", expireCommands=" + expireCommands + "]";
 	}
 
-	private void givePlayer(OfflinePlayer player, Server server, Permission permission) {
+	private void givePlayer(OfflinePlayer player, Server server, Permission permissionApi) {
 		List<World> worlds = server.getWorlds();
-		for (String pem : permissions) {
+		for (String pem : this.permissions) {
 			String[] args = pem.split(":");
 			pem = args[0];
 			if (args.length > 1) {
 				for (int i = 1; i < args.length; i++) {
 					String worldName = args[i];
-					permission.playerAdd(worldName, player, pem);
+					permissionApi.playerAdd(worldName, player, pem);
 				}
 			} else {
 				for (World world : worlds) {
 					String worldName = world.getName();
-					permission.playerAdd(worldName, player, pem);
+					permissionApi.playerAdd(worldName, player, pem);
 				}
 			}
 		}
-		for (String groupName : groups) {
+		for (String groupName : this.groups) {
 			String[] args = groupName.split(":");
 			groupName = args[0];
 			if (args.length > 1) {
 				for (int i = 1; i < args.length; i++) {
 					String worldName = args[i];
-					permission.playerAddGroup(worldName, player, groupName);
+					permissionApi.playerAddGroup(worldName, player, groupName);
 				}
 			} else {
 				for (World world : worlds) {
 					String worldName = world.getName();
-					permission.playerAddGroup(worldName, player, groupName);
+					permissionApi.playerAddGroup(worldName, player, groupName);
 				}
 			}
 		}
 	}
 
-	private void clearPlayer(OfflinePlayer player, Server server, Permission permission) {
+	private void clearPlayer(OfflinePlayer player, Server server, Permission permissionApi) {
 		List<World> worlds = server.getWorlds();
-		for (String pem : permissions) {
+		for (String pem : this.permissions) {
 			String[] args = pem.split(":");
 			pem = args[0];
 			if (args.length > 1) {
 				for (int i = 1; i < args.length; i++) {
 					String worldName = args[i];
-					permission.playerRemove(worldName, player, pem);
+					permissionApi.playerRemove(worldName, player, pem);
 				}
 			} else {
 				for (World world : worlds) {
 					String worldName = world.getName();
-					permission.playerRemove(worldName, player, pem);
+					permissionApi.playerRemove(worldName, player, pem);
 				}
 			}
 		}
-		for (String groupName : groups) {
+		for (String groupName : this.groups) {
 			String[] args = groupName.split(":");
 			groupName = args[0];
 			if (args.length > 1) {
 				for (int i = 1; i < args.length; i++) {
 					String worldName = args[i];
-					permission.playerRemoveGroup(worldName, player, groupName);
+					permissionApi.playerRemoveGroup(worldName, player, groupName);
 				}
 			} else {
 				for (World world : worlds) {
 					String worldName = world.getName();
-					permission.playerRemoveGroup(worldName, player, groupName);
+					permissionApi.playerRemoveGroup(worldName, player, groupName);
 				}
 			}
 		}
@@ -268,20 +267,28 @@ public class PermissionPackageBean implements IConfigBean {
 			addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
 		}
 		checkExpire(player, plugin);
-		BukkitTask task = taskMap.get(player.getUniqueId().toString());
+		String uuid = player.getUniqueId().toString();
+		BukkitTask task = taskMap.get(uuid);
 		if (pdbList.size() > 0) {
 			delay = (delay / 1000 + 1) * 20;// 1秒=20ticks
 			task = plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
 				@Override
 				public void run() {
-					List<PlayerDataBean> tpdbList = plugin.getSqlManager().getTime(player.getUniqueId().toString());
+					List<PlayerDataBean> tpdbList = plugin.getSqlManager().getTime(uuid);
 					reloadPlayerPermissions(player, tpdbList, plugin);
 				}
 			}, delay);
-			taskMap.put(player.getUniqueId().toString(), task);
+			taskMap.put(uuid, task);
 		}
 	}
 
+	/**
+	 * 清理玩家所有权限包中涉及的权限
+	 * 
+	 * @param player
+	 * @param plugin
+	 * @throws Exception
+	 */
 	public static void delPlayerAllPermissions(OfflinePlayer player, PluginMain plugin) throws Exception {
 		PermissionPackageBean subPpb = new PermissionPackageBean();
 		subPpb.getPermissions().addAll(PackagesCfg.allPermissions);
@@ -308,17 +315,14 @@ public class PermissionPackageBean implements IConfigBean {
 					plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
 						@Override
 						public void run() {
-							Player p = player.getPlayer();
-							if (p != null) {
-								p.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_IS_EXPIRATION_DATE, packageBean != null ? packageBean.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE, playerData.getPackageName()));
-								if(packageBean !=null) {
-									for (String commands : packageBean.getExpireCommands()) {
-										try {
-											commands = StrUtil.messageFormat(player.getPlayer(), commands);
-											plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commands);
-										} catch (Exception e) {
-											e.printStackTrace();
-										}
+							player.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_IS_EXPIRATION_DATE, packageBean != null ? packageBean.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE, playerData.getPackageName()));
+							if (packageBean != null) {
+								for (String commands : packageBean.getExpireCommands()) {
+									try {
+										commands = StrUtil.messageFormat(player.getPlayer(), commands);
+										plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commands);
+									} catch (Exception e) {
+										e.printStackTrace();
 									}
 								}
 							}

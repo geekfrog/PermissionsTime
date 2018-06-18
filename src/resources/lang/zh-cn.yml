@@ -13,6 +13,7 @@ msg:
   timeUnitParameterIncorrect: '&4时间单位不正确. 请使用 d或h或m. (d=天, h=小时, m=分钟)'
   processing: '&2执行中，请等待...'
   noData: '&4暂时无权限包.'
+  noTagData: '&4暂时无称号包.'
   packageNum: '&4共有{0}种权限包.'
   packageList: '{0}权限包名: {1}, 显示名称: {2}'
   packageDetail: '权限包名: {0}, 显示名称: {1}&r\n权限: {2}\n权限组: {3}'

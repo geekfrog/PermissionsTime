@@ -1,12 +1,8 @@
-package gg.frog.mc.permissionstime.model.cfg;
+package gg.frog.mc.permissionstime.model;
 
-import java.util.List;
-
-import org.bukkit.World;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import gg.frog.mc.permissionstime.PluginMain;
@@ -30,6 +26,8 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 	private String prefix;
 	// 后缀
 	private String suffix;
+	// 当前显示的名称
+	private String displayName;
 
 	public PlayerTagBean(String fileName, PluginMain pm) {
 		super(fileName, pm);
@@ -55,6 +53,18 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 		getConfig().set("prefix", prefix);
 		getConfig().set("suffix", suffix);
 		super.saveConfig();
+	}
+
+	public static void initPlayerTag(Player player, PluginMain pm) {
+		String uuid = pm.getPlayerUUIDByName(player.getName());
+		PlayerTagBean playerTag = null;
+		if (TagNameCfg.PLAYER_TAG.containsKey(uuid)) {
+			playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
+		} else {
+			playerTag = new PlayerTagBean("playerTag/" + uuid + ".yml", pm);
+			TagNameCfg.PLAYER_TAG.put(uuid, playerTag);
+		}
+		playerTag.setPlayerDisplayName(player, true);
 	}
 
 	public void setPlayerDisplayName(Player player) {
@@ -105,23 +115,51 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 					}
 				}
 				if (forceSet || namecolor_flag || prefix_flag || suffix_flag) {
-					Scoreboard scoreboard = pm.getServer().getScoreboardManager().getNewScoreboard();
-					Team team = scoreboard.getTeam(player.getName());
-					if (team == null) {
-						team = scoreboard.registerNewTeam(player.getName());
-					}
-					team.setPrefix(StrUtil.messageFormat(player, "&r" + prefix + "&r" + namecolor + "&r"));
-					team.setSuffix(StrUtil.messageFormat(player, "&r" + suffix + "&r"));
-					team.addEntry(player.getName());
-					player.setScoreboard(scoreboard);
-					List<World> worlds = pm.getServer().getWorlds();
-					for (World world : worlds) {
-						pm.getChat().setPlayerInfoString(world.getName(), player, "prefix", StrUtil.messageFormat(player, "&r" + prefix + "&r" + namecolor + "&r"));
-						pm.getChat().setPlayerInfoString(world.getName(), player, "suffix", StrUtil.messageFormat(player, "&r" + suffix + "&r"));
-					}
-					player.setDisplayName(getDisplayNameStr(player));
+					displayName = getDisplayNameStr(player);
+					player.setDisplayName(displayName);
 					if (PluginCfg.IS_DEBUG) {
 						System.out.println("PlayerTagBean:" + playerTag);
+					}
+					if (!TagNameCfg.USE_HD_PLUGIN) {
+						try {
+							if (TagNameCfg.scoreboard == null) {
+								TagNameCfg.scoreboard = pm.getServer().getScoreboardManager().getNewScoreboard();
+							}
+							Team team = TagNameCfg.scoreboard.getTeam(player.getName());
+							if (team == null) {
+								team = TagNameCfg.scoreboard.registerNewTeam(player.getName());
+							}
+							String teamPrefix = StrUtil.messageFormat(player, prefix + "&r" + namecolor);
+							if (PluginCfg.IS_DEBUG)
+								System.out.println(teamPrefix);
+							teamPrefix = teamPrefix.length() > 16 ? (teamPrefix.substring(0, 7) + ".." + teamPrefix.substring(teamPrefix.length() - 7)) : teamPrefix;
+							if (PluginCfg.IS_DEBUG)
+								System.out.println(teamPrefix);
+							team.setPrefix(teamPrefix);
+							String teamSuffix = StrUtil.messageFormat(player, "&r" + suffix);
+							if (PluginCfg.IS_DEBUG)
+								System.out.println(teamSuffix);
+							teamSuffix = teamSuffix.length() > 16 ? (teamSuffix.substring(0, 7) + ".." + teamSuffix.substring(teamSuffix.length() - 7)) : teamSuffix;
+							if (PluginCfg.IS_DEBUG) {
+								System.out.println(teamSuffix);
+							}
+							team.setSuffix(teamSuffix);
+							team.addEntry(player.getName());
+							player.setScoreboard(TagNameCfg.scoreboard);
+							if (PluginCfg.IS_DEBUG)
+								for (Team t : TagNameCfg.scoreboard.getTeams()) {
+									System.out.println(t.getPrefix());
+									System.out.println(t.getSuffix());
+									for (String e : t.getEntries()) {
+										System.out.println(e);
+									}
+								}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					} else {
+						//TODO
+						//player.setCustomNameVisible(false);
 					}
 				}
 			}
@@ -129,7 +167,7 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 	}
 
 	public String getDisplayNameStr(Player player) {
-		return StrUtil.messageFormat(player, prefix + namecolor + player.getName() + suffix + "&r");
+		return StrUtil.messageFormat(player, "&r" + prefix + "&r" + namecolor + player.getName() + "&r" + suffix + "&r");
 	}
 
 	@Override
@@ -165,6 +203,10 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 
 	public void setSuffix(String suffix) {
 		this.suffix = suffix;
+	}
+
+	public String getDisplayName() {
+		return displayName;
 	}
 
 	@Override

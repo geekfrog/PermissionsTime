@@ -13,6 +13,7 @@ msg:
   timeUnitParameterIncorrect: '&4The number of time unit is incorrect. Please use d/h/m. (d=day, h=hour, m=minute)'
   processing: '&2Please wait for processing...'
   noData: '&4No data for packages.'
+  noTagData: '&4No data for tag packages.'
   packageNum: '&4There are {0} kinds of permissions packages.'
   packageList: '{0}packageName: {1}, displayName: {2}'
   packageDetail: 'packageName: {0}, displayName: {1}&r\nPermissions: {2}\nGroups: {3}'

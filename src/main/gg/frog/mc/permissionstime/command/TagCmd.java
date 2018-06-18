@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import gg.frog.mc.permissionstime.PluginMain;
@@ -58,7 +59,10 @@ public class TagCmd implements Runnable {
 					}
 				}
 				OfflinePlayer player = pm.getOfflinePlayer(sender.getName());
-				PlayerTagShow.show(player.getPlayer(), type, itemList);
+				Player p = player.getPlayer();
+				if (p != null) {
+					PlayerTagShow.show(p, type, itemList);
+				}
 			} else {
 				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
 				sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_TAG, pm.PLUGIN_NAME_LOWER_CASE));
