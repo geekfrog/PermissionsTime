@@ -19,11 +19,11 @@ public class StrUtil {
 	private static final long mt = IPlayerDataDao.TIME_UNIT;
 
 	public static String messageFormat(String src, Object... args) {
-		return MessageFormat.format(src, args).replace("&", "§").replace("\\n", "\n");
+		return MessageFormat.format(src, args).replaceAll("&", "§").replaceAll("\\n", "\n");
 	}
 
 	public static String messageFormat(Player player, String src, Object... args) {
-		String message = MessageFormat.format(src, args).replace("&", "§").replace("\\n", "\n").replace("%player%", player.getPlayer().getDisplayName());
+		String message = MessageFormat.format(src, args).replaceAll("&", "§").replaceAll("\\n", "\n").replaceAll("%player%", player.getPlayer().getDisplayName());
 		if (PluginMain.enabledPlaceholder) {
 			message = PlaceholderAPI.setPlaceholders(player, message);
 		}

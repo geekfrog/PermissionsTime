@@ -37,7 +37,7 @@ public class PluginMain extends JavaPlugin {
 	private Permission permission = null;
 	public static boolean enabledHdPlugin;
 	public static boolean enabledPlaceholder;
-	private static Map<String, OfflinePlayer> playerMap = new ConcurrentHashMap<>();
+	private Map<String, OfflinePlayer> playerMap = new ConcurrentHashMap<>();
 
 	public PluginMain() {
 		PLUGIN_NAME = getDescription().getName();
@@ -111,6 +111,10 @@ public class PluginMain extends JavaPlugin {
 
 	public Permission getPermission() {
 		return permission;
+	}
+
+	public Map<String, OfflinePlayer> getPlayerMap() {
+		return playerMap;
 	}
 
 	private boolean checkPluginDepends() {

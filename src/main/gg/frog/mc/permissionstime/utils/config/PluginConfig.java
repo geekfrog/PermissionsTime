@@ -156,13 +156,13 @@ public abstract class PluginConfig {
 //        }
     }
 
-    protected void saveObj(String path, Map<String, ? extends IConfigBean> o) {
+    protected void setObj(String path, Map<String, ? extends IConfigBean> o) {
         for (Entry<String, ? extends IConfigBean> configBean : o.entrySet()) {
-            saveObj(path + "." + configBean.getKey(), configBean.getValue());
+            setObj(path + "." + configBean.getKey(), configBean.getValue());
         }
     }
 
-    protected void saveObj(String path, IConfigBean o) {
+    protected void setObj(String path, IConfigBean o) {
         getConfig().set(path, o.toConfig());
     }
 

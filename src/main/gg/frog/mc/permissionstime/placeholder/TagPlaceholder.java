@@ -21,7 +21,7 @@ public class TagPlaceholder extends PlaceholderExpansion {
 	}
 
 	public String getIdentifier() {
-		return pm.PLUGIN_NAME_LOWER_CASE;
+		return "pttag";
 	}
 
 	public String getPlugin() {
@@ -37,12 +37,16 @@ public class TagPlaceholder extends PlaceholderExpansion {
 	}
 
 	public String onPlaceholderRequest(Player player, String identifier) {
-		if (identifier.equalsIgnoreCase("displayname") && PluginCfg.TAG_SYSTEM) {
-			if (player != null) {
-				String uuid = pm.getPlayerUUIDByName(player.getName());
-				PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
-				if (playerTag != null) {
+		if (PluginCfg.TAG_SYSTEM && player != null) {
+			String uuid = pm.getPlayerUUIDByName(player.getName());
+			PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
+			if (playerTag != null) {
+				if (identifier.equalsIgnoreCase("fullname")) {
 					return playerTag.getDisplayName();
+				} else if (identifier.equalsIgnoreCase("prefix")) {
+					return playerTag.getDisplayPrefix();
+				} else if (identifier.equalsIgnoreCase("suffix")) {
+					return playerTag.getDisplaySuffix();
 				}
 			}
 		}

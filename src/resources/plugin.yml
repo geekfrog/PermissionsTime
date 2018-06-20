@@ -1,8 +1,9 @@
-name: PermissionsTime
-version: 0.4.0-SNAPSHOT
+name: ${project.name}
+version: ${project.version}
 main: gg.frog.mc.permissionstime.PluginMain
 author:
 - GeekFrog
+description: ${project.description}
 softdepend:
 - SQLibrary
 - Vault
@@ -56,4 +57,3 @@ permissions:
   permissionstime.packages:
     description: View packages.
     default: op
-    

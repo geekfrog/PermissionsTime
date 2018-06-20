@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import gg.frog.mc.permissionstime.PluginMain;
@@ -37,6 +36,7 @@ public class TagCmd implements Runnable {
 			if (args.length == 2) {
 				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
 				List<ItemStack> itemList = new ArrayList<ItemStack>();
+				List<ItemStack> disItemList = new ArrayList<ItemStack>();
 				TagType type = null;
 				Map<String, List<ItemStack>> p_i_map;
 				if ("c".equals(args[1])) {
@@ -56,13 +56,12 @@ public class TagCmd implements Runnable {
 				for (String p : p_i_map.keySet()) {
 					if ("".equals(p) || sender.hasPermission(p)) {
 						itemList.addAll(p_i_map.get(p));
+					} else {
+						disItemList.addAll(p_i_map.get(p));
 					}
 				}
 				OfflinePlayer player = pm.getOfflinePlayer(sender.getName());
-				Player p = player.getPlayer();
-				if (p != null) {
-					PlayerTagShow.show(p, type, itemList);
-				}
+				PlayerTagShow.show(player, type, itemList, disItemList);
 			} else {
 				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
 				sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_TAG, pm.PLUGIN_NAME_LOWER_CASE));

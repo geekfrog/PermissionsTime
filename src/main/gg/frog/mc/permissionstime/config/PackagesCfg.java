@@ -42,7 +42,7 @@ public class PackagesCfg extends PluginConfig {
         PACKAGES_VERSION = setGetDefault("version", "1.00");
         DEFAULT_GROUP = setGetDefault("defaultGroup", "Default");
         PACKAGES = getObjMap("packages", PermissionPackageBean.class);
-        saveObj("packages", PACKAGES);
+        setObj("packages", PACKAGES);
         if (PluginCfg.IS_DEBUG) {
             System.out.println("packages vresion:" + PACKAGES_VERSION);
             System.out.println("defaultGroup:" + DEFAULT_GROUP);

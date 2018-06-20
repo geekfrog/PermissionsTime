@@ -7,6 +7,28 @@ defaultPrefix: ''
 # 默认后缀.
 # Default Suffix.
 defaultSuffix: ''
+# 如果你有其他的插件来修改玩家的displayname, 请禁用此项或禁止其他插件修改. 比如Essentials插件.
+# 如果安装了PlaceholderAPI 可以使用
+#  %pttag_fullname% %pttag_prefix% %pttag_suffix% 来显示displayname prefix+color suffix
+# If you have other plugin, to modifies player displayname, please disable this.
+changeDisplayname: true
+# 使用HolographicDisplays显示称号
+# use HolographicDisplays to show Tags
+useHdPlugin: false
+# 称号刷新周期(秒). 
+# 如果你你的称号使用了PlaceholderAPI请设置此项
+# 推荐600秒以上.  设置-1则禁用刷新.
+# Title refresh cycle (seconds). 
+# If you use Placeholder, please set. 
+# Recommend more than 600s. Set -1 to disable refresh.
+refreshTagTime: -1
+template:
+  lore:
+  - '&1-----------------'
+  - '&2效果展示: '
+  - '&3    %displayname%'
+  - '&4-----------------'
+  - '&5——  %description%'
 packages:
 # 称号包名称.
 # Tag package name.

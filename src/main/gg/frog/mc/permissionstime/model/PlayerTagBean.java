@@ -1,9 +1,13 @@
 package gg.frog.mc.permissionstime.model;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Team;
+
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
 import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.config.PluginCfg;
@@ -11,6 +15,7 @@ import gg.frog.mc.permissionstime.config.TagNameCfg;
 import gg.frog.mc.permissionstime.utils.StrUtil;
 import gg.frog.mc.permissionstime.utils.config.IConfigBean;
 import gg.frog.mc.permissionstime.utils.config.PluginConfig;
+import gg.frog.mc.permissionstime.utils.nms.NMSUtil;
 
 /**
  * 玩家标签包实体类
@@ -28,12 +33,19 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 	private String suffix;
 	// 当前显示的名称
 	private String displayName;
+	// 当前显示的前缀
+	private String displayPrefix;
+	// 当前显示的后缀
+	private String displaySuffix;
+	// 玩家所在队伍
+	private Team team;
+	// 不可见的队伍名
+	private String invisibleName;
+	// hd
+	private Hologram holograms;
 
 	public PlayerTagBean(String fileName, PluginMain pm) {
 		super(fileName, pm);
-		if (PluginCfg.IS_DEBUG) {
-			System.out.println("Player Tag File:" + fileName);
-		}
 	}
 
 	@Override
@@ -115,59 +127,86 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 					}
 				}
 				if (forceSet || namecolor_flag || prefix_flag || suffix_flag) {
-					displayName = getDisplayNameStr(player);
-					player.setDisplayName(displayName);
+					displayPrefix = StrUtil.messageFormat(player, prefix + "&r" + namecolor);
+					displaySuffix = StrUtil.messageFormat(player, "&r" + suffix);
+					displayName = "§r" + displayPrefix + player.getName() + displaySuffix + "§r";
+					if (TagNameCfg.CHANGE_DISPLAYNAME) {
+						player.setDisplayName(displayName);
+					}
 					if (PluginCfg.IS_DEBUG) {
 						System.out.println("PlayerTagBean:" + playerTag);
 					}
-					if (!TagNameCfg.USE_HD_PLUGIN) {
-						try {
-							if (TagNameCfg.scoreboard == null) {
-								TagNameCfg.scoreboard = pm.getServer().getScoreboardManager().getNewScoreboard();
-							}
-							Team team = TagNameCfg.scoreboard.getTeam(player.getName());
+					try {
+						if (TagNameCfg.scoreboard == null) {
+							TagNameCfg.scoreboard = pm.getServer().getScoreboardManager().getNewScoreboard();
+						}
+						if (invisibleName == null) {
+							invisibleName = String.valueOf(TagNameCfg.scoreboard.getTeams().size() + 1).replaceAll("", "§");
+						}
+						if (!TagNameCfg.USE_HD_PLUGIN) {
+							team = TagNameCfg.scoreboard.getTeam(player.getName());
 							if (team == null) {
 								team = TagNameCfg.scoreboard.registerNewTeam(player.getName());
 							}
-							String teamPrefix = StrUtil.messageFormat(player, prefix + "&r" + namecolor);
-							if (PluginCfg.IS_DEBUG)
-								System.out.println(teamPrefix);
-							teamPrefix = teamPrefix.length() > 16 ? (teamPrefix.substring(0, 7) + ".." + teamPrefix.substring(teamPrefix.length() - 7)) : teamPrefix;
-							if (PluginCfg.IS_DEBUG)
-								System.out.println(teamPrefix);
+							String teamPrefix = displayPrefix.length() > 16 ? (displayPrefix.substring(0, 7) + ".." + displayPrefix.substring(displayPrefix.length() - 7)) : displayPrefix;
 							team.setPrefix(teamPrefix);
-							String teamSuffix = StrUtil.messageFormat(player, "&r" + suffix);
-							if (PluginCfg.IS_DEBUG)
-								System.out.println(teamSuffix);
-							teamSuffix = teamSuffix.length() > 16 ? (teamSuffix.substring(0, 7) + ".." + teamSuffix.substring(teamSuffix.length() - 7)) : teamSuffix;
-							if (PluginCfg.IS_DEBUG) {
-								System.out.println(teamSuffix);
-							}
+							String teamSuffix = displaySuffix.length() > 16 ? (displaySuffix.substring(0, 7) + ".." + displaySuffix.substring(displaySuffix.length() - 7)) : displaySuffix;
 							team.setSuffix(teamSuffix);
-							team.addEntry(player.getName());
-							player.setScoreboard(TagNameCfg.scoreboard);
-							if (PluginCfg.IS_DEBUG)
-								for (Team t : TagNameCfg.scoreboard.getTeams()) {
-									System.out.println(t.getPrefix());
-									System.out.println(t.getSuffix());
-									for (String e : t.getEntries()) {
-										System.out.println(e);
-									}
-								}
-						} catch (Exception e) {
-							e.printStackTrace();
+							if (!(holograms == null || holograms.isDeleted())) {
+								holograms.delete();
+							}
+						} else {
+							team = TagNameCfg.scoreboard.getTeam(invisibleName);
+							if (team == null) {
+								team = TagNameCfg.scoreboard.registerNewTeam(invisibleName);
+							}
+							team.setPrefix("");
+							team.setSuffix("");
+							if (NMSUtil.getServerVersion().startsWith("v1_7") || NMSUtil.getServerVersion().startsWith("v1_8")) {
+
+							} else {
+								team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
+							}
+							initHologramsName(player);
 						}
-					} else {
-						//TODO
-						//player.setCustomNameVisible(false);
+						team.addPlayer(player);
+						player.setScoreboard(TagNameCfg.scoreboard);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			}
 		});
 	}
 
+	public void initHologramsName(Player player) {
+		if (holograms == null || holograms.isDeleted()) {
+			Location loc = player.getLocation();
+			loc = new Location(loc.getWorld(), loc.getX(), loc.getY() + 2.75, loc.getZ());
+			holograms = HologramsAPI.createHologram(pm, loc);
+			holograms.getVisibilityManager().hideTo(player);
+		}
+		holograms.clearLines();
+		holograms.appendTextLine(StrUtil.messageFormat(player, prefix));
+		holograms.appendTextLine(StrUtil.messageFormat(player, namecolor + player.getName()));
+		holograms.appendTextLine(StrUtil.messageFormat(player, suffix));
+	}
+
+	public void moveHologramsName(Player player) {
+		if (!(holograms == null || holograms.isDeleted())) {
+			Location loc = player.getLocation();
+			holograms.teleport(loc.getWorld(), loc.getX(), loc.getY() + 2.75, loc.getZ());
+		}
+	}
+
+	public void delHologramsName() {
+		if (!(holograms == null || holograms.isDeleted())) {
+			holograms.delete();
+		}
+	}
+
 	public String getDisplayNameStr(Player player) {
-		return StrUtil.messageFormat(player, "&r" + prefix + "&r" + namecolor + player.getName() + "&r" + suffix + "&r");
+		return StrUtil.messageFormat(prefix + "&r" + namecolor + player.getName() + "&r" + suffix);
 	}
 
 	@Override
@@ -209,6 +248,14 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 		return displayName;
 	}
 
+	public String getDisplayPrefix() {
+		return displayPrefix;
+	}
+
+	public String getDisplaySuffix() {
+		return displaySuffix;
+	}
+
 	@Override
 	public YamlConfiguration toConfig() {
 		YamlConfiguration config = new YamlConfiguration();
@@ -227,7 +274,7 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 
 	@Override
 	public String toString() {
-		return "PlayerTagBean [namecolor=" + namecolor + ", prefix=" + prefix + ", suffix=" + suffix + "]";
+		return "PlayerTagBean [namecolor=" + namecolor + ", prefix=" + prefix + ", suffix=" + suffix + ", displayName=" + displayName + ", displayPrefix=" + displayPrefix + ", displaySuffix=" + displaySuffix + ", invisibleName=" + invisibleName + "]";
 	}
 
 }
