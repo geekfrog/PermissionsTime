@@ -3,7 +3,7 @@
 defaultNamecolor: '&6'
 # 默认前缀.
 # Default Prefix.
-defaultPrefix: ''
+defaultPrefix: '&3[player]'
 # 默认后缀.
 # Default Suffix.
 defaultSuffix: ''
@@ -12,8 +12,8 @@ defaultSuffix: ''
 #  %pttag_fullname% %pttag_prefix% %pttag_suffix% 来显示displayname prefix+color suffix
 # If you have other plugin, to modifies player displayname, please disable this.
 changeDisplayname: true
-# 使用HolographicDisplays显示称号
-# use HolographicDisplays to show Tags
+# 使用HolographicDisplays显示称号. 称号可以更长,不会被省略.
+# use HolographicDisplays to show Tags. The Tag can be more than 16 char
 useHdPlugin: false
 # 称号刷新周期(秒). 
 # 如果你你的称号使用了PlaceholderAPI请设置此项
@@ -25,13 +25,21 @@ refreshTagTime: -1
 template:
   lore:
   - '&1-----------------'
-  - '&2效果展示: '
+  - '&2效果展示:'
   - '&3    %displayname%'
   - '&4-----------------'
-  - '&5——  %description%'
+  - '&5    %description%'
+  - '&6-----------------'
 packages:
 # 称号包名称.
 # Tag package name.
+  default:
+    description: '&4The default tag.'
+    permissions: ''
+    namecolor:
+    - '&6'
+    prefix:
+    - '&3[player]'
   example1:
     # 称号包描述,可以填写如何获得这些称号.
     # Tag package describes. You can type how to get these tag.
