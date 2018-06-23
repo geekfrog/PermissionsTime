@@ -15,6 +15,9 @@ changeDisplayname: true
 # 使用HolographicDisplays显示称号. 称号可以更长,不会被省略.
 # use HolographicDisplays to show Tags. The Tag can be more than 16 char
 useHdPlugin: false
+# 如果使用了HD, 是否一行显示
+# One line display the name and tags.
+oneLineDisplay: true
 # 称号刷新周期(秒). 
 # 如果你你的称号使用了PlaceholderAPI请设置此项
 # 推荐600秒以上.  设置-1则禁用刷新.
@@ -25,7 +28,7 @@ refreshTagTime: -1
 template:
   lore:
   - '&1-----------------'
-  - '&2效果展示:'
+  - '&2Preview:'
   - '&3    %displayname%'
   - '&4-----------------'
   - '&5    %description%'

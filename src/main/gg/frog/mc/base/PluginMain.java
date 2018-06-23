@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime;
+package gg.frog.mc.base;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -12,15 +12,16 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import gg.frog.mc.permissionstime.command.MainCommand;
-import gg.frog.mc.permissionstime.config.ConfigManager;
-import gg.frog.mc.permissionstime.config.PluginCfg;
+import gg.frog.mc.base.config.ConfigManager;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.FileUtil;
+import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.UpdateCheck;
+import gg.frog.mc.nametags.listener.TagsListener;
+import gg.frog.mc.nametags.placeholder.TagPlaceholder;
+import gg.frog.mc.permissionstime.command.PtCommand;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.listener.MainListener;
-import gg.frog.mc.permissionstime.placeholder.TagPlaceholder;
-import gg.frog.mc.permissionstime.utils.FileUtil;
-import gg.frog.mc.permissionstime.utils.StrUtil;
-import gg.frog.mc.permissionstime.utils.UpdateCheck;
 import net.milkbowl.vault.permission.Permission;
 
 public class PluginMain extends JavaPlugin {
@@ -60,12 +61,12 @@ public class PluginMain extends JavaPlugin {
 
 			public void run() {
 				if (!checkPluginDepends()) {
-					getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Startup failure!"));
+					getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Startup failure!"));
 					getServer().getPluginManager().disablePlugin(pm);
 				} else {
 					registerListeners();
 					registerCommands();
-					getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&2Startup successful!"));
+					getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§2Startup successful!"));
 				}
 				if (PluginCfg.IS_METRICS) {
 					try {
@@ -85,6 +86,7 @@ public class PluginMain extends JavaPlugin {
 	 */
 	private void registerListeners() {
 		pm.getServer().getPluginManager().registerEvents(new MainListener(pm), pm);
+		pm.getServer().getPluginManager().registerEvents(new TagsListener(pm), pm);
 	}
 
 	/**
@@ -92,12 +94,12 @@ public class PluginMain extends JavaPlugin {
 	 * 这里可以注册多个，一般注册一个就够用
 	 */
 	private void registerCommands() {
-		MainCommand mcmd = new MainCommand(pm);
-		if (getDescription().getCommands().containsKey(PLUGIN_NAME_LOWER_CASE)) {
-			getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(mcmd);
+		PtCommand ptCmd = new PtCommand(pm);
+		if (getDescription().getCommands().containsKey("permissionstime")) {
+			getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(ptCmd);
 		}
 		if (getDescription().getCommands().containsKey("pt")) {
-			getCommand("pt").setExecutor(mcmd);
+			getCommand("pt").setExecutor(ptCmd);
 		}
 	}
 
@@ -121,22 +123,22 @@ public class PluginMain extends JavaPlugin {
 		boolean needDepend = false;
 		for (String name : DEPEND_PLUGIN.split(",")) {
 			if (!getServer().getPluginManager().isPluginEnabled(name)) {
-				getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Need depend plugins : " + name + "."));
+				getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Need depend plugins : " + name + "."));
 				needDepend = true;
 			}
 		}
 		if (!needDepend && !setupPermissions()) {
-			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Cann''t hook vault permission."));
+			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Cann''t hook vault permission."));
 			needDepend = true;
 		}
 		if (!needDepend && !setupDatabase()) {
-			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Cann''t setup database."));
+			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Cann''t setup database."));
 			needDepend = true;
 		}
 		enabledPlaceholder = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI");
 		if (!enabledPlaceholder) {
-			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&ePlaceholder is not installed or not enabled."));
-			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&eSome func will be disabled."));
+			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§ePlaceholder is not installed or not enabled."));
+			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§eSome func will be disabled."));
 		} else {
 			boolean placeholdersHook = false;
 			try {
@@ -145,14 +147,14 @@ public class PluginMain extends JavaPlugin {
 
 			}
 			if (!placeholdersHook) {
-				getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Cann''t hook placeholders"));
-				getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4The placeholders '%permissionstime_displayname%' Cann''t use."));
+				getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Cann''t hook placeholders"));
+				getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4The placeholders '%permissionstime_displayname%' Cann''t use."));
 			}
 		}
 		enabledHdPlugin = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
 		if (!enabledHdPlugin) {
-			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&eHolographicDisplays is not installed or not enabled."));
-			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&eSome func will be disabled."));
+			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§eHolographicDisplays is not installed or not enabled."));
+			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§eSome func will be disabled."));
 		}
 
 		if (needDepend) {

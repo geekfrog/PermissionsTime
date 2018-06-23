@@ -6,14 +6,14 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.LangCfg;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.LangCfg;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
-import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
-import gg.frog.mc.permissionstime.utils.StrUtil;
 
 public class GiveCmd implements Runnable {
 

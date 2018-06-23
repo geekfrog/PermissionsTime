@@ -12,7 +12,7 @@ metrics: true
 tagSystem: false
 # 语言文件名称 在'lang'文件夹内.
 # Language file name.
-lang: en
+lang: zh-cn
 # 数据库相关.
 # Database settings.
 mysql:

@@ -39,7 +39,7 @@
 			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 		<repository>
-			<id>filoghost-repo</id>
+			<id>HD</id>
 			<url>https://ci.filoghost.me/plugin/repository/everything/</url>
 		</repository>
 	</repositories>

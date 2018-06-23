@@ -15,11 +15,12 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.config.PluginConfig;
+import gg.frog.mc.base.utils.nms.ItemUtil;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
-import gg.frog.mc.permissionstime.utils.StrUtil;
-import gg.frog.mc.permissionstime.utils.config.PluginConfig;
-import gg.frog.mc.permissionstime.utils.nms.ItemUtil;
 
 public class PackagesCfg extends PluginConfig {
 
@@ -103,7 +104,7 @@ public class PackagesCfg extends PluginConfig {
             if (type != null) {
                 ItemStack item = new ItemStack(type, 1, (short) 0, (byte) exid);
                 ItemMeta meta = item.getItemMeta();
-                meta.setDisplayName(StrUtil.messageFormat(ppb.getDisplayName() + "&r(" + name + ")"));
+                meta.setDisplayName(StrUtil.messageFormat(ppb.getDisplayName() + "§r(" + name + ")"));
                 List<String> lores = new ArrayList<String>();
                 for (String lore : ppb.getLores()) {
                     lores.add(StrUtil.messageFormat(lore));

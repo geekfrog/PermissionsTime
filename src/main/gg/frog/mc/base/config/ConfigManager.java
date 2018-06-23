@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.config;
+package gg.frog.mc.base.config;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,12 +8,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.LangCfg;
-import gg.frog.mc.permissionstime.config.PluginCfg;
-import gg.frog.mc.permissionstime.utils.FileUtil;
-import gg.frog.mc.permissionstime.utils.FileUtil.FindFilesDo;
-import gg.frog.mc.permissionstime.utils.config.PluginConfig;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.LangCfg;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.FileUtil;
+import gg.frog.mc.base.utils.FileUtil.FindFilesDo;
+import gg.frog.mc.base.utils.config.PluginConfig;
+import gg.frog.mc.nametags.config.TagNameCfg;
+import gg.frog.mc.permissionstime.config.PackagesCfg;
 
 /**
  * 配置文件管理

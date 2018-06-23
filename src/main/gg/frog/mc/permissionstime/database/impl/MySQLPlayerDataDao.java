@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.database.DatabaseUtil;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
-import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.IPlayerDataDao;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
-import gg.frog.mc.permissionstime.utils.StrUtil;
-import gg.frog.mc.permissionstime.utils.database.DatabaseUtil;
 
 public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 
@@ -37,7 +37,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return false;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender()
-					.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't check table is exist."));
+					.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Can't check table is exist."));
 			throw e;
 		}
 	}
@@ -51,7 +51,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return true;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender()
-					.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't creat table."));
+					.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Can't creat table."));
 			throw e;
 		}
 	}
@@ -80,7 +80,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return true;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender()
-					.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't creat data: {0}", pdb));
+					.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Can't creat data: {0}", pdb));
 			throw e;
 		}
 	}
@@ -141,7 +141,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 					return true;
 				} catch (Exception e) {
 					pm.getServer().getConsoleSender().sendMessage(
-							StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't update data: {0}", pdb));
+							StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Can't update data: {0}", pdb));
 					throw e;
 				}
 			}
@@ -170,7 +170,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return pdbList;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender().sendMessage(
-					StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't find data by UUID: {0}", uuid));
+					StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Can't find data by UUID: {0}", uuid));
 			throw e;
 		}
 	}
@@ -201,7 +201,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return null;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(
-					PluginCfg.PLUGIN_PREFIX + "&4Can't find data by UUID: {0}, packageName: {1}", uuid, packageName));
+					PluginCfg.PLUGIN_PREFIX + "§4Can't find data by UUID: {0}, packageName: {1}", uuid, packageName));
 			throw e;
 		}
 	}
@@ -232,7 +232,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return pdbList;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender().sendMessage(
-					StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't find data by UUID: {0}", uuid));
+					StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Can't find data by UUID: {0}", uuid));
 			throw e;
 		}
 	}
@@ -246,7 +246,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return true;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender()
-					.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't delete data by ID: {0}", id));
+					.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Can't delete data by ID: {0}", id));
 			throw e;
 		}
 	}
@@ -265,7 +265,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return true;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender().sendMessage(
-					StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Can't delete data by UUID: {0}", uuid));
+					StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Can't delete data by UUID: {0}", uuid));
 			throw e;
 		}
 	}
@@ -284,7 +284,7 @@ public class MySQLPlayerDataDao extends DatabaseUtil implements IPlayerDataDao {
 			return true;
 		} catch (Exception e) {
 			pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(
-					PluginCfg.PLUGIN_PREFIX + "&4Can't delete data by UUID: {0}, packageName: {1}", uuid, packageName));
+					PluginCfg.PLUGIN_PREFIX + "§4Can't delete data by UUID: {0}, packageName: {1}", uuid, packageName));
 			throw e;
 		}
 	}

@@ -11,26 +11,34 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.LangCfg;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.LangCfg;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.nametags.command.TagCmd;
+import gg.frog.mc.permissionstime.command.GetCmd;
+import gg.frog.mc.permissionstime.command.GiveCmd;
+import gg.frog.mc.permissionstime.command.MeCmd;
+import gg.frog.mc.permissionstime.command.PackagesCmd;
+import gg.frog.mc.permissionstime.command.RemoveAllCmd;
+import gg.frog.mc.permissionstime.command.RemoveCmd;
+import gg.frog.mc.permissionstime.command.SetCmd;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
-import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
-import gg.frog.mc.permissionstime.utils.StrUtil;
 
-public class MainCommand implements CommandExecutor, TabCompleter {
+public class PtCommand implements CommandExecutor, TabCompleter {
 
 	private PluginMain pm;
 	private SqlManager sm;
 
-	public MainCommand(PluginMain pm) {
+	public PtCommand(PluginMain pm) {
 		this.pm = pm;
 		this.sm = pm.getSqlManager();
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
-		if (commandLabel.equalsIgnoreCase(pm.PLUGIN_NAME_LOWER_CASE) || commandLabel.equalsIgnoreCase("pt")) {
+		if (commandLabel.equalsIgnoreCase("permissionstime") || commandLabel.equalsIgnoreCase("pt")) {
 			boolean isPlayer = false;
 			if (sender instanceof Player) {
 				isPlayer = true;
@@ -46,13 +54,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 						if (player.hasPermission("permissionstime.reload")) {
 							for (Player p : pm.getServer().getOnlinePlayers()) {
 								InventoryView inventory = p.getOpenInventory();
-								if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle()))) {
+								if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§r").equals(inventory.getTitle()))) {
 									inventory.close();
 								}
 							}
 							pm.getConfigManager().reloadConfig();
 							if (!sm.updateDatabase()) {
-								sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Database exceptions."));
+								sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Database exceptions."));
 							}
 							sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_CONFIG_RELOADED));
 							pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_CONFIG_RELOADED));
@@ -62,13 +70,13 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 					} else {
 						for (Player p : pm.getServer().getOnlinePlayers()) {
 							InventoryView inventory = p.getOpenInventory();
-							if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "&r&5&9&2&0&r").equals(inventory.getTitle()))) {
+							if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§r").equals(inventory.getTitle()))) {
 								inventory.close();
 							}
 						}
 						pm.getConfigManager().reloadConfig();
 						if (!sm.updateDatabase()) {
-							sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Database exceptions."));
+							sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Database exceptions."));
 						}
 						sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_CONFIG_RELOADED));
 					}
@@ -127,7 +135,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 	}
 
 	private void getHelp(CommandSender sender, boolean isPlayer) {
-		sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "\n&a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
+		sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "\n§a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
 		if (isPlayer && (sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
 			sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_ME, pm.PLUGIN_NAME_LOWER_CASE));
 		}

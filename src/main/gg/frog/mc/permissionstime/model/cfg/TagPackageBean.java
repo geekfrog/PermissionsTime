@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import gg.frog.mc.permissionstime.utils.config.IConfigBean;
+import gg.frog.mc.base.utils.config.IConfigBean;
 
 /**
  * 标签包实体类

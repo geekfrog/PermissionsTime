@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.utils;
+package gg.frog.mc.base.utils;
 
 import java.io.File;
 import java.io.FileWriter;

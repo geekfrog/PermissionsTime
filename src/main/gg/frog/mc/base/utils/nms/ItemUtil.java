@@ -1,13 +1,13 @@
-package gg.frog.mc.permissionstime.utils.nms;
+package gg.frog.mc.base.utils.nms;
 
 import java.lang.reflect.Method;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.PluginCfg;
-import gg.frog.mc.permissionstime.utils.StrUtil;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
 
 public class ItemUtil {
 

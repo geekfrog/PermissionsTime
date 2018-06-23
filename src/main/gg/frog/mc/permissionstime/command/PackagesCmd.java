@@ -4,12 +4,12 @@ import java.util.Map.Entry;
 
 import org.bukkit.command.CommandSender;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.LangCfg;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.LangCfg;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
-import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
-import gg.frog.mc.permissionstime.utils.StrUtil;
 
 public class PackagesCmd implements Runnable {
 

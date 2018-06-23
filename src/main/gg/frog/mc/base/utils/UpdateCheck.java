@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.utils;
+package gg.frog.mc.base.utils;
 
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -7,8 +7,8 @@ import java.net.URL;
 import org.bukkit.configuration.file.YamlConfiguration;
 import com.google.common.base.Charsets;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.PluginCfg;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.PluginCfg;
 
 public class UpdateCheck implements Runnable {
 
@@ -29,9 +29,9 @@ public class UpdateCheck implements Runnable {
             YamlConfiguration tempConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(connection.getInputStream(), Charsets.UTF_8));
             String version = tempConfig.getString("version", pm.PLUGIN_VERSION);
             if (!pm.PLUGIN_VERSION.equals(version)) {
-                pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4There is a new version ''{0}'' of the plugin.", version));
+                pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4There is a new version ''{0}'' of the plugin.", version));
             } else {
-                pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&2No new version available."));
+                pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§2No new version available."));
             }
         } catch (Exception e) {
             e.printStackTrace();

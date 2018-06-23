@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.config;
+package gg.frog.mc.nametags.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +14,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Scoreboard;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.model.PlayerTagBean;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.LangCfg;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.config.PluginConfig;
+import gg.frog.mc.base.utils.nms.ItemUtil;
+import gg.frog.mc.nametags.model.PlayerTagBean;
 import gg.frog.mc.permissionstime.model.cfg.TagPackageBean;
-import gg.frog.mc.permissionstime.utils.StrUtil;
-import gg.frog.mc.permissionstime.utils.config.PluginConfig;
-import gg.frog.mc.permissionstime.utils.nms.ItemUtil;
 
 public class TagNameCfg extends PluginConfig {
 
@@ -28,6 +30,7 @@ public class TagNameCfg extends PluginConfig {
 	public static String DEFAULT_SUFFIX = null;
 	public static boolean CHANGE_DISPLAYNAME = true;
 	public static boolean USE_HD_PLUGIN = false;
+	public static boolean ONE_LINE_DISPLAY = false;
 	public static Integer REFRESH_TAG_TIME = null;
 	public static Map<String, TagPackageBean> PACKAGES = new ConcurrentHashMap<>();
 	public static List<String> TEMPLATE_LORE = null;
@@ -65,6 +68,7 @@ public class TagNameCfg extends PluginConfig {
 		DEFAULT_SUFFIX = setGetDefault("defaultSuffix", "");
 		CHANGE_DISPLAYNAME = setGetDefault("changeDisplayname", true);
 		USE_HD_PLUGIN = setGetDefault("useHdPlugin", false);
+		ONE_LINE_DISPLAY = setGetDefault("oneLineDisplay", true);
 		REFRESH_TAG_TIME = setGetDefault("refreshTagTime", -1);
 		PACKAGES = getObjMap("packages", TagPackageBean.class);
 		TEMPLATE_LORE = getConfig().getStringList("template.lore");
@@ -110,6 +114,7 @@ public class TagNameCfg extends PluginConfig {
 				SUFFIX_ITEMS.put(e.getValue().getPermissions(), items);
 			}
 		}
+		
 		if (task != null) {
 			task.cancel();
 		}
@@ -138,15 +143,15 @@ public class TagNameCfg extends PluginConfig {
 			Map<String, List<String>> tagPermissions = null;
 			if (tagType == TagType.NAMECOLOR_TYPE) {
 				tags = tpb.getNamecolor();
-				itemDisplayName = "&6&l昵称效果&r ";
+				itemDisplayName = LangCfg.TAG_COLOR_ITEM_NAME + "§1§r ";
 				tagPermissions = NAMECOLOR_PERMISSIONS;
 			} else if (tagType == TagType.PREFIX_TYPE) {
 				tags = tpb.getPrefix();
-				itemDisplayName = "&6&l昵称前缀&r ";
+				itemDisplayName = LangCfg.TAG_PREFIX_ITEM_NAME + "§2§r ";
 				tagPermissions = PREFIX_PERMISSIONS;
 			} else if (tagType == TagType.SUFFIX_TYPE) {
 				tags = tpb.getSuffix();
-				itemDisplayName = "&6&l昵称后缀&r ";
+				itemDisplayName = LangCfg.TAG_SUFFIX_ITEM_NAME + "§3§r ";
 				tagPermissions = SUFFIX_PERMISSIONS;
 			}
 			if (tags != null) {

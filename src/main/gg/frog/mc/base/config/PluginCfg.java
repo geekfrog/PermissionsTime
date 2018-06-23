@@ -1,7 +1,7 @@
-package gg.frog.mc.permissionstime.config;
+package gg.frog.mc.base.config;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.utils.config.PluginConfig;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.utils.config.PluginConfig;
 
 /**
  * 插件默认配置
@@ -34,7 +34,7 @@ public class PluginCfg extends PluginConfig {
 
     @Override
     protected void loadToDo() {
-        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "&b[" + pm.PLUGIN_NAME + "] ") + "&r";
+        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "§b[" + pm.PLUGIN_NAME + "] ") + "§r";
         IS_DEBUG = setGetDefault("debug", false);
         IS_METRICS = setGetDefault("metrics", true);
         TAG_SYSTEM = setGetDefault("tagSystem", false);

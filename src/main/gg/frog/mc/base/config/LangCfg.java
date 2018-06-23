@@ -1,7 +1,7 @@
-package gg.frog.mc.permissionstime.config;
+package gg.frog.mc.base.config;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.utils.config.PluginConfig;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.utils.config.PluginConfig;
 
 /**
  * 语言支持
@@ -20,6 +20,9 @@ public class LangCfg extends PluginConfig {
 	public static String TIME_UNIT_M = null;
 	public static String TIME_FOREVER = null;
 	public static String TAG = null;
+	public static String TAG_COLOR_ITEM_NAME = null;
+	public static String TAG_PREFIX_ITEM_NAME = null;
+	public static String TAG_SUFFIX_ITEM_NAME = null;
 
 	public static String MSG_PARAMETER_MISMATCH = null;
 	public static String MSG_TIME_PARAMETER_INCORRECT = null;
@@ -84,6 +87,9 @@ public class LangCfg extends PluginConfig {
 		TIME_UNIT_M = getConfig().getString("timeUnitM", "minute(s)");
 		TIME_FOREVER = getConfig().getString("timeForever", "Forever");
 		TAG = getConfig().getString("tag", "Tag/Prefix");
+		TAG_COLOR_ITEM_NAME = getConfig().getString("tag", "&6&lName Style");
+		TAG_PREFIX_ITEM_NAME = getConfig().getString("tag", "&6&lTag Prefix");
+		TAG_SUFFIX_ITEM_NAME = getConfig().getString("tag", "&6&lTag Suffix");
 
 		MSG_PARAMETER_MISMATCH = getConfig().getString("msg.parameterMismatch", "&4Parameter mismatch.");
 		MSG_TIME_PARAMETER_INCORRECT = getConfig().getString("msg.timeParameterIncorrect", "&4The number of time is incorrect. Please enter a nonzero integer.");

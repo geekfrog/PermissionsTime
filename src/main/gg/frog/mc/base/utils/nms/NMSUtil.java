@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.utils.nms;
+package gg.frog.mc.base.utils.nms;
 
 import org.bukkit.Bukkit;
 

@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.utils;
+package gg.frog.mc.base.utils;
 
 import java.text.MessageFormat;
 import java.util.Date;
@@ -6,8 +6,8 @@ import java.util.Date;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.bukkit.entity.Player;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.LangCfg;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.LangCfg;
 import gg.frog.mc.permissionstime.database.IPlayerDataDao;
 import me.clip.placeholderapi.PlaceholderAPI;
 
@@ -18,12 +18,14 @@ public class StrUtil {
 	private static final long ht = 60 * IPlayerDataDao.TIME_UNIT;
 	private static final long mt = IPlayerDataDao.TIME_UNIT;
 
+	
+	
 	public static String messageFormat(String src, Object... args) {
-		return MessageFormat.format(src, args).replaceAll("&", "§").replaceAll("\\n", "\n");
+		return MessageFormat.format(src, args).replaceAll("&", "§").replaceAll("\\\\n", "\n");
 	}
 
 	public static String messageFormat(Player player, String src, Object... args) {
-		String message = MessageFormat.format(src, args).replaceAll("&", "§").replaceAll("\\n", "\n").replaceAll("%player%", player.getPlayer().getDisplayName());
+		String message = MessageFormat.format(src, args).replaceAll("&", "§").replaceAll("\\\\n", "\n").replaceAll("%player%", player.getPlayer().getDisplayName());
 		if (PluginMain.enabledPlaceholder) {
 			message = PlaceholderAPI.setPlaceholders(player, message);
 		}

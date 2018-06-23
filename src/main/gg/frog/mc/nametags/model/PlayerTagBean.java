@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.model;
+package gg.frog.mc.nametags.model;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.MemorySection;
@@ -9,13 +9,13 @@ import org.bukkit.scoreboard.Team;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.PluginCfg;
-import gg.frog.mc.permissionstime.config.TagNameCfg;
-import gg.frog.mc.permissionstime.utils.StrUtil;
-import gg.frog.mc.permissionstime.utils.config.IConfigBean;
-import gg.frog.mc.permissionstime.utils.config.PluginConfig;
-import gg.frog.mc.permissionstime.utils.nms.NMSUtil;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.config.IConfigBean;
+import gg.frog.mc.base.utils.config.PluginConfig;
+import gg.frog.mc.base.utils.nms.NMSUtil;
+import gg.frog.mc.nametags.config.TagNameCfg;
 
 /**
  * 玩家标签包实体类
@@ -127,8 +127,8 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 					}
 				}
 				if (forceSet || namecolor_flag || prefix_flag || suffix_flag) {
-					displayPrefix = StrUtil.messageFormat(player, prefix + "&r" + namecolor);
-					displaySuffix = StrUtil.messageFormat(player, "&r" + suffix);
+					displayPrefix = StrUtil.messageFormat(player, prefix + "§r" + namecolor);
+					displaySuffix = StrUtil.messageFormat(player, "§r" + suffix);
 					displayName = "§r" + displayPrefix + player.getName() + displaySuffix + "§r";
 					if (TagNameCfg.CHANGE_DISPLAYNAME) {
 						player.setDisplayName(displayName);
@@ -180,25 +180,35 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 	}
 
 	public void initHologramsName(Player player) {
+		Location loc = player.getLocation();
+		loc = new Location(loc.getWorld(), loc.getX(), loc.getY() + (TagNameCfg.ONE_LINE_DISPLAY ? 2.25 : 2.75), loc.getZ());
 		if (holograms == null || holograms.isDeleted()) {
-			Location loc = player.getLocation();
-			loc = new Location(loc.getWorld(), loc.getX(), loc.getY() + 2.75, loc.getZ());
 			holograms = HologramsAPI.createHologram(pm, loc);
-			holograms.getVisibilityManager().hideTo(player);
+		} else {
+			holograms.teleport(loc);
 		}
 		holograms.clearLines();
-		holograms.appendTextLine(StrUtil.messageFormat(player, prefix));
-		holograms.appendTextLine(StrUtil.messageFormat(player, namecolor + player.getName()));
-		holograms.appendTextLine(StrUtil.messageFormat(player, suffix));
+		if (TagNameCfg.ONE_LINE_DISPLAY) {
+			holograms.appendTextLine(getDisplayNameStr(player));
+		} else {
+			holograms.appendTextLine(StrUtil.messageFormat(player, prefix));
+			holograms.appendTextLine(StrUtil.messageFormat(player, namecolor + player.getName()));
+			holograms.appendTextLine(StrUtil.messageFormat(player, suffix));
+		}
+		holograms.getVisibilityManager().hideTo(player);
 	}
 
 	public void moveHologramsName(Player player) {
 		if (!(holograms == null || holograms.isDeleted())) {
 			Location loc = player.getLocation();
-			holograms.teleport(loc.getWorld(), loc.getX(), loc.getY() + 2.75, loc.getZ());
+			loc = new Location(loc.getWorld(), loc.getX(), loc.getY() + (TagNameCfg.ONE_LINE_DISPLAY ? 2.25 : 2.75), loc.getZ());
+			holograms.teleport(loc);
 		}
 	}
 
+	/**
+	 * 退出游戏调用
+	 */
 	public void delHologramsName() {
 		if (!(holograms == null || holograms.isDeleted())) {
 			holograms.delete();
@@ -206,7 +216,7 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 	}
 
 	public String getDisplayNameStr(Player player) {
-		return StrUtil.messageFormat(prefix + "&r" + namecolor + player.getName() + "&r" + suffix);
+		return StrUtil.messageFormat(prefix + "§r" + namecolor + player.getName() + "§r" + suffix);
 	}
 
 	@Override

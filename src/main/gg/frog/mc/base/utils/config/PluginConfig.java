@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.utils.config;
+package gg.frog.mc.base.utils.config;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,9 +17,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.google.common.base.Charsets;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.PluginCfg;
-import gg.frog.mc.permissionstime.utils.StrUtil;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
 
 /**
  * 配置操作

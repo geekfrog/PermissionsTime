@@ -1,6 +1,6 @@
-package gg.frog.mc.permissionstime.utils.database;
+package gg.frog.mc.base.utils.database;
 
-import gg.frog.mc.permissionstime.config.PluginCfg;
+import gg.frog.mc.base.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import lib.PatPeter.SQLibrary.Database;
 

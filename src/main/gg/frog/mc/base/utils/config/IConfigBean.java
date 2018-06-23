@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.utils.config;
+package gg.frog.mc.base.utils.config;
 
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;

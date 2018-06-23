@@ -1,4 +1,4 @@
-package gg.frog.mc.permissionstime.gui;
+package gg.frog.mc.nametags.gui;
 
 import java.util.List;
 
@@ -8,13 +8,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import gg.frog.mc.permissionstime.config.LangCfg;
-import gg.frog.mc.permissionstime.config.PluginCfg;
-import gg.frog.mc.permissionstime.config.TagNameCfg;
-import gg.frog.mc.permissionstime.config.TagNameCfg.TagType;
-import gg.frog.mc.permissionstime.model.PlayerTagBean;
-import gg.frog.mc.permissionstime.utils.StrUtil;
-import gg.frog.mc.permissionstime.utils.nms.ItemUtil;
+import gg.frog.mc.base.config.LangCfg;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.nms.ItemUtil;
+import gg.frog.mc.nametags.config.TagNameCfg;
+import gg.frog.mc.nametags.config.TagNameCfg.TagType;
+import gg.frog.mc.nametags.model.PlayerTagBean;
 
 public class PlayerTagShow {
 
@@ -22,7 +22,7 @@ public class PlayerTagShow {
 		Inventory inventory = null;
 		int size = 0;
 		if (itemList.size() > 0) {
-			inventory = Bukkit.createInventory(null, ((itemList.size() + disItemList.size()) % 9 == 0 ? (itemList.size() + disItemList.size()) : ((itemList.size() + disItemList.size()) / 9 + 1) * 9), StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "&r&5&9&2&0&r"));
+			inventory = Bukkit.createInventory(null, ((itemList.size() + disItemList.size()) % 9 == 0 ? (itemList.size() + disItemList.size()) : ((itemList.size() + disItemList.size()) / 9 + 1) * 9), StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§r"));
 			String uuid = player.getUniqueId().toString();
 			PlayerTagBean playerTag = null;
 			if (TagNameCfg.PLAYER_TAG.containsKey(uuid)) {

@@ -5,13 +5,13 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import gg.frog.mc.permissionstime.PluginMain;
-import gg.frog.mc.permissionstime.config.LangCfg;
-import gg.frog.mc.permissionstime.config.PluginCfg;
+import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.LangCfg;
+import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.utils.StrUtil;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.gui.PlayerPermissionShow;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
-import gg.frog.mc.permissionstime.utils.StrUtil;
 
 public class MeCmd implements Runnable {
 
@@ -42,7 +42,7 @@ public class MeCmd implements Runnable {
 				sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_ME, pm.PLUGIN_NAME_LOWER_CASE));
 			}
 		} else {
-			sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "&4Only player can use this command."));
+			sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Only player can use this command."));
 		}
 	}
 }
