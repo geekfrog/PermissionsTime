@@ -21,7 +21,7 @@ import gg.frog.mc.nametags.listener.TagsListener;
 import gg.frog.mc.nametags.placeholder.TagPlaceholder;
 import gg.frog.mc.permissionstime.command.PtCommand;
 import gg.frog.mc.permissionstime.database.SqlManager;
-import gg.frog.mc.permissionstime.listener.MainListener;
+import gg.frog.mc.permissionstime.listener.PtListener;
 import net.milkbowl.vault.permission.Permission;
 
 public class PluginMain extends JavaPlugin {
@@ -57,17 +57,17 @@ public class PluginMain extends JavaPlugin {
 		getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "    https://github.com/geekfrog/PermissionsTime/ "));
 		getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX));
 		getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "==============================="));
+		if (!checkPluginDepends()) {
+			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Startup failure!"));
+			getServer().getPluginManager().disablePlugin(pm);
+		} else {
+			cm.initConfig();
+			registerListeners();
+			registerCommands();
+			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§2Startup successful!"));
+		}
 		getServer().getScheduler().runTask(pm, new Runnable() {
-
 			public void run() {
-				if (!checkPluginDepends()) {
-					getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Startup failure!"));
-					getServer().getPluginManager().disablePlugin(pm);
-				} else {
-					registerListeners();
-					registerCommands();
-					getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§2Startup successful!"));
-				}
 				if (PluginCfg.IS_METRICS) {
 					try {
 						new Metrics(pm);
@@ -85,7 +85,7 @@ public class PluginMain extends JavaPlugin {
 	 * 这里可以注册多个
 	 */
 	private void registerListeners() {
-		pm.getServer().getPluginManager().registerEvents(new MainListener(pm), pm);
+		pm.getServer().getPluginManager().registerEvents(new PtListener(pm), pm);
 		pm.getServer().getPluginManager().registerEvents(new TagsListener(pm), pm);
 	}
 

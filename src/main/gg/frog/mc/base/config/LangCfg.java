@@ -1,5 +1,7 @@
 package gg.frog.mc.base.config;
 
+import org.bukkit.command.CommandSender;
+
 import gg.frog.mc.base.PluginMain;
 import gg.frog.mc.base.utils.config.PluginConfig;
 
@@ -77,7 +79,7 @@ public class LangCfg extends PluginConfig {
 	}
 
 	@Override
-	protected void loadToDo() {
+	protected void loadToDo(CommandSender sender) {
 		INVENTORY_NAME = getConfig().getString("inventoryName", "&4===Permissions Packages===");
 		TAG_INVENTORY_NAME = getConfig().getString("tagInventoryName", "&4===Tag Packages===");
 		EXPIRATION_TIME = getConfig().getString("expirationTime", "&4Expiration time: {0}");
@@ -87,9 +89,9 @@ public class LangCfg extends PluginConfig {
 		TIME_UNIT_M = getConfig().getString("timeUnitM", "minute(s)");
 		TIME_FOREVER = getConfig().getString("timeForever", "Forever");
 		TAG = getConfig().getString("tag", "Tag/Prefix");
-		TAG_COLOR_ITEM_NAME = getConfig().getString("tag", "&6&lName Style");
-		TAG_PREFIX_ITEM_NAME = getConfig().getString("tag", "&6&lTag Prefix");
-		TAG_SUFFIX_ITEM_NAME = getConfig().getString("tag", "&6&lTag Suffix");
+		TAG_COLOR_ITEM_NAME = getConfig().getString("tagColorItemName", "&6&lName Style");
+		TAG_PREFIX_ITEM_NAME = getConfig().getString("tagPrefixItemName", "&6&lTag Prefix");
+		TAG_SUFFIX_ITEM_NAME = getConfig().getString("tagSuffixItemName", "&6&lTag Suffix");
 
 		MSG_PARAMETER_MISMATCH = getConfig().getString("msg.parameterMismatch", "&4Parameter mismatch.");
 		MSG_TIME_PARAMETER_INCORRECT = getConfig().getString("msg.timeParameterIncorrect", "&4The number of time is incorrect. Please enter a nonzero integer.");

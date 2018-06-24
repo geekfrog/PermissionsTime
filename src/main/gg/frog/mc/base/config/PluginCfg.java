@@ -1,5 +1,7 @@
 package gg.frog.mc.base.config;
 
+import org.bukkit.command.CommandSender;
+
 import gg.frog.mc.base.PluginMain;
 import gg.frog.mc.base.utils.config.PluginConfig;
 
@@ -33,7 +35,7 @@ public class PluginCfg extends PluginConfig {
     protected void init() {}
 
     @Override
-    protected void loadToDo() {
+    protected void loadToDo(CommandSender sender) {
         PLUGIN_PREFIX = setGetDefault("pluginPrefix", "§b[" + pm.PLUGIN_NAME + "] ") + "§r";
         IS_DEBUG = setGetDefault("debug", false);
         IS_METRICS = setGetDefault("metrics", true);

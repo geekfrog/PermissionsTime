@@ -58,7 +58,7 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 									inventory.close();
 								}
 							}
-							pm.getConfigManager().reloadConfig();
+							pm.getConfigManager().reloadConfig(sender);
 							if (!sm.updateDatabase()) {
 								sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Database exceptions."));
 							}
@@ -74,7 +74,7 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 								inventory.close();
 							}
 						}
-						pm.getConfigManager().reloadConfig();
+						pm.getConfigManager().reloadConfig(sender);
 						if (!sm.updateDatabase()) {
 							sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§4Database exceptions."));
 						}

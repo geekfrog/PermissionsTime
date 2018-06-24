@@ -17,11 +17,11 @@ import gg.frog.mc.base.utils.StrUtil;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 
-public class MainListener implements Listener {
+public class PtListener implements Listener {
 
 	private PluginMain pm;
 
-	public MainListener(PluginMain pm) {
+	public PtListener(PluginMain pm) {
 		this.pm = pm;
 	}
 
@@ -74,7 +74,7 @@ public class MainListener implements Listener {
 
 	@EventHandler
 	public void onPlayerClick(InventoryClickEvent event) {
-		if (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§r").equals(event.getInventory().getName())) {
+		if (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§1§r").equals(event.getInventory().getName())) {
 			event.setCancelled(true);
 		}
 	}

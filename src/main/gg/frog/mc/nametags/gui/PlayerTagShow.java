@@ -22,7 +22,7 @@ public class PlayerTagShow {
 		Inventory inventory = null;
 		int size = 0;
 		if (itemList.size() > 0) {
-			inventory = Bukkit.createInventory(null, ((itemList.size() + disItemList.size()) % 9 == 0 ? (itemList.size() + disItemList.size()) : ((itemList.size() + disItemList.size()) / 9 + 1) * 9), StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§r"));
+			inventory = Bukkit.createInventory(null, ((itemList.size() + disItemList.size()) % 9 == 0 ? (itemList.size() + disItemList.size()) : ((itemList.size() + disItemList.size()) / 9 + 1) * 9), StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§2§r"));
 			String uuid = player.getUniqueId().toString();
 			PlayerTagBean playerTag = null;
 			if (TagNameCfg.PLAYER_TAG.containsKey(uuid)) {

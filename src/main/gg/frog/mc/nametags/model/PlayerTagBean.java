@@ -1,6 +1,7 @@
 package gg.frog.mc.nametags.model;
 
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -54,7 +55,7 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 	}
 
 	@Override
-	protected void loadToDo() {
+	protected void loadToDo(CommandSender sender) {
 		namecolor = getConfig().getString("namecolor", TagNameCfg.DEFAULT_NAMECOLOR);
 		prefix = getConfig().getString("prefix", TagNameCfg.DEFAULT_PREFIX);
 		suffix = getConfig().getString("suffix", TagNameCfg.DEFAULT_SUFFIX);

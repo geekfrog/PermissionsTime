@@ -65,7 +65,7 @@ public class TagsListener implements Listener {
 
 	@EventHandler
 	public void onPlayerClick(InventoryClickEvent event) {
-		if (StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§r").equals(event.getInventory().getName())) {
+		if (StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§2§r").equals(event.getInventory().getName())) {
 			if (event.getCurrentItem() != null && event.getCurrentItem().getItemMeta() != null && event.getCurrentItem().getItemMeta().hasLore()) {
 				List<String> lores = event.getCurrentItem().getItemMeta().getLore();
 				if (lores.size() > 1) {

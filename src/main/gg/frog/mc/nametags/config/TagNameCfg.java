@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -62,12 +63,22 @@ public class TagNameCfg extends PluginConfig {
 	}
 
 	@Override
-	protected void loadToDo() {
+	protected void loadToDo(CommandSender sender) {
 		DEFAULT_NAMECOLOR = setGetDefault("defaultNamecolor", "");
 		DEFAULT_PREFIX = setGetDefault("defaultPrefix", "");
 		DEFAULT_SUFFIX = setGetDefault("defaultSuffix", "");
 		CHANGE_DISPLAYNAME = setGetDefault("changeDisplayname", true);
 		USE_HD_PLUGIN = setGetDefault("useHdPlugin", false);
+		if (USE_HD_PLUGIN && !PluginMain.enabledHdPlugin) {
+			USE_HD_PLUGIN = false;
+			if (sender != null) {
+				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§eHolographicDisplays is not installed or not enabled. "));
+				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§eBut you enabled some func need HolographicDisplays."));
+			} else {
+				pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§eHolographicDisplays is not installed or not enabled. "));
+				pm.getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§eBut you enabled some func need HolographicDisplays."));
+			}
+		}
 		ONE_LINE_DISPLAY = setGetDefault("oneLineDisplay", true);
 		REFRESH_TAG_TIME = setGetDefault("refreshTagTime", -1);
 		PACKAGES = getObjMap("packages", TagPackageBean.class);
@@ -114,7 +125,7 @@ public class TagNameCfg extends PluginConfig {
 				SUFFIX_ITEMS.put(e.getValue().getPermissions(), items);
 			}
 		}
-		
+
 		if (task != null) {
 			task.cancel();
 		}
