@@ -54,7 +54,7 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 						if (player.hasPermission("permissionstime.reload")) {
 							for (Player p : pm.getServer().getOnlinePlayers()) {
 								InventoryView inventory = p.getOpenInventory();
-								if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§r").equals(inventory.getTitle()))) {
+								if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§1§r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§2§r").equals(inventory.getTitle()))) {
 									inventory.close();
 								}
 							}
@@ -70,7 +70,7 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 					} else {
 						for (Player p : pm.getServer().getOnlinePlayers()) {
 							InventoryView inventory = p.getOpenInventory();
-							if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§r").equals(inventory.getTitle()))) {
+							if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§1§r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§2§r").equals(inventory.getTitle()))) {
 								inventory.close();
 							}
 						}

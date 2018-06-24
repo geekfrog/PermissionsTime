@@ -13,15 +13,18 @@ import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import gg.frog.mc.base.PluginMain;
+import gg.frog.mc.base.config.LangCfg;
 import gg.frog.mc.base.config.PluginCfg;
 import gg.frog.mc.base.utils.StrUtil;
 import gg.frog.mc.base.utils.config.PluginConfig;
 import gg.frog.mc.base.utils.nms.ItemUtil;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
+import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 
 public class PackagesCfg extends PluginConfig {
 
@@ -66,6 +69,16 @@ public class PackagesCfg extends PluginConfig {
 			}
 			allPermissions.addAll(e.getValue().getPermissions());
 			allGroups.addAll(e.getValue().getGroups());
+		}
+		for (Player player : pm.getServer().getOnlinePlayers()) {
+			try {
+				String uuid = pm.getPlayerUUIDByName(player.getName());
+				List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(uuid);
+				PermissionPackageBean.reloadPlayerPermissions(player, pdbList, pm, false);
+			} catch (Exception e) {
+				e.printStackTrace();
+				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
+			}
 		}
 	}
 

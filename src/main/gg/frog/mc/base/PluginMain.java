@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import gg.frog.mc.base.config.ConfigManager;
 import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.base.listener.BaseListener;
 import gg.frog.mc.base.utils.FileUtil;
 import gg.frog.mc.base.utils.StrUtil;
 import gg.frog.mc.base.utils.UpdateCheck;
@@ -38,7 +39,8 @@ public class PluginMain extends JavaPlugin {
 	private Permission permission = null;
 	public static boolean enabledHdPlugin;
 	public static boolean enabledPlaceholder;
-	private Map<String, OfflinePlayer> playerMap = new ConcurrentHashMap<>();
+	private Map<String, String> PLAYER_UUID_MAP = new ConcurrentHashMap<>();
+	private Map<String, OfflinePlayer> OFFLINE_PLAYER_MAP = new ConcurrentHashMap<>();
 
 	public PluginMain() {
 		PLUGIN_NAME = getDescription().getName();
@@ -85,6 +87,7 @@ public class PluginMain extends JavaPlugin {
 	 * 这里可以注册多个
 	 */
 	private void registerListeners() {
+		pm.getServer().getPluginManager().registerEvents(new BaseListener(pm), pm);
 		pm.getServer().getPluginManager().registerEvents(new PtListener(pm), pm);
 		pm.getServer().getPluginManager().registerEvents(new TagsListener(pm), pm);
 	}
@@ -115,8 +118,8 @@ public class PluginMain extends JavaPlugin {
 		return permission;
 	}
 
-	public Map<String, OfflinePlayer> getPlayerMap() {
-		return playerMap;
+	public Map<String, OfflinePlayer> getOFFLINE_PLAYER_MAP() {
+		return OFFLINE_PLAYER_MAP;
 	}
 
 	private boolean checkPluginDepends() {
@@ -186,26 +189,37 @@ public class PluginMain extends JavaPlugin {
 		return sm.updateDatabase();
 	}
 
-	public String getPlayerUUIDByName(String name) {
-		OfflinePlayer p = getOfflinePlayer(name);
-		if (p == null) {
-			return null;
-		} else {
-			return p.getUniqueId().toString();
-		}
-	}
-
 	public OfflinePlayer getOfflinePlayer(String name) {
 		if (name != null) {
-			OfflinePlayer p1 = playerMap.get(name);
-			if (p1 != null)
-				return p1;
+			OfflinePlayer p = OFFLINE_PLAYER_MAP.get(name);
+			if (p != null)
+				return p;
 			for (OfflinePlayer p2 : getServer().getOfflinePlayers()) {
 				if (p2 == null)
 					continue;
 				if (p2.getName().equalsIgnoreCase(name)) {
-					playerMap.put(name, p2);
+					OFFLINE_PLAYER_MAP.put(name, p2);
 					return p2;
+				}
+			}
+		}
+		return null;
+	}
+
+	public String getPlayerUUIDByName(String name) {
+		if (name != null) {
+			String uuid = PLAYER_UUID_MAP.get(name);
+			if (uuid != null) {
+				return uuid;
+			} else {
+				for (OfflinePlayer p : getServer().getOfflinePlayers()) {
+					if (p == null)
+						continue;
+					if (p.getName().equalsIgnoreCase(name)) {
+						uuid = p.getUniqueId().toString();
+						PLAYER_UUID_MAP.put(name, uuid);
+						return uuid;
+					}
 				}
 			}
 		}

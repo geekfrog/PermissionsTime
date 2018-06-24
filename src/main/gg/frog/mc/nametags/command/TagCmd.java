@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import gg.frog.mc.base.PluginMain;
@@ -22,6 +22,7 @@ public class TagCmd implements Runnable {
 	private String[] args;
 	private CommandSender sender;
 	private boolean isPlayer;
+	private TagType type = null;
 
 	public TagCmd(PluginMain pm, CommandSender sender, boolean isPlayer, String[] args) {
 		this.pm = pm;
@@ -37,7 +38,7 @@ public class TagCmd implements Runnable {
 				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
 				List<ItemStack> itemList = new ArrayList<ItemStack>();
 				List<ItemStack> disItemList = new ArrayList<ItemStack>();
-				TagType type = null;
+
 				Map<String, List<ItemStack>> p_i_map;
 				if ("c".equals(args[1])) {
 					type = TagNameCfg.TagType.NAMECOLOR_TYPE;
@@ -60,8 +61,7 @@ public class TagCmd implements Runnable {
 						disItemList.addAll(p_i_map.get(p));
 					}
 				}
-				OfflinePlayer player = pm.getOfflinePlayer(sender.getName());
-				PlayerTagShow.show(player, type, itemList, disItemList);
+				PlayerTagShow.show(pm, (Player) sender, type, itemList, disItemList);
 			} else {
 				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PARAMETER_MISMATCH));
 				sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_TAG, pm.PLUGIN_NAME_LOWER_CASE));

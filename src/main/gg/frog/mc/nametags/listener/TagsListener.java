@@ -2,7 +2,7 @@ package gg.frog.mc.nametags.listener;
 
 import java.util.List;
 
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -70,10 +70,9 @@ public class TagsListener implements Listener {
 				List<String> lores = event.getCurrentItem().getItemMeta().getLore();
 				if (lores.size() > 1) {
 					String permissions = lores.get(lores.size() - 2);
-					permissions = permissions.length() > 4 ? permissions.substring(4) : "";
-					OfflinePlayer player = this.pm.getOfflinePlayer(event.getWhoClicked().getName());
-					String uuid = player.getUniqueId().toString();
-					if (permissions.length() == 0 || player.getPlayer().hasPermission(permissions)) {
+					permissions = permissions.startsWith("§8§k") ? permissions.substring(4) : "noPermissions";
+					String uuid = pm.getPlayerUUIDByName(event.getWhoClicked().getName());
+					if (permissions.length() == 0 || event.getWhoClicked().hasPermission(permissions)) {
 						if (TagNameCfg.PLAYER_TAG.containsKey(uuid)) {
 							String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
 							PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
@@ -84,16 +83,18 @@ public class TagsListener implements Listener {
 							} else if (itemName.startsWith(StrUtil.messageFormat(LangCfg.TAG_SUFFIX_ITEM_NAME + "§3§r "))) {
 								playerTag.setSuffix(lores.get(lores.size() - 1).substring(2));
 							} else {
+								event.getWhoClicked().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
 								event.setCancelled(true);
 								return;
 							}
-							playerTag.setPlayerDisplayName(player.getPlayer(), true);
+							playerTag.setPlayerDisplayName((Player) event.getWhoClicked(), true);
 							playerTag.saveConfig();
-							player.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TAG_SET_SUCCESS));
+							event.getWhoClicked().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TAG_SET_SUCCESS));
+							event.setCancelled(true);
+							return;
 						}
-					} else {
-						player.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
 					}
+					event.getWhoClicked().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
 				}
 			}
 			event.setCancelled(true);

@@ -25,21 +25,16 @@ public class PtListener implements Listener {
 		this.pm = pm;
 	}
 
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onJoin(PlayerLoginEvent event) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					String uuid = pm.getPlayerUUIDByName(event.getPlayer().getName());
-					List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(uuid);
-					PermissionPackageBean.reloadPlayerPermissions(event.getPlayer(), pdbList, pm, false);
-				} catch (Exception e) {
-					e.printStackTrace();
-					event.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
-				}
-			}
-		}).start();
+		try {
+			String uuid = pm.getPlayerUUIDByName(event.getPlayer().getName());
+			List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(uuid);
+			PermissionPackageBean.reloadPlayerPermissions(event.getPlayer(), pdbList, pm, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+			event.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
+		}
 	}
 
 	@EventHandler
@@ -54,7 +49,6 @@ public class PtListener implements Listener {
 				}
 			}
 		}).start();
-		pm.getPlayerMap().remove(event.getPlayer().getName());
 	}
 
 	@EventHandler
@@ -69,7 +63,6 @@ public class PtListener implements Listener {
 				}
 			}
 		}).start();
-		pm.getPlayerMap().remove(event.getPlayer().getName());
 	}
 
 	@EventHandler

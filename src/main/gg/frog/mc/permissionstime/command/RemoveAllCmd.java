@@ -39,7 +39,7 @@ public class RemoveAllCmd implements Runnable {
 			OfflinePlayer player = pm.getOfflinePlayer(playerName);
 			if (player != null) {
 				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
-				String uuid = player.getUniqueId().toString();
+				String uuid = pm.getPlayerUUIDByName(playerName);
 				if (PluginCfg.IS_DEBUG) {
 					sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid));
 				}

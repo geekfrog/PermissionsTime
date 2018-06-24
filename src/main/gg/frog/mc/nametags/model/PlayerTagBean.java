@@ -217,7 +217,7 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 	}
 
 	public String getDisplayNameStr(Player player) {
-		return StrUtil.messageFormat(prefix + "§r" + namecolor + player.getName() + "§r" + suffix);
+		return StrUtil.messageFormat(player, prefix + "§r" + namecolor + player.getName() + "§r" + suffix);
 	}
 
 	@Override

@@ -220,11 +220,11 @@ public class PermissionPackageBean implements IConfigBean {
 		}
 	}
 
-	public static void reloadPlayerPermissions(OfflinePlayer player, List<PlayerDataBean> pdbList, PluginMain plugin) {
-		reloadPlayerPermissions(player, pdbList, plugin, true);
+	public static void reloadPlayerPermissions(OfflinePlayer player, List<PlayerDataBean> pdbList, PluginMain pm) {
+		reloadPlayerPermissions(player, pdbList, pm, true);
 	}
 
-	public static void reloadPlayerPermissions(OfflinePlayer player, List<PlayerDataBean> pdbList, PluginMain plugin, boolean async) {
+	public static void reloadPlayerPermissions(OfflinePlayer player, List<PlayerDataBean> pdbList, PluginMain pm, boolean async) {
 		long delay = -1;
 		long now = new Date().getTime();
 		PermissionPackageBean addPpb = new PermissionPackageBean();
@@ -250,12 +250,12 @@ public class PermissionPackageBean implements IConfigBean {
 			}
 		}
 		if (async) {
-			plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+			pm.getServer().getScheduler().runTask(pm, new Runnable() {
 				@Override
 				public void run() {
 					try {
-						subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
-						addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
+						subPpb.clearPlayer(player, pm.getServer(), pm.getPermission());
+						addPpb.givePlayer(player, pm.getServer(), pm.getPermission());
 					} catch (Exception e) {
 						e.printStackTrace();
 						player.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_FAIL_SET_PERMISSION));
@@ -263,19 +263,19 @@ public class PermissionPackageBean implements IConfigBean {
 				}
 			});
 		} else {
-			subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
-			addPpb.givePlayer(player, plugin.getServer(), plugin.getPermission());
+			subPpb.clearPlayer(player, pm.getServer(), pm.getPermission());
+			addPpb.givePlayer(player, pm.getServer(), pm.getPermission());
 		}
-		checkExpire(player, plugin);
-		String uuid = player.getUniqueId().toString();
+		checkExpire(player, pm);
+		String uuid = pm.getPlayerUUIDByName(player.getName());
 		BukkitTask task = taskMap.get(uuid);
 		if (pdbList.size() > 0) {
 			delay = (delay / 1000 + 1) * 20;// 1秒=20ticks
-			task = plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
+			task = pm.getServer().getScheduler().runTaskLaterAsynchronously(pm, new Runnable() {
 				@Override
 				public void run() {
-					List<PlayerDataBean> tpdbList = plugin.getSqlManager().getTime(uuid);
-					reloadPlayerPermissions(player, tpdbList, plugin);
+					List<PlayerDataBean> tpdbList = pm.getSqlManager().getTime(uuid);
+					reloadPlayerPermissions(player, tpdbList, pm);
 				}
 			}, delay);
 			taskMap.put(uuid, task);
@@ -289,30 +289,32 @@ public class PermissionPackageBean implements IConfigBean {
 	 * @param plugin
 	 * @throws Exception
 	 */
-	public static void delPlayerAllPermissions(OfflinePlayer player, PluginMain plugin) throws Exception {
+	public static void delPlayerAllPermissions(OfflinePlayer player, PluginMain pm) throws Exception {
 		PermissionPackageBean subPpb = new PermissionPackageBean();
 		subPpb.getPermissions().addAll(PackagesCfg.allPermissions);
 		subPpb.getGroups().addAll(PackagesCfg.allGroups);
-		plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+		pm.getServer().getScheduler().runTask(pm, new Runnable() {
 			@Override
 			public void run() {
-				subPpb.clearPlayer(player, plugin.getServer(), plugin.getPermission());
+				subPpb.clearPlayer(player, pm.getServer(), pm.getPermission());
 			}
 		});
-		BukkitTask task = taskMap.get(player.getUniqueId().toString());
+		String uuid = pm.getPlayerUUIDByName(player.getName());
+		BukkitTask task = taskMap.get(uuid);
 		if (task != null) {
-			plugin.getServer().getScheduler().cancelTask(task.getTaskId());
+			pm.getServer().getScheduler().cancelTask(task.getTaskId());
 		}
 	}
 
-	public static void checkExpire(OfflinePlayer player, PluginMain plugin) {
-		List<PlayerDataBean> playerDataList = plugin.getSqlManager().getAllTime(player.getUniqueId().toString());
+	public static void checkExpire(OfflinePlayer player, PluginMain pm) {
+		String uuid = pm.getPlayerUUIDByName(player.getName());
+		List<PlayerDataBean> playerDataList = pm.getSqlManager().getAllTime(uuid);
 		long now = new Date().getTime();
 		for (PlayerDataBean playerData : playerDataList) {
 			if (playerData.getExpire() < now) {
 				PermissionPackageBean packageBean = PackagesCfg.PACKAGES.get(playerData.getPackageName());
 				if ((packageBean == null && !playerData.getGlobal()) || (packageBean != null && playerData.getGlobal() == packageBean.getGlobal())) {
-					plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
+					pm.getServer().getScheduler().runTask(pm, new Runnable() {
 						@Override
 						public void run() {
 							player.getPlayer().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_IS_EXPIRATION_DATE, packageBean != null ? packageBean.getDisplayName() : LangCfg.MSG_UNKNOWN_PACKAGE, playerData.getPackageName()));
@@ -320,7 +322,7 @@ public class PermissionPackageBean implements IConfigBean {
 								for (String commands : packageBean.getExpireCommands()) {
 									try {
 										commands = StrUtil.messageFormat(player.getPlayer(), commands);
-										plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commands);
+										pm.getServer().dispatchCommand(pm.getServer().getConsoleSender(), commands);
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
@@ -328,7 +330,7 @@ public class PermissionPackageBean implements IConfigBean {
 							}
 						}
 					});
-					plugin.getSqlManager().delById(playerData.getId());
+					pm.getSqlManager().delById(playerData.getId());
 				}
 			}
 		}
