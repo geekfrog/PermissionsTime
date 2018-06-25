@@ -46,7 +46,7 @@ msg:
 cmd:
   help: '&6/{0} help \n&7  - Show commands.'
   me: '&6/{0} me \n&7  - View your packages.'
-  tag: '&6/{0} tag <c/p/s>\n&7  - View your color/prefix/suffix tags.'
+  tag: '&6/{0} tag <c/p/s>\n&7  - Set your color/prefix/suffix of tags.'
   packages: '&6/{0} packages [packageName] \n&7  - View server packages.'
   get: '&6/{0} get <playerName> \n&7  - View player packages.'
   give: '&6/{0} give <playerName> <packageName> <time> <timeUnit:d/h/m> \n&7  - Give player package some time. (Time accumulation.) \n&7    timeUnit: d=day, h=hour, m=minute'

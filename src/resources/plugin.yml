@@ -1,5 +1,5 @@
 name: ${project.name}
-version: 0.4.2-SNAPSHOT
+version: 0.4.2-SNAPSHOT-b1002
 main: gg.frog.mc.base.PluginMain
 author:
 - GeekFrog
@@ -34,7 +34,7 @@ permissions:
     description: View your packages.
     default: true
   permissionstime.tag:
-    description: View your color/prefix/suffix tags.
+    description: Set your color/prefix/suffix of tags.
     default: true
   permissionstime.reload:
     description: Reloads the config file.

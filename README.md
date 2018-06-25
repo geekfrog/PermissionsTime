@@ -1,5 +1,5 @@
 # PermissionsTime
-### 支持跨服的权限限时插件
+### 支持跨服的权限限时插件(+称号功能)
 
 ##### [插件使用说明](https://github.com/geekfrog/PermissionsTime/wiki/PermissionsTime-%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 ##### 构建地址:[http://ci.frog.gg/](http://ci.frog.gg/)
@@ -21,6 +21,26 @@
 ![image](http://i.imgur.com/bqvIVvz.jpg)
 ![image](http://i.imgur.com/NFK3WKa.jpg)
 
+#### 称号功能: 
+<details>
+<summary>查看详细</summary></br>
+1.支持Placeholder变量、HolographicDisplays显示称号(解决称号长度限制问题)</br>
+2.可以设置称号功能开关、默认称号、是否 修改displayname、是否使用HolographicDisplays、以及称号刷新时间(使用Placeholder变量的话)</br>
+3.自带Placeholder变量: %pttag_fullname% %pttag_prefix% %pttag_suffix% 来显示displayname、prefix+color、suffix</br>
+
+![image](http://i.imgur.com/o7tZTQp.jpg)
+![image](http://i.imgur.com//E3SNYNj.jpg)
+
+![image](http://i.imgur.com/zRAOpFf.jpg)
+![image](http://i.imgur.com/tP66jxF.jpg)
+
+![image](http://i.imgur.com/FGxa96D.jpg)
+![image](http://i.imgur.com/ovCir3l.jpg)
+![image](http://i.imgur.com/1oel29B.jpg)
+
+![image](http://i.imgur.com/w702i9I.jpg)
+
+</details>
 
 #### 已知问题(作者提醒):
 

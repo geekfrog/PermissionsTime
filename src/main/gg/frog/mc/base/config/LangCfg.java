@@ -128,7 +128,7 @@ public class LangCfg extends PluginConfig {
 
 		CMD_HELP = getConfig().getString("cmd.help", "/{0} help \\n&7  - Show commands.");
 		CMD_ME = getConfig().getString("cmd.me", "&6/{0} me \\n&7  - View your packages.");
-		CMD_TAG = getConfig().getString("cmd.tag", "&6/{0} tag <c/p/s> \\n&7  - View your color/prefix/suffix tags.");
+		CMD_TAG = getConfig().getString("cmd.tag", "&6/{0} tag <c/p/s> \\n&7  - Set your color/prefix/suffix of tags.");
 		CMD_PACKAGES = getConfig().getString("cmd.packages", "&6/{0} packages [packageName] \\n&7  - View packages.");
 		CMD_GET = getConfig().getString("cmd.get", "&6/{0} get <playerName> \\n&7  - View player packages.");
 		CMD_GIVE = getConfig().getString("cmd.give", "&6/{0} give <playerName> <packageName> <time> <timeUnit:d/h/m> \\n&7  - Give player package some time. (Time accumulation.) \\n&7    timeUnit: d=day, h=hour, m=minute");

@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -29,6 +30,13 @@ public class TagsListener implements Listener {
 
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerLoginEvent event) {
+		if (PluginCfg.TAG_SYSTEM) {
+			PlayerTagBean.initPlayerTag(event.getPlayer(), pm);
+		}
+	}
+	
+	@EventHandler
+	public void onRespawn(PlayerChangedWorldEvent event) {
 		if (PluginCfg.TAG_SYSTEM) {
 			PlayerTagBean.initPlayerTag(event.getPlayer(), pm);
 		}
