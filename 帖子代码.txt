@@ -7,7 +7,7 @@
 [align=center][size=4][color=#ffa500][b]这是本人第一个发布的插件, 希望能让大家满意！[/b][/color][/size][/align]
 [align=center][size=4][color=#dda0dd][b]本插件需要JAVA8！！！[/b][/color][/size][/align][align=center]
 [size=4][color=#98fb98][b]下载地址在最下面！[/b][/color][/size][/align]
-[align=center][size=4][color=#c0c0c0][b]最新版本: [/b][/color][b][color=#8b0000]0.4.2[/color][color=#c0c0c0]，推荐大家使用新版本，只需替换插件的jar包和语言文件即可! [/color][/b][/size][/align]
+[align=center][size=4][color=#c0c0c0][b]最新版本: [/b][/color][b][color=#8b0000]0.4.3[/color][color=#c0c0c0]，推荐大家使用新版本，只需替换插件的jar包和语言文件即可! [/color][/b][/size][/align]
 [align=center][size=4][b][color=#c0c0c0]请对比原配置, 查看新版本是否增加了新的配置项![/color][/b][/size][/align]
 [/td][/tr]
 [/table][/align][align=center][table=98%,#4169e1]
@@ -334,6 +334,10 @@ cmd:
 [tr][td][align=center][size=6][color=#ffffff][b]更新日志[/b][/color][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,gray]
 [tr][td][spoiler][size=4][b][url=http://ci.frog.gg/jenkins/job/PermissionsTime/changes]详细的更新记录[/url]
+[color=#ffffff]2018年6月30日 V0.4.3[/color][quote][color=#000000]1.V0.4.3正式发布
+2.修复一些BUG:
+  1.7.10的兼容
+  以及新玩家数据的BUG[/color][/quote]
 [color=#ffffff]2018年6月25日 V0.4.2[/color][quote][color=#000000]1.V0.4.2正式发布
 2.增加了称号管理功能
 3.修复一些BUG[/color][/quote]
@@ -364,7 +368,7 @@ cmd:
 [/table][/align][align=center][table=98%,#4169e1]
 [tr][td][align=center][size=6][color=#ffffff][b]下载地址[/b][/color][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,gray]
-[tr][td][size=4][b][align=center][color=#000] [url=https://ci.frog.gg/job/PermissionsTime/75/]V0.4.2版下载地址[/url][/color][/align][align=center][color=#ffffff]前置插件：[/color][color=#000][url=https://dev.bukkit.org/projects/vault/files]vault[/url][/color][color=#000000] , [/color][color=#000][url=https://dev.bukkit.org/projects/sqlibrary/files]sqlibrary[/url][/color][/align][align=center][color=#ffffff]前置插件最好去原站下载适合的版本, 如果无法下载可以在帖内下载。[/color][/align]
+[tr][td][size=4][b][align=center][color=#000] [url=https://ci.frog.gg/job/PermissionsTime/76/]V0.4.3版下载地址[/url][/color][/align][align=center][color=#ffffff]前置插件：[/color][color=#000][url=https://dev.bukkit.org/projects/vault/files]vault[/url][/color][color=#000000] , [/color][color=#000][url=https://dev.bukkit.org/projects/sqlibrary/files]sqlibrary[/url][/color][/align][align=center][color=#ffffff]前置插件最好去原站下载适合的版本, 如果无法下载可以在帖内下载。[/color][/align]
 [align=center][b][color=#ffffff]帖内下载：[/color][/b][/align][align=center][color=#000][attach]1101088[/attach][/color][/align][align=center][color=#000][b][color=#ff0000]前置插件必须安装[/color][/b][/color][/align][align=center][color=#000][attach]1101089[/attach][/color][/align][align=center][color=#000][attach]1101090[/attach][/color][/align][align=center][color=#000][attach]1101110[/attach]ANSI编码[/color][/align]
 [align=center][color=#000][color=#ff0000][b]如果大家觉得好用就给点金粒吧，如果不好请告诉我，帮助我改进。[/b][/color][/color][/align][align=center][color=#000][b]BUG可以在帖内回复我。[/b][/color][/align][/b][/size][/td][/tr]
 [/table][/align][align=center][table=98%,#4169e1]
