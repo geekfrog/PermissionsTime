@@ -24,7 +24,7 @@ public class PlayerTagShow {
 		int size = 0;
 		if (itemList.size() > 0) {
 			inventory = Bukkit.createInventory(null, ((itemList.size() + disItemList.size()) % 9 == 0 ? (itemList.size() + disItemList.size()) : ((itemList.size() + disItemList.size()) / 9 + 1) * 9), StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§2§r"));
-			String uuid = pm.getPlayerUUIDByName(p.getName());
+			String uuid = pm.getPlayerUUIDByName(p);
 			PlayerTagBean playerTag = null;
 			if (uuid != null && TagNameCfg.PLAYER_TAG.containsKey(uuid)) {
 				playerTag = TagNameCfg.PLAYER_TAG.get(uuid);

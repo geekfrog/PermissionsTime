@@ -38,7 +38,7 @@ public class TagPlaceholder extends PlaceholderExpansion {
 
 	public String onPlaceholderRequest(Player player, String identifier) {
 		if (PluginCfg.TAG_SYSTEM && player != null) {
-			String uuid = pm.getPlayerUUIDByName(player.getName());
+			String uuid = pm.getPlayerUUIDByName(player);
 			PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
 			if (playerTag != null) {
 				if (identifier.equalsIgnoreCase("fullname")) {

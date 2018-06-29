@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -67,19 +68,19 @@ public class PluginMain extends JavaPlugin {
 			registerListeners();
 			registerCommands();
 			getServer().getConsoleSender().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "§2Startup successful!"));
-		}
-		getServer().getScheduler().runTask(pm, new Runnable() {
-			public void run() {
-				if (PluginCfg.IS_METRICS) {
-					try {
-						new Metrics(pm);
-					} catch (Exception e) {
-						e.printStackTrace();
+			getServer().getScheduler().runTask(pm, new Runnable() {
+				public void run() {
+					if (PluginCfg.IS_METRICS) {
+						try {
+							new Metrics(pm);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
+					getServer().getScheduler().runTaskAsynchronously(pm, new UpdateCheck(pm));
 				}
-				getServer().getScheduler().runTaskAsynchronously(pm, new UpdateCheck(pm));
-			}
-		});
+			});
+		}
 	}
 
 	/**
@@ -99,7 +100,7 @@ public class PluginMain extends JavaPlugin {
 	private void registerCommands() {
 		PtCommand ptCmd = new PtCommand(pm);
 		if (getDescription().getCommands().containsKey("permissionstime")) {
-			getCommand(PLUGIN_NAME_LOWER_CASE).setExecutor(ptCmd);
+			getCommand("permissionstime").setExecutor(ptCmd);
 		}
 		if (getDescription().getCommands().containsKey("pt")) {
 			getCommand("pt").setExecutor(ptCmd);
@@ -204,6 +205,14 @@ public class PluginMain extends JavaPlugin {
 			}
 		}
 		return null;
+	}
+
+	public String getPlayerUUIDByName(Player p) {
+		String uuid = getPlayerUUIDByName(p.getName());
+		if (uuid == null) {
+			return p.getUniqueId().toString();
+		}
+		return uuid;
 	}
 
 	public String getPlayerUUIDByName(String name) {

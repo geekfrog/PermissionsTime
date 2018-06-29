@@ -34,7 +34,7 @@ public class MeCmd implements Runnable {
 		if (isPlayer) {
 			if (args.length == 1) {
 				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
-				String uuid = pm.getPlayerUUIDByName(sender.getName());
+				String uuid = pm.getPlayerUUIDByName((Player) sender);
 				List<PlayerDataBean> ps = sm.getTime(uuid);
 				PlayerPermissionShow.show((Player) sender, ps);
 			} else {

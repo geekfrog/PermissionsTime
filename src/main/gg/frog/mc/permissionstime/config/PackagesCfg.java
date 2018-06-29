@@ -72,7 +72,7 @@ public class PackagesCfg extends PluginConfig {
 		}
 		for (Player player : pm.getServer().getOnlinePlayers()) {
 			try {
-				String uuid = pm.getPlayerUUIDByName(player.getName());
+				String uuid = pm.getPlayerUUIDByName(player);
 				List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(uuid);
 				PermissionPackageBean.reloadPlayerPermissions(player, pdbList, pm, false);
 			} catch (Exception e) {

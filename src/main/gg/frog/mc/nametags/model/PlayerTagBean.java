@@ -69,7 +69,7 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 	}
 
 	public static void initPlayerTag(Player player, PluginMain pm) {
-		String uuid = pm.getPlayerUUIDByName(player.getName());
+		String uuid = pm.getPlayerUUIDByName(player);
 		PlayerTagBean playerTag = null;
 		if (TagNameCfg.PLAYER_TAG.containsKey(uuid)) {
 			playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
@@ -164,7 +164,6 @@ public class PlayerTagBean extends PluginConfig implements IConfigBean, Cloneabl
 							team.setPrefix("");
 							team.setSuffix("");
 							if (NMSUtil.getServerVersion().startsWith("v1_7") || NMSUtil.getServerVersion().startsWith("v1_8")) {
-
 							} else {
 								team.setOption(Team.Option.NAME_TAG_VISIBILITY, Team.OptionStatus.NEVER);
 							}

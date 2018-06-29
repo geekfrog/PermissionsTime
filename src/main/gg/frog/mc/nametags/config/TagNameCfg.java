@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Scoreboard;
 
@@ -210,7 +211,13 @@ public class TagNameCfg extends PluginConfig {
 						meta.setLore(lores);
 						item.setItemMeta(meta);
 						if (skullOwner != null) {
-							item = ItemUtil.addSkullOwner(item, skullOwner);
+							try {
+								((SkullMeta) meta).setOwner(skullOwner);
+								item.setItemMeta(meta);
+							} catch (Exception e) {
+								e.printStackTrace();
+								item = ItemUtil.addSkullOwner(item, skullOwner);
+							}
 						}
 						items.add(item);
 					}

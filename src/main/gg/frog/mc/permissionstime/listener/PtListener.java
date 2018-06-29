@@ -28,7 +28,7 @@ public class PtListener implements Listener {
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onJoin(PlayerLoginEvent event) {
 		try {
-			String uuid = pm.getPlayerUUIDByName(event.getPlayer().getName());
+			String uuid = pm.getPlayerUUIDByName(event.getPlayer());
 			List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(uuid);
 			PermissionPackageBean.reloadPlayerPermissions(event.getPlayer(), pdbList, pm, false);
 		} catch (Exception e) {

@@ -31,10 +31,15 @@ public class TagsListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onJoin(PlayerLoginEvent event) {
 		if (PluginCfg.TAG_SYSTEM) {
-			PlayerTagBean.initPlayerTag(event.getPlayer(), pm);
+			pm.getServer().getScheduler().runTaskLaterAsynchronously(pm, new Runnable() {
+				@Override
+				public void run() {
+					PlayerTagBean.initPlayerTag(event.getPlayer(), pm);
+				}
+			}, 1 * 20);
 		}
 	}
-	
+
 	@EventHandler
 	public void onRespawn(PlayerChangedWorldEvent event) {
 		if (PluginCfg.TAG_SYSTEM) {
@@ -45,7 +50,7 @@ public class TagsListener implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		if (PluginCfg.TAG_SYSTEM && TagNameCfg.USE_HD_PLUGIN) {
-			String uuid = pm.getPlayerUUIDByName(event.getPlayer().getName());
+			String uuid = pm.getPlayerUUIDByName(event.getPlayer());
 			PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
 			playerTag.delHologramsName();
 		}
@@ -54,7 +59,7 @@ public class TagsListener implements Listener {
 	@EventHandler
 	public void onKick(PlayerKickEvent event) {
 		if (PluginCfg.TAG_SYSTEM && TagNameCfg.USE_HD_PLUGIN) {
-			String uuid = pm.getPlayerUUIDByName(event.getPlayer().getName());
+			String uuid = pm.getPlayerUUIDByName(event.getPlayer());
 			PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
 			playerTag.delHologramsName();
 		}
@@ -63,7 +68,7 @@ public class TagsListener implements Listener {
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 		if (PluginCfg.TAG_SYSTEM && TagNameCfg.USE_HD_PLUGIN) {
-			String uuid = this.pm.getPlayerUUIDByName(event.getPlayer().getName());
+			String uuid = this.pm.getPlayerUUIDByName(event.getPlayer());
 			PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
 			if (playerTag != null) {
 				playerTag.moveHologramsName(event.getPlayer());
@@ -74,36 +79,40 @@ public class TagsListener implements Listener {
 	@EventHandler
 	public void onPlayerClick(InventoryClickEvent event) {
 		if (StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§2§r").equals(event.getInventory().getName())) {
-			if (event.getCurrentItem() != null && event.getCurrentItem().getItemMeta() != null && event.getCurrentItem().getItemMeta().hasLore()) {
-				List<String> lores = event.getCurrentItem().getItemMeta().getLore();
-				if (lores.size() > 1) {
-					String permissions = lores.get(lores.size() - 2);
-					permissions = permissions.startsWith("§8§k") ? permissions.substring(4) : "noPermissions";
-					String uuid = pm.getPlayerUUIDByName(event.getWhoClicked().getName());
-					if (permissions.length() == 0 || event.getWhoClicked().hasPermission(permissions)) {
-						if (TagNameCfg.PLAYER_TAG.containsKey(uuid)) {
-							String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
-							PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
-							if (itemName.startsWith(StrUtil.messageFormat(LangCfg.TAG_COLOR_ITEM_NAME + "§1§r "))) {
-								playerTag.setNamecolor(lores.get(lores.size() - 1).substring(2));
-							} else if (itemName.startsWith(StrUtil.messageFormat(LangCfg.TAG_PREFIX_ITEM_NAME + "§2§r "))) {
-								playerTag.setPrefix(lores.get(lores.size() - 1).substring(2));
-							} else if (itemName.startsWith(StrUtil.messageFormat(LangCfg.TAG_SUFFIX_ITEM_NAME + "§3§r "))) {
-								playerTag.setSuffix(lores.get(lores.size() - 1).substring(2));
-							} else {
-								event.getWhoClicked().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
+			try {
+				if (event.getCurrentItem() != null && event.getCurrentItem().getItemMeta() != null && event.getCurrentItem().getItemMeta().hasLore()) {
+					List<String> lores = event.getCurrentItem().getItemMeta().getLore();
+					if (lores.size() > 1) {
+						String permissions = lores.get(lores.size() - 2);
+						permissions = permissions.startsWith("§8§k") ? permissions.substring(4) : "noPermissions";
+						String uuid = pm.getPlayerUUIDByName((Player) event.getWhoClicked());
+						if (permissions.length() == 0 || event.getWhoClicked().hasPermission(permissions)) {
+							if (TagNameCfg.PLAYER_TAG.containsKey(uuid)) {
+								String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
+								PlayerTagBean playerTag = TagNameCfg.PLAYER_TAG.get(uuid);
+								if (itemName.startsWith(StrUtil.messageFormat(LangCfg.TAG_COLOR_ITEM_NAME + "§1§r "))) {
+									playerTag.setNamecolor(lores.get(lores.size() - 1).substring(2));
+								} else if (itemName.startsWith(StrUtil.messageFormat(LangCfg.TAG_PREFIX_ITEM_NAME + "§2§r "))) {
+									playerTag.setPrefix(lores.get(lores.size() - 1).substring(2));
+								} else if (itemName.startsWith(StrUtil.messageFormat(LangCfg.TAG_SUFFIX_ITEM_NAME + "§3§r "))) {
+									playerTag.setSuffix(lores.get(lores.size() - 1).substring(2));
+								} else {
+									((Player) event.getWhoClicked()).sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
+									event.setCancelled(true);
+									return;
+								}
+								playerTag.setPlayerDisplayName((Player) event.getWhoClicked(), true);
+								playerTag.saveConfig();
+								((Player) event.getWhoClicked()).sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TAG_SET_SUCCESS));
 								event.setCancelled(true);
 								return;
 							}
-							playerTag.setPlayerDisplayName((Player) event.getWhoClicked(), true);
-							playerTag.saveConfig();
-							event.getWhoClicked().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_TAG_SET_SUCCESS));
-							event.setCancelled(true);
-							return;
 						}
+						((Player) event.getWhoClicked()).sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
 					}
-					event.getWhoClicked().sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_NO_PERMISSION));
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 			event.setCancelled(true);
 		}
