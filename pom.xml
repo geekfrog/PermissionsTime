@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gg.frog.mc</groupId>
 	<artifactId>permissionstime</artifactId>
-	<version>0.4.3-SNAPSHOT-b1006</version>
+	<version>0.4.4-SNAPSHOT-b1007</version>
 	<packaging>jar</packaging>
 	<name>PermissionsTime</name>
 	<description>支持跨服的权限限时插件</description>
