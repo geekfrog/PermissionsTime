@@ -1,14 +1,15 @@
 name: ${project.name}
-version: 0.4.3-SNAPSHOT-b1005
-main: gg.frog.mc.base.PluginMain
+version: 0.4.3-SNAPSHOT-b1006
+main: gg.frog.mc.permissionstime.PluginMain
 author:
 - GeekFrog
 description: ${project.description}
+depend:
+- FrogsPluginLib
 softdepend:
+- PlaceholderAPI
 - SQLibrary
 - Vault
-- PlaceholderAPI
-- HolographicDisplays
 commands:
   permissionstime:
     description: Show all commands.
@@ -22,7 +23,6 @@ permissions:
     default: op
     children:
       permissionstime.me: true
-      permissionstime.tag: true
       permissionstime.reload: true
       permissionstime.give: true
       permissionstime.set: true
@@ -32,9 +32,6 @@ permissions:
       permissionstime.packages: true
   permissionstime.me:
     description: View your packages.
-    default: true
-  permissionstime.tag:
-    description: Set your color/prefix/suffix of tags.
     default: true
   permissionstime.reload:
     description: Reloads the config file.

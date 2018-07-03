@@ -8,10 +8,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import gg.frog.mc.base.config.LangCfg;
-import gg.frog.mc.base.config.PluginCfg;
 import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
+import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 
@@ -30,7 +30,7 @@ public class PlayerPermissionShow {
 					ItemMeta meta = tItem.getItemMeta();
 					List<String> lores = meta.getLore();
 					lores.add(StrUtil.messageFormat(LangCfg.EXPIRATION_TIME, StrUtil.timestampToString(pdb.getExpire())));
-					lores.add(StrUtil.getLeftTime(pdb.getExpire()));
+					lores.add(PlayerDataBean.getLeftTime(pdb.getExpire()));
 					meta.setLore(lores);
 					tItem.setItemMeta(meta);
 					inventory.addItem(tItem);

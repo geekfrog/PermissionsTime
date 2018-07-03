@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gg.frog.mc</groupId>
 	<artifactId>permissionstime</artifactId>
-	<version>0.4.3-SNAPSHOT-b1005</version>
+	<version>0.4.3-SNAPSHOT-b1006</version>
 	<packaging>jar</packaging>
 	<name>PermissionsTime</name>
 	<description>支持跨服的权限限时插件</description>
@@ -19,11 +19,15 @@
 	</properties>
 	<repositories>
 		<repository>
+			<id>Frog Nexus Repository</id>
+			<url>https://maven.frog.gg/repository/maven-public/</url>
+		</repository>
+		<repository>
 			<id>spigotmc-repo</id>
 			<url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
 		</repository>
 		<repository>
-			<id>dakani</id>
+			<id>dakani-repo</id>
 			<name>Dakani Nexus Repo</name>
 			<url>https://repo.dakanilabs.com/repository/public/</url>
 		</repository>
@@ -36,15 +40,20 @@
 			<url>http://repo.bstats.org/content/repositories/releases/</url>
 		</repository>
 		<repository>
-			<id>placeholderapi</id>
+			<id>extendedclip-repo</id>
 			<url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
 		</repository>
 		<repository>
-			<id>HD</id>
+			<id>filoghost-repo</id>
 			<url>https://ci.filoghost.me/plugin/repository/everything/</url>
 		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>gg.frog.mc</groupId>
+			<artifactId>base</artifactId>
+			<version>LATEST</version>
+		</dependency>
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
@@ -87,6 +96,17 @@
 			<resource>
 				<directory>src/resources</directory>
 				<filtering>true</filtering>
+				<includes>
+					<include>*.yml</include>
+					<include>lang/*.yml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/resources</directory>
+				<filtering>false</filtering>
+				<includes>
+					<include>lib/*.jar</include>
+				</includes>
 			</resource>
 			<resource>
 				<targetPath>.</targetPath>
@@ -137,7 +157,7 @@
 					</artifactSet>
 					<relocations>
 						<relocation>
-							<pattern>org.bstats</pattern>
+							<pattern>org.bstats.bukkit</pattern>
 							<!-- Replace this with your package! -->
 							<shadedPattern>gg.frog.mc.permissionstime</shadedPattern>
 						</relocation>
@@ -158,4 +178,16 @@
 		<system>Jenkins</system>
 		<url>http://ci.frog.gg/</url>
 	</ciManagement>
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<name>Frog Release Repository</name>
+			<url>https://maven.frog.gg/repository/maven-releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<name>Frog Snapshot Repository</name>
+			<url>https://maven.frog.gg/repository/maven-snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
 </project>

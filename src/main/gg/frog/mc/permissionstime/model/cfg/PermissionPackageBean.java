@@ -13,12 +13,13 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 
-import gg.frog.mc.base.PluginMain;
-import gg.frog.mc.base.config.LangCfg;
-import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.base.utils.StrUtil;
 import gg.frog.mc.base.utils.config.IConfigBean;
+import gg.frog.mc.base.utils.data.PlayerData;
+import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
+import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 import net.milkbowl.vault.permission.Permission;
 
@@ -267,7 +268,7 @@ public class PermissionPackageBean implements IConfigBean {
 			addPpb.givePlayer(player, pm.getServer(), pm.getPermission());
 		}
 		checkExpire(player, pm);
-		String uuid = pm.getPlayerUUIDByName(player.getPlayer());
+		String uuid = PlayerData.getPlayerUUIDByName(player.getPlayer());
 		BukkitTask task = taskMap.get(uuid);
 		if (pdbList.size() > 0) {
 			delay = (delay / 1000 + 1) * 20;// 1秒=20ticks
@@ -299,7 +300,7 @@ public class PermissionPackageBean implements IConfigBean {
 				subPpb.clearPlayer(player, pm.getServer(), pm.getPermission());
 			}
 		});
-		String uuid = pm.getPlayerUUIDByName(player.getPlayer());
+		String uuid = PlayerData.getPlayerUUIDByName(player.getPlayer());
 		BukkitTask task = taskMap.get(uuid);
 		if (task != null) {
 			pm.getServer().getScheduler().cancelTask(task.getTaskId());
@@ -307,7 +308,7 @@ public class PermissionPackageBean implements IConfigBean {
 	}
 
 	public static void checkExpire(OfflinePlayer player, PluginMain pm) {
-		String uuid = pm.getPlayerUUIDByName(player.getPlayer());
+		String uuid = PlayerData.getPlayerUUIDByName(player.getPlayer());
 		List<PlayerDataBean> playerDataList = pm.getSqlManager().getAllTime(uuid);
 		long now = new Date().getTime();
 		for (PlayerDataBean playerData : playerDataList) {

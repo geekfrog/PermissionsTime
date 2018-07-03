@@ -11,11 +11,8 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryView;
 
-import gg.frog.mc.base.PluginMain;
-import gg.frog.mc.base.config.LangCfg;
-import gg.frog.mc.base.config.PluginCfg;
 import gg.frog.mc.base.utils.StrUtil;
-import gg.frog.mc.nametags.command.TagCmd;
+import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.permissionstime.command.GetCmd;
 import gg.frog.mc.permissionstime.command.GiveCmd;
 import gg.frog.mc.permissionstime.command.MeCmd;
@@ -23,7 +20,9 @@ import gg.frog.mc.permissionstime.command.PackagesCmd;
 import gg.frog.mc.permissionstime.command.RemoveAllCmd;
 import gg.frog.mc.permissionstime.command.RemoveCmd;
 import gg.frog.mc.permissionstime.command.SetCmd;
+import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
+import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 
 public class PtCommand implements CommandExecutor, TabCompleter {
@@ -54,7 +53,7 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 						if (player.hasPermission("permissionstime.reload")) {
 							for (Player p : pm.getServer().getOnlinePlayers()) {
 								InventoryView inventory = p.getOpenInventory();
-								if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§1§r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§2§r").equals(inventory.getTitle()))) {
+								if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§1§r").equals(inventory.getTitle()))) {
 									inventory.close();
 								}
 							}
@@ -70,7 +69,7 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 					} else {
 						for (Player p : pm.getServer().getOnlinePlayers()) {
 							InventoryView inventory = p.getOpenInventory();
-							if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§1§r").equals(inventory.getTitle()) || StrUtil.messageFormat(LangCfg.TAG_INVENTORY_NAME + "§r§5§9§2§0§2§r").equals(inventory.getTitle()))) {
+							if (inventory != null && (StrUtil.messageFormat(LangCfg.INVENTORY_NAME + "§r§5§9§2§0§1§r").equals(inventory.getTitle()))) {
 								inventory.close();
 							}
 						}
@@ -85,15 +84,6 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 					if (hasPermission(sender, isPlayer, "permissionstime.me")) {
 						MeCmd meCmd = new MeCmd(pm, sender, isPlayer, args);
 						new Thread(meCmd).start();
-					}
-				} else if (args[0].equalsIgnoreCase("tag")) {
-					if (hasPermission(sender, isPlayer, "permissionstime.tag")) {
-						if (PluginCfg.TAG_SYSTEM) {
-							TagCmd tagCmd = new TagCmd(pm, sender, isPlayer, args);
-							new Thread(tagCmd).start();
-						} else {
-							sender.sendMessage(StrUtil.messageFormat(LangCfg.MSG_FUNC_DISABLED, LangCfg.TAG));
-						}
 					}
 				} else if (args[0].equalsIgnoreCase("give")) {
 					if (hasPermission(sender, isPlayer, "permissionstime.give")) {
@@ -138,9 +128,6 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 		sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + "\n§a===== " + pm.PLUGIN_NAME + " Version:" + pm.PLUGIN_VERSION + (pm.getDescription().getCommands().containsKey("pt") ? " Aliases:/pt" : "") + " ====="));
 		if (isPlayer && (sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
 			sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_ME, pm.PLUGIN_NAME_LOWER_CASE));
-		}
-		if (isPlayer && (sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".tag"))) {
-			sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_TAG, pm.PLUGIN_NAME_LOWER_CASE));
 		}
 		if (!isPlayer || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages")) {
 			sender.sendMessage(StrUtil.messageFormat(LangCfg.CMD_PACKAGES, pm.PLUGIN_NAME_LOWER_CASE));
@@ -189,9 +176,6 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 			if ("me".startsWith(args[0]) && (!isPlayer || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".me"))) {
 				tipList.add("me");
 			}
-			if ("tag".startsWith(args[0]) && (!isPlayer || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".tag"))) {
-				tipList.add("tag");
-			}
 			if ("packages".startsWith(args[0]) && (!isPlayer || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".packages"))) {
 				tipList.add("packages");
 			}
@@ -222,10 +206,6 @@ public class PtCommand implements CommandExecutor, TabCompleter {
 						tipList.add(name);
 					}
 				}
-			} else if ("tag".equalsIgnoreCase(args[0]) && (!isPlayer || sender.hasPermission(pm.PLUGIN_NAME_LOWER_CASE + ".tag"))) {
-				tipList.add("c");
-				tipList.add("p");
-				tipList.add("s");
 			}
 		} else if (args.length == 3) {
 			args[0] = args[0].toLowerCase(Locale.ENGLISH);

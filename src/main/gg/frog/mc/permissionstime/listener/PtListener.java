@@ -6,14 +6,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import gg.frog.mc.base.PluginMain;
-import gg.frog.mc.base.config.LangCfg;
-import gg.frog.mc.base.config.PluginCfg;
 import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.data.PlayerData;
+import gg.frog.mc.permissionstime.PluginMain;
+import gg.frog.mc.permissionstime.config.LangCfg;
+import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
 
@@ -25,10 +26,10 @@ public class PtListener implements Listener {
 		this.pm = pm;
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onJoin(PlayerLoginEvent event) {
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onJoin(PlayerJoinEvent event) {
 		try {
-			String uuid = pm.getPlayerUUIDByName(event.getPlayer());
+			String uuid = PlayerData.getPlayerUUIDByName(event.getPlayer());
 			List<PlayerDataBean> pdbList = pm.getSqlManager().getTime(uuid);
 			PermissionPackageBean.reloadPlayerPermissions(event.getPlayer(), pdbList, pm, false);
 		} catch (Exception e) {

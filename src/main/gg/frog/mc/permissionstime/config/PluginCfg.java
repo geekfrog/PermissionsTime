@@ -1,9 +1,9 @@
-package gg.frog.mc.base.config;
+package gg.frog.mc.permissionstime.config;
 
 import org.bukkit.command.CommandSender;
 
-import gg.frog.mc.base.PluginMain;
 import gg.frog.mc.base.utils.config.PluginConfig;
+import gg.frog.mc.permissionstime.PluginMain;
 
 /**
  * 插件默认配置
@@ -16,7 +16,6 @@ public class PluginCfg extends PluginConfig {
     public static String PLUGIN_PREFIX;
     public static boolean IS_METRICS = true;
     public static boolean IS_DEBUG = false;
-    public static boolean TAG_SYSTEM = false;
     public static String LANG;
     public static boolean USE_MYSQL = false;
     public static String SQL_SERVER_ID;
@@ -36,10 +35,9 @@ public class PluginCfg extends PluginConfig {
 
     @Override
     protected void loadToDo(CommandSender sender) {
-        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "§b[" + pm.PLUGIN_NAME + "] ") + "§r";
+        PLUGIN_PREFIX = setGetDefault("pluginPrefix", "§4[§b" + pb.PLUGIN_NAME + "§4] ") + "§r";
         IS_DEBUG = setGetDefault("debug", false);
         IS_METRICS = setGetDefault("metrics", true);
-        TAG_SYSTEM = setGetDefault("tagSystem", false);
         LANG = setGetDefault("lang", "en");
         USE_MYSQL = setGetDefault("mysql.enable", false);
         SQL_SERVER_ID = setGetDefault("mysql.serverId", "default");

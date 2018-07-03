@@ -6,11 +6,12 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import gg.frog.mc.base.PluginMain;
-import gg.frog.mc.base.config.LangCfg;
-import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.data.PlayerData;
+import gg.frog.mc.permissionstime.config.LangCfg;
 import gg.frog.mc.permissionstime.config.PackagesCfg;
+import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.model.cfg.PermissionPackageBean;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
@@ -40,10 +41,10 @@ public class RemoveCmd implements Runnable {
 			}
 			PermissionPackageBean pack = PackagesCfg.PACKAGES.get(packageName);
 			if (pack != null) {
-				OfflinePlayer player = pm.getOfflinePlayer(playerName);
+				OfflinePlayer player = PlayerData.getOfflinePlayer(playerName);
 				if (player != null) {
 					sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
-					String uuid = pm.getPlayerUUIDByName(playerName);
+					String uuid = PlayerData.getPlayerUUIDByName(playerName);
 					if (PluginCfg.IS_DEBUG) {
 						sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + uuid + "\n" + pack.toString()));
 					}

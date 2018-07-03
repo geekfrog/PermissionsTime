@@ -5,10 +5,11 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import gg.frog.mc.base.PluginMain;
-import gg.frog.mc.base.config.LangCfg;
-import gg.frog.mc.base.config.PluginCfg;
+import gg.frog.mc.permissionstime.PluginMain;
 import gg.frog.mc.base.utils.StrUtil;
+import gg.frog.mc.base.utils.data.PlayerData;
+import gg.frog.mc.permissionstime.config.LangCfg;
+import gg.frog.mc.permissionstime.config.PluginCfg;
 import gg.frog.mc.permissionstime.database.SqlManager;
 import gg.frog.mc.permissionstime.gui.PlayerPermissionShow;
 import gg.frog.mc.permissionstime.model.db.PlayerDataBean;
@@ -34,7 +35,7 @@ public class MeCmd implements Runnable {
 		if (isPlayer) {
 			if (args.length == 1) {
 				sender.sendMessage(StrUtil.messageFormat(PluginCfg.PLUGIN_PREFIX + LangCfg.MSG_PROCESSING));
-				String uuid = pm.getPlayerUUIDByName((Player) sender);
+				String uuid = PlayerData.getPlayerUUIDByName((Player) sender);
 				List<PlayerDataBean> ps = sm.getTime(uuid);
 				PlayerPermissionShow.show((Player) sender, ps);
 			} else {
