@@ -212,7 +212,8 @@ cmd:
 [tr][td][align=center][size=6][color=#ffffff][b]已知问题(作者提醒)[/b][/color][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,gray]
 [tr][td][size=4][color=#ffffff][b][list]
-[*]如果出现问题一般退出服务器重进就能解决。一次不行再来一次。
+[*]如果插件不能正常工作,如1.7.10版本配置文件需要改成ANSI编码。
+[*]如果出现问题一般退出服务器重进就能解决。
 [*]插件重载不会重置在线玩家的权限, 如有必要请重启服务器。
 [*]玩家每次登陆会重置权限包涉及的权限。请不要单独给予玩家涉及的权限。
 [*]服务器关闭时, 插件被禁用的顺序不一, 会导致玩家有权限留存。 如果配置的权限包删掉原来设置的权限(或修改世界), 会导致插件无法清理原有的权限及权限组。(你可以配置一个不使用的权限包, 权限包内含有你想清理的权限及权限组即可。)
@@ -220,7 +221,7 @@ cmd:
 [/table][/align][align=center][table=98%,#4169e1]
 [tr][td][align=center][size=6][color=#ffffff][b]更新日志[/b][/color][/size][/align][/td][/tr]
 [/table][/align][align=center][table=98%,gray]
-[tr][td][spoiler][size=4][b][url=http://ci.frog.gg/jenkins/job/PermissionsTime/changes]详细的更新记录[/url]
+[tr][td][spoiler][size=4][b][url=http://ci.frog.gg/job/PermissionsTime/changes]详细的更新记录[/url]
 [color=#ffffff]2018年7月3日 V0.4.4[/color][quote][color=#000000]1.V0.4.4正式发布
 2.修复一些BUG
 3.将称号系统和常用工具类分离出来

@@ -1,7 +1,6 @@
 package gg.frog.mc.permissionstime;
 
 import java.text.MessageFormat;
-import java.util.Locale;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -26,12 +25,6 @@ public class PluginMain extends PluginBase {
 	private PluginMain pm = null;
 	private SqlManager sm = null;
 	private Permission permission = null;
-
-	public PluginMain() {
-		PLUGIN_NAME = getDescription().getName();
-		PLUGIN_VERSION = getDescription().getVersion();
-		PLUGIN_NAME_LOWER_CASE = PLUGIN_NAME.toLowerCase(Locale.ENGLISH);
-	}
 
 	@Override
 	public void onEnable() {
